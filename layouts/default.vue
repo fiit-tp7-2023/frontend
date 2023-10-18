@@ -1,5 +1,13 @@
 <template>
-  <header>Header</header>
+  <header>Project section header <button @click="handleSignOut">Sign out</button></header>
   <slot />
-  <footer>Footer</footer>
+  <footer>Project section footer</footer>
 </template>
+
+<script lang="ts" setup>
+const { signOut } = useAuth();
+
+const handleSignOut = async () => {
+  await signOut({ callbackUrl: "/" });
+};
+</script>

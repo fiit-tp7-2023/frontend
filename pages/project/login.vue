@@ -9,8 +9,9 @@
 definePageMeta({
   auth: {
     unauthenticatedOnly: true,
-    navigateAuthenticatedTo: "/project/dashboard",
+    navigateAuthenticatedTo: "/project",
   },
+  layout: false,
 });
 
 const { signIn } = useAuth();

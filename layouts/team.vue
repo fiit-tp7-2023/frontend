@@ -1,13 +1,5 @@
 <template>
-  <header>Team section header <button @click="goHome">Home</button></header>
+  <header>Team section header</header>
   <slot />
   <footer>Team section footer</footer>
 </template>
-
-<script lang="ts" setup>
-const router = useRouter();
-
-const goHome = () => {
-  router.push("/");
-};
-</script>
