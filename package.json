@@ -17,6 +17,6 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
-    "next-auth": "^4.21.1"
+    "next-auth": "~4.22.5"
   }
 }
