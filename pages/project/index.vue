@@ -2,20 +2,12 @@
   <div>
     <h1>Project section index page</h1>
     <button @click="refreshForecast()">Refresh forecast</button>
-    <div>{{ forecast }}</div>
+    <div v-if="forecastLoading">Loading...</div>
+    <ul v-else>
+      <li v-for="forecast in forecasts" :key="forecast.id" >{{ forecast.date }} - {{ forecast.temperatureC }} C</li>
+    </ul>
   </div>
 </template>
 <script setup lang="ts">
-const { data } = useFetch("/api/token");
-const { data: forecast, refresh: refreshForecast } = useAsyncData(
-  "forecast",
-  () =>
-    $fetch("https://localhost:7210/WeatherForecast", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer: " + data.value?.googleAccessToken,
-      },
-    })
-);
+const {data: forecasts, refresh:refreshForecast, pending: forecastLoading} = useFetch('/api/weather');
 </script>
