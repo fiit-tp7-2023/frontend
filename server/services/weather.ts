@@ -1,23 +1,13 @@
 import { WeatherForecast } from "~/types/weather";
-import { BASE_URL } from "../config/api";
+import { useApi } from "../utils/api";
 
 export const useWeatherService = (token: string) => {
+  const getForecasts = async <T>() => {
+    const data = await useApi<WeatherForecast[]>("/WeatherForecast", token);
+    return data;
+  };
 
-    const getForecasts = async () => {
-        const data = await $fetch<WeatherForecast[]>(
-          `${BASE_URL}/WeatherForecast`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
-        return data;
-    }
-
-    return {
-        getForecasts,
-    }
-}
+  return {
+    getForecasts,
+  };
+};
