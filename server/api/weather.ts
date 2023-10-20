@@ -1,6 +1,5 @@
 import { getToken } from "#auth";
-import { WeatherForecast } from "~/types/weather";
-import { BASE_URL } from "../config/api";
+import { useWeatherService } from "../services/weather";
 
 export default defineEventHandler(async (event) => {
   const token = await getToken({ event });
@@ -8,12 +7,7 @@ export default defineEventHandler(async (event) => {
     statusCode: 401,
     statusMessage: "Unauthorized",
   });
-    const data = await $fetch<WeatherForecast[]>(`${BASE_URL}/WeatherForecast`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token.googleAccessToken,
-    },
-  });
-  return data
+
+  const {getForecasts} = useWeatherService(token.googleAccessToken)
+  return await getForecasts();
 })
