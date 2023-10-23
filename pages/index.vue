@@ -8,6 +8,6 @@
 <script lang="ts" setup>
 definePageMeta({
   auth: false,
-  layout: "team",
+  layout: 'team',
 });
 </script>

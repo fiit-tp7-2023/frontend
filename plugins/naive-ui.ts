@@ -1,7 +1,7 @@
-import { setup } from "@css-render/vue3-ssr";
-import { NuxtSSRContext, defineNuxtPlugin } from "#app";
+import { NuxtSSRContext, defineNuxtPlugin } from '#app';
+import { setup } from '@css-render/vue3-ssr';
 
-export default defineNuxtPlugin(nuxtApp => {
+export default defineNuxtPlugin((nuxtApp) => {
   if (process.server) {
     const { collect } = setup(nuxtApp.vueApp);
     const originalRenderMeta = nuxtApp.ssrContext?.renderMeta;
@@ -13,17 +13,17 @@ export default defineNuxtPlugin(nuxtApp => {
         };
       }
       const originalMeta = originalRenderMeta();
-      if ("then" in originalMeta) {
+      if ('then' in originalMeta) {
         return originalMeta.then((resolvedOriginalMeta: any) => {
           return {
             ...resolvedOriginalMeta,
-            headTags: resolvedOriginalMeta["headTags"] + collect(),
+            headTags: resolvedOriginalMeta.headTags + collect(),
           };
         });
       } else {
         return {
           ...originalMeta,
-          headTags: originalMeta["headTags"] + collect(),
+          headTags: originalMeta.headTags + collect(),
         };
       }
     };

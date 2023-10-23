@@ -8,6 +8,6 @@
 const { signOut } = useAuth();
 
 const handleSignOut = async () => {
-  await signOut({ callbackUrl: "/" });
+  await signOut({ callbackUrl: '/' });
 };
 </script>

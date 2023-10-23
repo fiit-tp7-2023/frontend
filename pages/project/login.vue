@@ -9,7 +9,7 @@
 definePageMeta({
   auth: {
     unauthenticatedOnly: true,
-    navigateAuthenticatedTo: "/project",
+    navigateAuthenticatedTo: '/project',
   },
   layout: false,
 });
@@ -17,6 +17,6 @@ definePageMeta({
 const { signIn } = useAuth();
 
 const handleSignIn = async () => {
-  await signIn("google");
+  await signIn('google');
 };
 </script>
