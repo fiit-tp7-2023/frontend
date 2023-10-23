@@ -1,0 +1,11 @@
+{
+    "recommendations": [
+        "Vue.volar",
+        "Vue.vscode-typescript-vue-plugin",
+        "tal7aouy.icons",
+        "dbaeumer.vscode-eslint",
+        "rvest.vs-code-prettier-eslint",
+        "Nuxtr.nuxtr-vscode",
+        "esbenp.prettier-vscode"
+    ]
+}
