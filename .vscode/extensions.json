@@ -6,6 +6,7 @@
         "dbaeumer.vscode-eslint",
         "rvest.vs-code-prettier-eslint",
         "Nuxtr.nuxtr-vscode",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "EditorConfig.EditorConfig"
     ]
 }
