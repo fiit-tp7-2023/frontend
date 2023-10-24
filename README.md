@@ -14,6 +14,7 @@ Powered by [Nuxt 3](https://nuxt.com/)
     * Prettier ESLint
     * Nuxtr
     * Prettier - Code formatter
+    * EditorConfig for VS Code
 
 Visual Studio Code should automatically ask you to install these extensions
 
