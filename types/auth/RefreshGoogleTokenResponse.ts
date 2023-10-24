@@ -1,4 +1,4 @@
-interface RefreshGoogleTokenResponse {
+export interface RefreshGoogleTokenResponse {
   accessToken: string;
   expires_in: number;
   scope: string;

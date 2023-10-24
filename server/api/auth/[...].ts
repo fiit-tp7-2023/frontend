@@ -1,20 +1,22 @@
-import { NuxtAuthHandler } from "#auth";
-import { JWT } from "next-auth/jwt";
-import GoogleProvider from "next-auth/providers/google";
+import { JWT } from 'next-auth/jwt';
+import GoogleProvider from 'next-auth/providers/google';
+import { NuxtAuthHandler } from '#auth';
+import { RefreshGoogleTokenResponse } from '~/types/auth/RefreshGoogleTokenResponse';
+import { RefreshGoogleTokenRequest } from '~/types/auth/RefreshGoogleTokenRequest';
 
 const RUNTIME_CONFIG = useRuntimeConfig();
-const REFRESH_GOOGLE_TOKEN_URL = "https://www.googleapis.com/oauth2/v4/token";
+const REFRESH_GOOGLE_TOKEN_URL = 'https://www.googleapis.com/oauth2/v4/token';
 
 const refreshGoogleToken = async (token: JWT): Promise<JWT> => {
   const body: RefreshGoogleTokenRequest = {
     client_id: RUNTIME_CONFIG.googleClientId,
     client_secret: RUNTIME_CONFIG.googleClientSecret,
     refresh_token: token.googleRefreshToken,
-    grant_type: "refresh_token",
+    grant_type: 'refresh_token',
   };
 
   const res = await $fetch<RefreshGoogleTokenResponse>(REFRESH_GOOGLE_TOKEN_URL, {
-    method: "POST",
+    method: 'POST',
     body,
   });
   token.googleAccessToken = res.id_token;
@@ -25,7 +27,7 @@ const refreshGoogleToken = async (token: JWT): Promise<JWT> => {
 
 export default NuxtAuthHandler({
   pages: {
-    signIn: "/project/login",
+    signIn: '/project/login',
   },
   providers: [
     // @ts-expect-error
@@ -34,9 +36,9 @@ export default NuxtAuthHandler({
       clientSecret: RUNTIME_CONFIG.googleClientSecret,
       authorization: {
         params: {
-          prompt: "consent",
-          access_type: "offline",
-          response_type: "code",
+          prompt: 'consent',
+          access_type: 'offline',
+          response_type: 'code',
         },
       },
     }),
@@ -58,7 +60,7 @@ export default NuxtAuthHandler({
     },
   },
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
     maxAge: 3600,
   },
 
