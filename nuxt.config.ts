@@ -5,6 +5,7 @@ export default defineNuxtConfig({
   auth: {
     enableGlobalAppMiddleware: true,
     origin: process.env.NODE_ENV === 'production' ? 'https://' + process.env.VERCEL_URL : 'http://localhost:3000',
+    secret: process.env.AUTH_SECRET,
   },
   runtimeConfig: {
     googleClientId: process.env.GOOGLE_CLIENT_ID,
