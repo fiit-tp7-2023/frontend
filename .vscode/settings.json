@@ -4,5 +4,17 @@
     "source.organizeImports": "never"
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "cSpell.words": ["FIIT", "nuxt"]
+  "cSpell.words": [
+    "FIIT",
+    "Josefin",
+    "Lato",
+    "nuxt",
+    "nuxtjs",
+    "Raleway",
+    "Roboto",
+    "sidebase",
+    "tailwindcss",
+    "vueuc",
+    "wght"
+  ]
 }
