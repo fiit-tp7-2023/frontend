@@ -11,7 +11,7 @@
       <li v-for="forecast in forecasts" :key="forecast.id">{{ forecast.date }} - {{ forecast.temperatureC }} C</li>
     </ul>
   </n-card>
-  <n-card v-for="x in [2, 3, 4, 5]" :key="x" :title="`Project section ${x}`">
+  <n-card v-for="x in [2, 3, 4, 5, 6]" :key="x" :title="`Project section ${x}`">
     <p>Project section {{ x }}</p>
   </n-card>
 </template>
