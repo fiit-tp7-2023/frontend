@@ -1,35 +1,30 @@
 <template>
-  <n-card>
-    <header>
-      <n-space justify="space-between" align="center" class="mx-2">
-        <h1>Graph explorer</h1>
-        <span>
-          <n-button type="tertiary" @click="handleSignOut">
-            Sign out
-            <template #icon>
-              <Icon name="ri:logout-box-line" color="black" />
-            </template>
-          </n-button>
-          <n-button type="tertiary" @click="changeTheme">
-            Change theme
-            <template #icon>
-              <Icon name="mdi:theme-light-dark" color="black" />
-            </template>
-          </n-button>
-        </span>
-      </n-space>
+  <n-card class="rounded-md" size="small">
+    <header class="flex justify-between items-center">
+      <span class="flex justify-between items-center">
+        <nuxt-img width="80" height="80" src="/images/logo.png" />
+        <h1 class="text-lg h-1/2">Graph explorer</h1>
+      </span>
+      <span class="flex justify-evenly items-center w-20">
+        <n-button text type="tertiary" @click="changeTheme">
+          <Icon size="30px" name="mdi:theme-light-dark" :color="theme === 'light' ? 'black' : 'white'" />
+        </n-button>
+        <n-button type="tertiary" text @click="handleSignOut">
+          <Icon size="30px" name="ri:logout-box-line" :color="theme === 'light' ? 'black' : 'white'" />
+        </n-button>
+      </span>
     </header>
   </n-card>
 </template>
 
 <script lang="ts" setup>
-import { NCard, NSpace, NButton } from 'naive-ui';
+import { NCard, NButton } from 'naive-ui';
 const { signOut } = useAuth();
 
 const handleSignOut = async () => {
   await signOut({ callbackUrl: '/' });
 };
-const theme = useState('theme', () => 'dark');
+const theme = useState<'dark' | 'light'>('theme', () => 'dark');
 const changeTheme = () => {
   if (theme.value === 'dark') {
     theme.value = 'light';

@@ -1,9 +1,13 @@
 <template>
   <n-card>
-    <n-space justify="center">FIIT STU 2023</n-space>
+    <div class="flex justify-between mx-2 w-full">
+      <span>FIIT STU</span>
+      <span>2023</span>
+      <span>TAG Team</span>
+    </div>
   </n-card>
 </template>
 
 <script lang="ts" setup>
-import { NCard, NSpace } from 'naive-ui';
+import { NCard } from 'naive-ui';
 </script>
