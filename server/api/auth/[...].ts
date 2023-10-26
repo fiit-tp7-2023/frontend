@@ -26,6 +26,7 @@ const refreshGoogleToken = async (token: JWT): Promise<JWT> => {
 };
 
 export default NuxtAuthHandler({
+  secret: RUNTIME_CONFIG.authSecret,
   pages: {
     signIn: '/project/login',
   },
