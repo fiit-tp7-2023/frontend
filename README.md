@@ -15,6 +15,7 @@ Powered by [Nuxt 3](https://nuxt.com/)
     * Nuxtr
     * Prettier - Code formatter
     * EditorConfig for VS Code
+    * Tailwind CSS IntelliSense
 
 Visual Studio Code should automatically ask you to install these extensions
 
