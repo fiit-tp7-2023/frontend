@@ -12,6 +12,7 @@
     "lint:fix": "eslint --fix --ext \".ts,.js,.vue\" --ignore-path .gitignore ."
   },
   "devDependencies": {
+    "@bg-dev/nuxt-naiveui": "^1.5.2",
     "@commitlint/cli": "^18.0.0",
     "@css-render/vue3-ssr": "^0.15.12",
     "@nuxt/devtools": "latest",

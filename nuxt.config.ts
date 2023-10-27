@@ -11,7 +11,14 @@ export default defineNuxtConfig({
     googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
     authSecret: process.env.AUTH_SECRET,
   },
-  modules: ['@sidebase/nuxt-auth', 'nuxt-icon', '@nuxtjs/eslint-module', '@nuxtjs/google-fonts', '@nuxt/image'],
+  modules: [
+    '@sidebase/nuxt-auth',
+    'nuxt-icon',
+    '@nuxtjs/eslint-module',
+    '@nuxtjs/google-fonts',
+    '@nuxt/image',
+    '@bg-dev/nuxt-naiveui',
+  ],
   build: {
     transpile:
       process.env.NODE_ENV === 'production'
@@ -42,4 +49,7 @@ export default defineNuxtConfig({
     },
   },
   css: ['~/assets/css/main.css'],
+  tailwindcss: {
+    exposeConfig: true,
+  },
 });
