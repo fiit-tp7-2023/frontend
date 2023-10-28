@@ -1,4 +1,4 @@
-import { useWeatherService } from '../services/weather';
+import { useTransactionService } from '~/server/services/transaction';
 import { getToken } from '#auth';
 
 export default defineEventHandler(async (event) => {
@@ -9,6 +9,7 @@ export default defineEventHandler(async (event) => {
       statusMessage: 'Unauthorized',
     });
 
-  const { getForecasts } = useWeatherService(token.googleAccessToken);
-  return await getForecasts();
+  const { getTransaction } = useTransactionService(token.googleAccessToken);
+  const id = event.context.params!.id;
+  return await getTransaction(id);
 });

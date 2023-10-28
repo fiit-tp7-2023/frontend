@@ -1,21 +1,45 @@
 <template>
-  <n-card class="w-full" title="Project section 1">
+  <n-card class="w-full" title="Transactions">
     <template #header-extra>
-      <n-button type="primary" text @click="refreshForecast()">
+      <n-button type="primary" text @click="refreshTransactions()">
         <Icon size="25" name="material-symbols:sync-rounded" />
       </n-button>
     </template>
-    <div v-if="forecastLoading">Loading...</div>
-    <div v-else-if="error">Error: {{ error }}</div>
-    <ul v-else>
-      <li v-for="forecast in forecasts" :key="forecast.id">{{ forecast.date }} - {{ forecast.temperatureC }} C</li>
-    </ul>
-  </n-card>
-  <n-card v-for="x in [2, 3, 4, 5, 6]" :key="x" :title="`Project section ${x}`">
-    <p>Project section {{ x }}</p>
+    <n-data-table v-if="!error" :columns="columns" :data="transactions!" :loading="transactionsLoading" />
+    <div v-else>Error: {{ error }}</div>
   </n-card>
 </template>
+
 <script setup lang="ts">
-import { NButton, NCard } from 'naive-ui';
-const { data: forecasts, refresh: refreshForecast, pending: forecastLoading, error } = useFetch('/api/weather');
+import { NDataTable, NCard, NButton } from 'naive-ui';
+
+const {
+  data: transactions,
+  refresh: refreshTransactions,
+  pending: transactionsLoading,
+  error,
+} = useFetch('/api/transaction/search');
+
+const columns = [
+  {
+    title: 'Transaction',
+    key: 'id',
+  },
+  {
+    title: 'Amount',
+    key: 'amount',
+  },
+  {
+    title: 'Sender',
+    key: 'sender.id',
+  },
+  {
+    title: 'Receiver',
+    key: 'receiver.id',
+  },
+  {
+    title: 'NFT',
+    key: 'nft.id',
+  },
+];
 </script>

@@ -1,21 +1,20 @@
 import { JWT } from 'next-auth/jwt';
 import GoogleProvider from 'next-auth/providers/google';
 import { NuxtAuthHandler } from '#auth';
-import { RefreshGoogleTokenResponse } from '~/types/auth/RefreshGoogleTokenResponse';
-import { RefreshGoogleTokenRequest } from '~/types/auth/RefreshGoogleTokenRequest';
+import { RefreshGoogleTokenRequestDTO, RefreshGoogleTokenResponseDTO } from '~/types/dtos';
+import { REFRESH_GOOGLE_TOKEN_URL } from '~/server/config/api';
 
 const RUNTIME_CONFIG = useRuntimeConfig();
-const REFRESH_GOOGLE_TOKEN_URL = 'https://www.googleapis.com/oauth2/v4/token';
 
 const refreshGoogleToken = async (token: JWT): Promise<JWT> => {
-  const body: RefreshGoogleTokenRequest = {
+  const body: RefreshGoogleTokenRequestDTO = {
     client_id: RUNTIME_CONFIG.googleClientId,
     client_secret: RUNTIME_CONFIG.googleClientSecret,
     refresh_token: token.googleRefreshToken,
     grant_type: 'refresh_token',
   };
 
-  const res = await $fetch<RefreshGoogleTokenResponse>(REFRESH_GOOGLE_TOKEN_URL, {
+  const res = await $fetch<RefreshGoogleTokenResponseDTO>(REFRESH_GOOGLE_TOKEN_URL, {
     method: 'POST',
     body,
   });
