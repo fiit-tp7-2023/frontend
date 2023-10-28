@@ -1,5 +1,5 @@
 import { useApi } from '../utils/api';
-import { TransactionDTO, TransactionSearchRequestDTO } from '~/types/dtos';
+import { TransactionDTO, TransactionSearchRequestDTO, TransactionSearchResponseDTO } from '~/types/dtos';
 
 export const useTransactionService = (token: string) => {
   const getTransaction = async (id: string) => {
@@ -8,7 +8,7 @@ export const useTransactionService = (token: string) => {
   };
 
   const searchTransactions = async (query: TransactionSearchRequestDTO) => {
-    const data = await useApi<TransactionDTO[]>('transaction/search', token, { query });
+    const data = await useApi<TransactionSearchResponseDTO>('transaction/search', token, { query });
     return data;
   };
 
