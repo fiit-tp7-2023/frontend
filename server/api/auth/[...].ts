@@ -2,7 +2,6 @@ import { JWT } from 'next-auth/jwt';
 import GoogleProvider from 'next-auth/providers/google';
 import { NuxtAuthHandler } from '#auth';
 import { RefreshGoogleTokenRequestDTO, RefreshGoogleTokenResponseDTO } from '~/types/dtos';
-import { REFRESH_GOOGLE_TOKEN_URL } from '~/server/config/api';
 
 const RUNTIME_CONFIG = useRuntimeConfig();
 
@@ -14,7 +13,7 @@ const refreshGoogleToken = async (token: JWT): Promise<JWT> => {
     grant_type: 'refresh_token',
   };
 
-  const res = await $fetch<RefreshGoogleTokenResponseDTO>(REFRESH_GOOGLE_TOKEN_URL, {
+  const res = await $fetch<RefreshGoogleTokenResponseDTO>(RUNTIME_CONFIG.googleRefreshTokenUrl, {
     method: 'POST',
     body,
   });

@@ -7,6 +7,8 @@ export default defineNuxtConfig({
     origin: process.env.NODE_ENV === 'production' ? 'https://' + process.env.VERCEL_URL : 'http://localhost:3000',
   },
   runtimeConfig: {
+    restApiUrl: process.env.REST_API_URL,
+    googleRefreshTokenUrl: process.env.REFRESH_GOOGLE_TOKEN_URL,
     googleClientId: process.env.GOOGLE_CLIENT_ID,
     googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
     authSecret: process.env.AUTH_SECRET,
