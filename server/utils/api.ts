@@ -1,8 +1,9 @@
 import { ofetch, type FetchOptions } from 'ofetch';
-import { BASE_URL } from '../config/api';
+
+const RUNTIME_CONFIG = useRuntimeConfig();
 
 const apiFetch = ofetch.create({
-  baseURL: BASE_URL,
+  baseURL: RUNTIME_CONFIG.restApiUrl,
   headers: {
     'Content-Type': 'application/json',
   },
