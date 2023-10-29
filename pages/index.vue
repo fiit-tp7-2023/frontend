@@ -2,7 +2,7 @@
   <div>
     <h1>Team section index page</h1>
     <n-button type="info" @click="$router.push('/project/login')">Project section</n-button>
-    <team-section></team-section>
+    <team-section />
   </div>
 </template>
 

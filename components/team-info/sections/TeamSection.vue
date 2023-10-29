@@ -23,5 +23,3 @@
 <script lang="ts" setup>
 import TeamMemberComponent from './TeamMemberComponent.vue';
 </script>
-
-<style></style>

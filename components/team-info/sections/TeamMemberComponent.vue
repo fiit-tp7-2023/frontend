@@ -23,7 +23,5 @@ const props = defineProps({
   },
 });
 
-const image = props.image ?? `https://api.dicebear.com/7.x/pixel-art/png?seed=${props.name}`;
+const image = computed(() => props.image ?? `https://api.dicebear.com/7.x/pixel-art/png?seed=${props.name}`);
 </script>
-
-<style></style>
