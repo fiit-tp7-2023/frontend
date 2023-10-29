@@ -10,6 +10,6 @@ export default defineEventHandler(async (event) => {
     });
 
   const { getTransaction } = useTransactionService(token.googleAccessToken);
-  const id = event.context.params!.id;
+  const id = getRouterParam(event, 'id') as string;
   return await getTransaction(id);
 });
