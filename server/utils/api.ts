@@ -1,5 +1,4 @@
 import { ofetch, type FetchOptions } from 'ofetch';
-import { useRuntimeConfig } from 'nuxt/app';
 
 const RUNTIME_CONFIG = useRuntimeConfig();
 
