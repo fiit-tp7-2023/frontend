@@ -20,5 +20,7 @@
     "tailwindcss",
     "vueuc",
     "wght"
-  ]
+    
+  ],
+  "files.eol": "\n"
 }
