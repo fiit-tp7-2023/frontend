@@ -2,14 +2,13 @@
   <div>
     <h1>Team section index page</h1>
     <n-button type="info" @click="$router.push('/project/login')">Project section</n-button>
-    <client-only>
-      <n-theme-editor />
-    </client-only>
+    <team-section />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { NButton, NThemeEditor } from 'naive-ui';
+import TeamSection from '../components/team-info/sections/TeamSection.vue';
+
 definePageMeta({
   auth: false,
   layout: 'team',
