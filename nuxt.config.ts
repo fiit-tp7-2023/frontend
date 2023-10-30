@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     authSecret: process.env.AUTH_SECRET,
   },
   modules: [
+    '@nuxtjs/tailwindcss',
     '@sidebase/nuxt-auth',
     'nuxt-icon',
     '@nuxtjs/eslint-module',
@@ -21,17 +22,6 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@bg-dev/nuxt-naiveui',
   ],
-  build: {
-    transpile:
-      process.env.NODE_ENV === 'production'
-        ? ['naive-ui', 'vueuc', '@css-render/vue3-ssr', '@juggle/resize-observer']
-        : ['@juggle/resize-observer'],
-  },
-  vite: {
-    optimizeDeps: {
-      include: process.env.NODE_ENV === 'development' ? ['naive-ui', 'vueuc', 'date-fns-tz/formatInTimeZone'] : [],
-    },
-  },
   googleFonts: {
     families: {
       Roboto: true,
@@ -44,13 +34,6 @@ export default defineNuxtConfig({
       },
     },
   },
-  postcss: {
-    plugins: {
-      tailwindcss: {},
-      autoprefixer: {},
-    },
-  },
-  css: ['~/assets/css/main.css'],
   tailwindcss: {
     exposeConfig: true,
   },

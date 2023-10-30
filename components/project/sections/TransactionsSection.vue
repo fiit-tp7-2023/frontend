@@ -25,10 +25,9 @@
 </template>
 
 <script setup lang="ts">
-import { NDataTable, NCard, NButton, NSpace, NInput } from 'naive-ui';
-import { LocationQueryRaw } from 'vue-router';
-import { TransactionSearchRequestDTO, TransactionSearchResponseDTO } from '~/types/dtos';
-import { TransactionSearchForm } from '~/types/forms';
+import type { LocationQueryRaw } from '#vue-router';
+import type { TransactionSearchRequestDTO, TransactionSearchResponseDTO } from '~/types/dtos';
+import type { TransactionSearchForm } from '~/types/forms';
 
 const router = useRouter();
 const route = useRoute();
