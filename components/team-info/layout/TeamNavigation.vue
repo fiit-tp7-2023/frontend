@@ -1,5 +1,5 @@
 <template>
-  <div class="text-xl bg-zinc-800 text-white p-5 flex justify-between content-center">
+  <div class="text-xl bg-zinc-900 text-white p-5 flex justify-between content-center">
     <NuxtLink to="/" class="text-3xl font-bold">ChainMates</NuxtLink>
     <div class="flex space-x-7">
       <NuxtLink
@@ -7,8 +7,8 @@
         :key="text"
         :value="link"
         :to="link"
-        class="hover:text-green-400 transition-all"
-        active-class="text-green-400 underline underline-offset-8"
+        class="hover:text-purple-400 transition-all"
+        active-class="text-purple-400 underline underline-offset-8"
         >{{ text }}</NuxtLink
       >
     </div>
