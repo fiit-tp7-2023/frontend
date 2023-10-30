@@ -7,7 +7,6 @@
 </template>
 
 <script lang="ts" setup>
-import { NButton } from 'naive-ui';
 import TeamSection from '../components/team-info/sections/TeamSection.vue';
 
 definePageMeta({

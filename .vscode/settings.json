@@ -4,7 +4,11 @@
     "source.organizeImports": "never"
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
   "cSpell.words": [
+    
     "FIIT",
     "Josefin",
     "Lato",

@@ -8,10 +8,10 @@
       <span class="flex justify-evenly items-center mr-2" :class="{ 'w-1/6': status === 'authenticated' }">
         <span v-if="status == 'authenticated'">Welcome {{ data?.user?.name ?? 'unknown user' }}!</span>
         <n-button text type="tertiary" @click="changeTheme">
-          <Icon size="30px" name="mdi:theme-light-dark" :color="theme === 'light' ? 'black' : 'white'" />
+          <Icon size="30px" name="mdi:theme-light-dark" color="green" />
         </n-button>
         <n-button v-if="status == 'authenticated'" type="tertiary" text @click="handleSignOut">
-          <Icon size="30px" name="ri:logout-box-line" :color="theme === 'light' ? 'black' : 'white'" />
+          <Icon size="30px" name="ri:logout-box-line" color="green" />
         </n-button>
       </span>
     </header>
@@ -19,18 +19,19 @@
 </template>
 
 <script lang="ts" setup>
-import { NCard, NButton } from 'naive-ui';
 const { signOut, status, data } = useAuth();
 
 const handleSignOut = async () => {
   await signOut({ callbackUrl: '/project/login' });
 };
-const theme = useState<'dark' | 'light'>('theme', () => 'dark');
+
+const { colorModePreference, colorMode } = useNaiveColorMode();
+
 const changeTheme = () => {
-  if (theme.value === 'dark') {
-    theme.value = 'light';
+  if (colorMode.value === 'dark') {
+    colorModePreference.set('light');
   } else {
-    theme.value = 'dark';
+    colorModePreference.set('dark');
   }
 };
 </script>

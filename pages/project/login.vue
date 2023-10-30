@@ -5,7 +5,6 @@
 </template>
 
 <script lang="ts" setup>
-import { NButton, NCard } from 'naive-ui';
 definePageMeta({
   auth: {
     unauthenticatedOnly: true,
