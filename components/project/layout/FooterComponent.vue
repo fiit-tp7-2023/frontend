@@ -7,7 +7,3 @@
     </div>
   </n-card>
 </template>
-
-<script lang="ts" setup>
-import { NCard } from 'naive-ui';
-</script>

@@ -95,8 +95,8 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { NButton } from 'naive-ui';
-import TeamMembers from '~/components/team-info/sections/TeamMembers.vue';
+import TeamMembers from '../components/team-info/sections/TeamMembers.vue';
+
 definePageMeta({
   auth: false,
   layout: 'team',

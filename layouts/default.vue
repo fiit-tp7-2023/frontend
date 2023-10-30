@@ -15,8 +15,6 @@
 </template>
 
 <script lang="ts" setup>
-import { NLayout, NLayoutContent, NLayoutFooter, NLayoutHeader } from 'naive-ui';
-
 import NavigationComponent from '~/components/project/layout/NavigationComponent.vue';
 import FooterComponent from '~/components/project/layout/FooterComponent.vue';
 </script>
