@@ -1,7 +1,9 @@
 <template>
   <naive-config>
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
+    <n-message-provider>
+      <NuxtLayout>
+        <NuxtPage />
+      </NuxtLayout>
+    </n-message-provider>
   </naive-config>
 </template>
