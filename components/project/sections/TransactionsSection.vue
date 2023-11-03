@@ -25,8 +25,9 @@
 </template>
 
 <script setup lang="ts">
+import TruncatedAddressComponent from '../other/TruncatedAddressComponent.vue';
 import type { LocationQueryRaw } from '#vue-router';
-import type { TransactionSearchRequestDTO, TransactionSearchResponseDTO } from '~/types/dtos';
+import type { TransactionDTO, TransactionSearchRequestDTO, TransactionSearchResponseDTO } from '~/types/dtos';
 import type { TransactionSearchForm } from '~/types/forms';
 
 const router = useRouter();
@@ -44,14 +45,17 @@ const columns = [
   {
     title: 'Sender',
     key: 'sender.id',
+    render: (row: TransactionDTO) => h(TruncatedAddressComponent, { address: row.sender.id }),
   },
   {
     title: 'Receiver',
     key: 'receiver.id',
+    render: (row: TransactionDTO) => h(TruncatedAddressComponent, { address: row.receiver.id }),
   },
   {
     title: 'NFT',
     key: 'nft.id',
+    render: (row: TransactionDTO) => h(TruncatedAddressComponent, { address: row.nft.id }),
   },
 ];
 
