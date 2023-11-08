@@ -21,6 +21,7 @@ export default defineNuxtConfig({
     '@nuxtjs/google-fonts',
     '@nuxt/image',
     '@bg-dev/nuxt-naiveui',
+    '@nuxt/content',
   ],
   googleFonts: {
     families: {
