@@ -1,6 +1,6 @@
 <template>
   <n-card title="Login">
-    <n-button class="w-full" type="primary" ghost @click="handleSignIn">Sign in with Google</n-button>
+    <n-button class="w-full" type="primary" strong ghost @click="handleSignIn">Sign in with Google</n-button>
   </n-card>
 </template>
 

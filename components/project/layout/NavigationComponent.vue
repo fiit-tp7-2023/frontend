@@ -7,11 +7,11 @@
       </span>
       <span class="flex justify-evenly items-center mr-2" :class="{ 'w-1/6': status === 'authenticated' }">
         <span v-if="status == 'authenticated'">Welcome {{ data?.user?.name ?? 'unknown user' }}!</span>
-        <n-button text type="tertiary" @click="changeTheme">
-          <Icon size="30px" name="mdi:theme-light-dark" color="green" />
+        <n-button text type="primary" @click="changeTheme">
+          <Icon size="30px" name="mdi:theme-light-dark" />
         </n-button>
-        <n-button v-if="status == 'authenticated'" type="tertiary" text @click="handleSignOut">
-          <Icon size="30px" name="ri:logout-box-line" color="green" />
+        <n-button v-if="status == 'authenticated'" text type="primary" @click="handleSignOut">
+          <Icon size="30px" name="ri:logout-box-line" />
         </n-button>
       </span>
     </header>
