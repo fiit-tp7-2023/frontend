@@ -20,8 +20,8 @@
         </p>
       </div>
     </div>
-    <div class="flex justify-center items-center mt-3 mr-11">
-      <n-button strong ghost type="primary" class="w-1/2 h-20 ml-auto" @click="$router.push('/project/login')">
+    <div class="flex justify-center items-center mt-3">
+      <n-button strong ghost type="primary" class="w-full md:w-1/2 h-20" @click="$router.push('/project/login')">
         Project section
       </n-button>
     </div>
