@@ -38,4 +38,7 @@ export default defineNuxtConfig({
   tailwindcss: {
     exposeConfig: true,
   },
+  content: {
+    contentHead: false,
+  },
 });

@@ -16,13 +16,17 @@
         class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#ff4694] to-[#776fff] opacity-20 tag-bg-gradient"
       />
     </div>
-    <team-info />
-    <team-section />
+    <div class="grid max-w-7xl mx-auto px-6 lg:px-8 gap-24">
+      <team-info />
+      <team-section />
+      <documents-section />
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
 import TeamSection from '../components/team-info/sections/TeamSection.vue';
 import TeamInfo from '~/components/team-info/sections/TeamInfo.vue';
+import DocumentsSection from '~/components/team-info/sections/DocumentsSection.vue';
 
 definePageMeta({
   auth: false,
