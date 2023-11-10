@@ -23,8 +23,8 @@ import FooterComponent from '~/components/project/layout/FooterComponent.vue';
 .n-layout-header,
 .n-layout-content,
 .n-layout-footer {
-  background: rgba(128, 128, 128, 0.2);
   padding: 10px;
+  background-color: inherit;
 }
 
 .n-layout-content {

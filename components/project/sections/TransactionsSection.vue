@@ -9,7 +9,7 @@
       <n-input v-model:value="searchValues.senderId" type="text" placeholder="Sender ID" />
       <n-input v-model:value="searchValues.receiverId" type="text" placeholder="Receiver ID" />
       <n-input v-model:value="searchValues.nftId" type="text" placeholder="NFT ID" />
-      <n-button @click="handleSearch()">Search</n-button>
+      <n-button type="primary" strong class="w-full" @click="handleSearch()">Search</n-button>
       <n-data-table
         v-if="!error"
         ref="table"
