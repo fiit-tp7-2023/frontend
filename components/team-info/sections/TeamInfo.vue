@@ -1,6 +1,6 @@
 <template>
-  <div id="about" class="mx-auto max-w-7xl px-6 lg:px-8 grid lg:grid-cols-2 gap-8 column-2 mb-10">
-    <div class="mx-auto max-w-2xl lg:mx-0 mb-10">
+  <div id="about" class="grid lg:grid-cols-2 gap-8 column-2">
+    <div class="mx-auto max-w-2xl lg:mx-0">
       <div>
         <h2 class="text-4xl font-bold tracking-tight text-white sm:text-6xl">About our project</h2>
       </div>
