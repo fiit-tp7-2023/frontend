@@ -1,16 +1,18 @@
 <template>
-  <div class="text-xl bg-zinc-900 text-white p-5 flex justify-between content-center">
+  <div class="bg-zinc-900 z-10 text-white p-5 flex justify-between w-full">
     <h1 class="text-3xl font-bold">ChainMates</h1>
     <div class="items-center flex space-x-7">
-      <a
-        v-for="(link, text) in pages"
-        :key="text"
-        :value="link"
-        :href="link"
-        class="hover:text-purple-400 transition-all"
-        active-class="text-purple-400 underline underline-offset-8"
-        >{{ text }}
-      </a>
+      <span class="hidden md:flex justify-between gap-2">
+        <a
+          v-for="(link, text) in pages"
+          :key="text"
+          :value="link"
+          :href="link"
+          class="text-xl hover:text-purple-400 transition-all"
+          active-class="text-purple-400 underline underline-offset-8"
+          >{{ text }}
+        </a>
+      </span>
       <n-button text type="tertiary" @click="changeTheme">
         <Icon size="30px" name="mdi:theme-light-dark" color="white" />
       </n-button>

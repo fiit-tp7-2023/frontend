@@ -1,5 +1,5 @@
 <template>
-  <div id="about" class="grid lg:grid-cols-2 gap-8 column-2">
+  <div id="about" class="grid lg:grid-cols-2 gap-8">
     <div class="mx-auto max-w-2xl lg:mx-0">
       <div>
         <n-h2 class="text-4xl font-bold tracking-tight sm:text-6xl">About our project</n-h2>

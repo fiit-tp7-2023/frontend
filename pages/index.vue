@@ -1,22 +1,9 @@
 <template>
-  <div class="relative isolate overflow-hidden py-24 sm:py-32" :class="[bgColor]">
-    <div
-      class="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl"
-      aria-hidden="true"
-    >
-      <div
-        class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#ff4694] to-[#776fff] opacity-20 tag-bg-gradient"
-      />
+  <div class="relative isolate py-24" :class="[bgColor]">
+    <div class="absolute w-screen top-0 left-0 -z-30 transform-gpu blur-3xl">
+      <div class="aspect-square w-screen bg-gradient-to-tr from-[#ff4694] to-[#776fff] opacity-20 tag-bg-gradient" />
     </div>
-    <div
-      class="absolute -top-52 left-1/2 -z-10 -translate-x-1/2 transform-gpu blur-3xl sm:top-[-28rem] sm:ml-16 sm:translate-x-0 sm:transform-gpu"
-      aria-hidden="true"
-    >
-      <div
-        class="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#ff4694] to-[#776fff] opacity-20 tag-bg-gradient"
-      />
-    </div>
-    <div class="grid max-w-7xl mx-auto px-6 lg:px-8 gap-24">
+    <div class="flex flex-col max-w-7xl mx-auto px-6 lg:px-8 gap-24">
       <team-info />
       <team-section />
       <documents-section />

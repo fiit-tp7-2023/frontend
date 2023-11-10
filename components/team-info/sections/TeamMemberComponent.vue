@@ -1,5 +1,5 @@
 <template>
-  <div class="table text-center w-28">
+  <div class="text-center w-28">
     <img :src="image" alt="avatar" class="rounded-full overflow-hidden w-24 h-24 m-auto" />
     <p class="uppercase text-xl">{{ props.name }}</p>
     <p>{{ props.role }}</p>
