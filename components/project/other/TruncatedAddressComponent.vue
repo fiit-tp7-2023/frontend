@@ -1,7 +1,7 @@
 <template>
   <n-tooltip trigger="hover">
     <template #trigger>
-      <n-button text class="cursor-pointer" @click="copyAddress(address)">{{ truncatedAddress }}</n-button>
+      <n-button text class="cursor-pointer" @click="(e) => copyAddress(e, address)">{{ truncatedAddress }}</n-button>
     </template>
     {{ address }}
   </n-tooltip>
@@ -25,9 +25,9 @@ const truncateAddress = (address: string) => {
   return match ? `${match[1].slice(0, 6)}...${match[2].slice(-4)}` : address;
 };
 
-const copyAddress = (address: string) => {
+const copyAddress = (e: MouseEvent, address: string) => {
   copy(address);
   message.info('Copied to clipboard');
-  (document.activeElement as HTMLElement | null)?.blur();
+  (e.currentTarget as HTMLElement | null)?.blur();
 };
 </script>
