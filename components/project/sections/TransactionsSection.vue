@@ -81,7 +81,7 @@ const {
   refresh: refreshTransactions,
   pending: transactionsLoading,
   error,
-} = useFetch('/api/transaction/search', {
+} = useFetch('/api/transaction', {
   query,
 });
 

@@ -7,7 +7,7 @@ export const useTransactionService = (token: string) => {
   };
 
   const searchTransactions = async (query: TransactionSearchRequestDTO) => {
-    return await useApi<TransactionSearchResponseDTO>('transaction/search', token, { query });
+    return await useApi<TransactionSearchResponseDTO>('transaction', token, { query });
   };
 
   return {

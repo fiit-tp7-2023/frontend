@@ -1,5 +1,5 @@
 ---
-title: 'minute-book-1.md'
+title: 'minute-book-1.pdf'
 ---
 
 # ZÁPISNICA
