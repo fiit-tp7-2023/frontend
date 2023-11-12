@@ -6,6 +6,7 @@
 
 <script lang="ts" setup>
 definePageMeta({
+  middleware: 'redirect',
   auth: {
     unauthenticatedOnly: true,
     navigateAuthenticatedTo: '/project',
