@@ -23,6 +23,16 @@ const themeConfig: ThemeConfig = {
       cardColor: 'rgb(17, 24, 48)',
       bodyColor: 'rgb(17, 24, 39)',
     },
+    Button: {
+      textColorText: '#ffffff',
+      textColorTextHover: '#fe086e',
+    },
+  },
+  light: {
+    Button: {
+      textColorText: '#000000',
+      textColorTextHover: '#fe086e',
+    },
   },
 };
 </script>

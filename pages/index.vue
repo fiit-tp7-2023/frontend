@@ -3,7 +3,7 @@
     <div class="absolute w-screen top-0 left-0 -z-30 transform-gpu blur-3xl">
       <div class="aspect-square w-screen bg-gradient-to-tr from-[#ff4694] to-[#776fff] opacity-20 tag-bg-gradient" />
     </div>
-    <div class="flex flex-col max-w-7xl mx-auto px-6 lg:px-8 gap-24">
+    <div class="flex flex-col max-w-7xl gap-24">
       <team-info />
       <team-section />
       <documents-section />

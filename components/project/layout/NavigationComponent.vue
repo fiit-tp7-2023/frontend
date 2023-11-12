@@ -9,10 +9,10 @@
         <span v-if="status == 'authenticated'" class="hidden md:block"
           >Welcome {{ data?.user?.name ?? 'unknown user' }}!</span
         >
-        <n-button text class="text-white hover:opacity-80" @click="changeTheme">
+        <n-button text @click="changeTheme">
           <Icon size="30px" name="mdi:theme-light-dark" />
         </n-button>
-        <n-button v-if="status == 'authenticated'" text class="text-white hover:opacity-80" @click="handleSignOut">
+        <n-button v-if="status == 'authenticated'" text @click="handleSignOut">
           <Icon size="30px" name="ri:logout-box-line" />
         </n-button>
       </span>

@@ -1,7 +1,7 @@
 <template>
   <n-card class="w-full" title="Transactions">
     <template #header-extra>
-      <n-button type="primary" text @click="refreshTransactions()">
+      <n-button text @click="refreshTransactions()">
         <Icon size="25" name="material-symbols:sync-rounded" />
       </n-button>
     </template>
