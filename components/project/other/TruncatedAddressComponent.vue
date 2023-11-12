@@ -1,5 +1,10 @@
 <template>
-  <span :title="address" class="cursor-pointer" @click="copyAddress(address)">{{ truncatedAddress }}</span>
+  <n-tooltip trigger="hover">
+    <template #trigger>
+      <n-button text class="cursor-pointer" @click="(e) => copyAddress(e, address)">{{ truncatedAddress }}</n-button>
+    </template>
+    {{ address }}
+  </n-tooltip>
 </template>
 
 <script lang="ts" setup>
@@ -20,8 +25,9 @@ const truncateAddress = (address: string) => {
   return match ? `${match[1].slice(0, 6)}...${match[2].slice(-4)}` : address;
 };
 
-const copyAddress = (address: string) => {
+const copyAddress = (e: MouseEvent, address: string) => {
   copy(address);
   message.info('Copied to clipboard');
+  (e.currentTarget as HTMLElement | null)?.blur();
 };
 </script>
