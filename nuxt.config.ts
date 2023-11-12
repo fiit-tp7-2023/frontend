@@ -3,7 +3,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   auth: {
-    enableGlobalAppMiddleware: true,
+    enableGlobalAppMiddleware: process.env.VERCEL_ENV !== 'preview',
     origin: process.env.NODE_ENV === 'production' ? 'https://frontend-tag.vercel.app' : 'http://localhost:3000',
   },
   runtimeConfig: {
@@ -12,6 +12,9 @@ export default defineNuxtConfig({
     googleClientId: process.env.GOOGLE_CLIENT_ID,
     googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
     authSecret: process.env.AUTH_SECRET,
+    public: {
+      vercelEnv: process.env.VERCEL_ENV,
+    },
   },
   modules: [
     '@nuxtjs/tailwindcss',
