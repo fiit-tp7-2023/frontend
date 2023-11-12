@@ -1,6 +1,6 @@
 <template>
-  <div class="text-center w-28">
-    <img :src="image" alt="avatar" class="rounded-full overflow-hidden w-24 h-24 m-auto" />
+  <div class="text-center sm:w-52 md:w-24">
+    <img :src="image" alt="avatar" class="rounded-full overflow-hidden sm:w-52 sm:h-52 md:w-24 md:h-24 m-auto" />
     <p class="uppercase text-xl">{{ props.name }}</p>
     <p>{{ props.role }}</p>
   </div>
