@@ -1,16 +1,17 @@
-import { AddressNode, NFTNode, TransactionNode } from '../nodes';
-import { PaginationRequestDTO, PaginationResponseDTO } from '.';
+import type { AddressNode, TransactionNode } from '../nodes';
+import type { NFTDTO, PaginationRequestDTO, PaginationResponseDTO } from '.';
 
 export interface TransactionDTO extends TransactionNode {
   sender: AddressNode;
   receiver: AddressNode;
-  nft: NFTNode;
+  nft: NFTDTO;
 }
 
 export interface TransactionSearchRequestDTO extends PaginationRequestDTO {
   senderId?: string;
   receiverId?: string;
   nftId?: string;
+  tagNames?: string[];
 }
 
 export interface TransactionSearchResponseDTO extends PaginationResponseDTO {

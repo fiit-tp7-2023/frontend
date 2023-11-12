@@ -1,4 +1,7 @@
-import type { Attribute } from './attribute';
+export interface Attribute {
+  traitType: string;
+  value: string;
+}
 
 export interface NFTNode {
   id: string;
