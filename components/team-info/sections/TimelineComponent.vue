@@ -146,6 +146,7 @@ const timelineItems = [
   background: white;
   border-radius: 999px;
   border: 3px solid #fe086e;
+  transform: translateY(300%);
 }
 
 .card:nth-child(even) > .info > .title {
