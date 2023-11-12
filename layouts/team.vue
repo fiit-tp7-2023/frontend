@@ -2,7 +2,13 @@
   <header>
     <team-navigation />
   </header>
-  <slot />
+  <main class="w-full grid grid-cols-1 md:grid-cols-5">
+    <div class="hidden md:block" />
+    <div class="col-span-3 px-4 md:px-0">
+      <slot />
+    </div>
+    <div class="hidden md:block" />
+  </main>
   <footer>
     <team-footer />
   </footer>
