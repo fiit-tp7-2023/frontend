@@ -1,14 +1,16 @@
 <template>
-  <div id="timeline" class="overflow-hidden flex flex-col items-center space-y-5">
+  <div id="timeline" class="flex flex-col items-center">
     <h1 class="text-3xl font-bold mb-0">Timeline</h1>
-    <div class="timeline body" :class="theme">
-      <div class="outer">
-        <div v-for="(item, index) in timelineItems" :key="index" class="card">
-          <div class="info">
-            <n-card :title="item.title" class="title"
-              >{{ item.content }} <template #header-extra>{{ item.date }}</template></n-card
-            >
-          </div>
+    <div class="timeline" :class="theme">
+      <div v-for="(item, index) in timelineItems" :key="index" class="card">
+        <div class="info flex">
+          <n-card :title="item.title" class="title">
+            {{ item.content }}
+            <template #header-extra>
+              {{ item.date }}
+            </template>
+          </n-card>
+          <div class="dot" />
         </div>
       </div>
     </div>
@@ -59,24 +61,13 @@ const theme = computed(() => {
 });
 </script>
 
-<!--PINK VERSION DARK MODE-->
 <style scoped>
-* {
-  margin: 0;
-  padding: 0;
-}
-.body {
-  display: flex;
-  justify-content: center;
-}
 .timeline {
-  background: transparent;
-  margin: 20px auto;
-  padding: 20px;
+  margin-top: 5%;
 }
 .card {
   position: relative;
-  max-width: 400px;
+  max-width: 500px;
 }
 
 .card::before {
@@ -88,11 +79,9 @@ const theme = computed(() => {
 .lightMode .card::before {
   border: solid #fe086e;
 }
-
 .darkMode .card::before {
   border: solid #5964c9;
 }
-
 .card:nth-child(odd) {
   padding: 30px 0 30px 30px;
 }
@@ -101,21 +90,15 @@ const theme = computed(() => {
 }
 .card:nth-child(odd)::before {
   left: 0px;
-  top: -5px;
+  top: 0px;
   bottom: -5px;
   border-width: 5px 0 5px 5px;
   border-radius: 50px 0 0 50px;
 }
-@media only screen and (max-width: 400px) {
-  .card:nth-child(odd)::before {
-    top: -5px;
-    bottom: -5px;
-  }
-}
 .card:nth-child(even)::before {
   right: 0;
-  top: 0;
-  bottom: 0;
+  top: 0px;
+  bottom: -5px;
   border-width: 5px 5px 5px 0;
   border-radius: 0 50px 50px 0;
 }
@@ -132,37 +115,32 @@ const theme = computed(() => {
   border-bottom-right-radius: 0;
 }
 
-.lightMode .title {
-  position: relative;
-}
-
-.darkMode .title {
-  position: relative;
-}
-
-.title::before {
-  content: '';
-  position: absolute;
-  width: 15px;
-  height: 15px;
-  border-radius: 999px;
-  transform: translateY(450%);
-}
-
-.lightMode .title::before {
-  background: white;
-  border: 3px solid #fe086e;
-}
-
-.darkMode .title::before {
-  background: white;
+.darkMode .dot {
   border: 3px solid #5964c9;
 }
 
-.card:nth-child(odd) > .info > .title::before {
-  left: -36px;
+.dot {
+  background: white;
+  width: 15px;
+  height: 15px;
+  border-radius: 999px;
+  position: absolute;
 }
-.card:nth-child(even) > .info > .title::before {
-  right: -36px;
+
+.lightMode .dot {
+  border: 5px solid #fe086e;
+}
+
+.card:nth-child(odd) > .info > .dot {
+  left: -5px;
+}
+
+.card:nth-child(even) > .info > .dot {
+  right: -5px;
+}
+
+.info {
+  max-height: 100%;
+  align-items: center;
 }
 </style>
