@@ -70,7 +70,7 @@ const teams = {
       role: 'Data analyst',
       image: '/avatars/ctibor.svg',
     },
-    { name: 'Braňo', role: 'Data analyst' },
+    { name: 'Braňo', role: 'Data analyst', image: '/avatars/brano.svg' },
     { name: 'Kiko', role: 'Backend developer', image: '/avatars/chico.svg' },
     {
       name: 'Samo',
