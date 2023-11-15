@@ -1,25 +1,106 @@
 <template>
-  <div id="team" class="overflow-hidden md:flex flex-col items-center space-y-10">
-    <h1 class="text-3xl text-center font-bold mb-0">Our Team</h1>
-    <div class="flex flex-col items-center space-y-10 md:flex-row md:space-y-0 md:space-x-10">
-      <team-member-component name="Viktor" role="Product owner" />
-      <team-member-component name="Kiko" role="Product owner" />
+  <div id="team">
+    <n-h1 class="text-3xl text-center font-bold mb-12">Our Team</n-h1>
+    <div class="hidden lg:flex flex-col items-center gap-10">
+      <div v-for="(team, rowIndex) in teams" :key="rowIndex" class="flex flex-row items-start gap-10">
+        <team-member-component
+          v-for="(member, memberIndex) in team"
+          :key="memberIndex"
+          :name="member.name"
+          :role="member.role"
+          :image="member.image"
+        />
+      </div>
     </div>
-    <div class="flex flex-col items-center space-y-10 md:flex-row md:space-y-0 md:space-x-10">
-      <team-member-component name="Adam" role="Indexer" />
-      <team-member-component name="Karolína" role="UX designer" />
-      <team-member-component name="Alexandra" role="UX designer" />
-    </div>
-    <div class="flex flex-col items-center space-y-10 md:flex-row md:space-y-0 md:space-x-10">
-      <team-member-component name="Ctibor" role="Data analyst" />
-      <team-member-component name="Kiko" role="Front-end developer" />
-      <team-member-component name="Braňo" role="Scrum master" />
-      <team-member-component name="Samuel" role="Back-end developer" />
-    </div>
+    <n-carousel draggable class="lg:hidden">
+      <team-member-component
+        v-for="(member, index) in allTeamMembers"
+        :key="index"
+        :name="member.name"
+        :role="member.role"
+        :image="member.image"
+        class="mb-5 mx-auto"
+      />
+      <template #dots="{ total, currentIndex, to }">
+        <ul class="custom-dots">
+          <li
+            v-for="index of total"
+            :key="index"
+            :class="{ ['is-active']: currentIndex === index - 1 }"
+            @click="to(index - 1)"
+          />
+        </ul>
+      </template>
+    </n-carousel>
   </div>
 </template>
 
 <script lang="ts" setup>
 import TeamMemberComponent from './TeamMemberComponent.vue';
+
+const teams = {
+  firstRow: [
+    {
+      name: 'Kiko',
+      role: 'Product owner',
+      image: '/avatars/kiko.svg',
+    },
+    {
+      name: 'Viky',
+      role: 'Product owner',
+      image: '/avatars/viky.svg',
+    },
+  ],
+  secondRow: [
+    {
+      name: 'Kaja',
+      role: 'Frontend developer',
+      image: '/avatars/kaja.svg',
+    },
+    { name: 'Adam', role: 'Indexer', image: '/avatars/adam.svg' },
+    {
+      name: 'Alex',
+      role: 'Frontend developer',
+      image: '/avatars/alex.svg',
+    },
+  ],
+  thirdRow: [
+    {
+      name: 'Ctibor',
+      role: 'Data analyst',
+      image: '/avatars/ctibor.svg',
+    },
+    { name: 'Braňo', role: 'Data analyst', image: '/avatars/brano.svg' },
+    { name: 'Kiko', role: 'Backend developer', image: '/avatars/chico.svg' },
+    {
+      name: 'Samo',
+      role: 'Backend developer',
+      image: '/avatars/samo.svg',
+    },
+  ],
+};
+const allTeamMembers = Object.values(teams).flat();
 </script>
 
+<style scoped>
+.custom-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.custom-dots li {
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: rgba(128, 128, 128, 0.4);
+  transition:
+    width 0.3s,
+    background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.custom-dots li.is-active {
+  background: #fe086e;
+}
+</style>
