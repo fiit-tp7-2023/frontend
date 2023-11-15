@@ -5,19 +5,28 @@
         <n-h2 class="text-4xl font-bold tracking-tight sm:text-6xl">About our project</n-h2>
       </div>
       <div>
-        <p class="mt-6 text-lg leading-8">
-          At the heart of our project lies a fascination with the intricate details encoded in blockchain transactions.
-          We've set our sights on collecting and dissecting the metadata of NFTs, treating each piece of information as
-          a puzzle piece that, when put together, forms a captivating narrative. Through meticulous data science
-          techniques, we aim to uncover the relationships between various addresses, shedding light on the
-          interconnected web of transactions within the blockchain.
-        </p>
-        <p class="mt-6 text-lg leading-8 opacity-70">
-          Armed with our findings, we are channeling our data into the dynamic realm of Neo4j, a powerful graph
-          database. Here, relationships between addresses will materialize into a visual symphony, providing insights
-          into the patterns and connections that define the NFT landscape. Our Neo4j graph database is not just a
-          repository; it's a canvas where the story of blockchain transactions unfolds in vibrant detail.
-        </p>
+        <n-text depth="1" class="mt-6 text-lg leading-8">
+          Dive into the captivating world of blockchain transactions with our project, centered around Ethereum and
+          smart contracts. We transform complex data into a visual narrative, representing blockchain records as a
+          dynamic graph. Explore the dependencies of tokenized real assets among network participants, bridging data
+          science, blockchain, and visualization.
+        </n-text>
+
+        <n-h1 depth="1" class="font-bold tracking-tight">Key features</n-h1>
+        <n-text depth="2" class="mt-6 text-lg leading-8">
+          <b>Graph layer</b>
+          <n-text depth="3">
+            - Uncover patterns in blockchain transactions by modeling dependencies among addresses and smart
+            contracts.</n-text
+          >
+        </n-text>
+        <n-text depth="2" class="mt-6 text-lg leading-8">
+          <br /><b>Data Visualization</b>
+          <n-text depth="3">
+            - Our Neo4j graph database is not just a repository; it's a vibrant canvas revealing the intricate
+            connections defining the NFT landscape.</n-text
+          >
+        </n-text>
       </div>
     </div>
     <div class="flex justify-center items-center mt-3">
