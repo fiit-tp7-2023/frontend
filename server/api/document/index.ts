@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
     console.log(e);
     throw createError({
       statusCode: 404,
-      statusMessage: e,
+      statusMessage: String(e),
     });
   });
 });
