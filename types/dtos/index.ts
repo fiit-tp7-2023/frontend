@@ -3,3 +3,4 @@ export * from './pagination';
 export * from './refresh-google-token';
 export * from './nft';
 export * from './tag';
+export * from './document';
