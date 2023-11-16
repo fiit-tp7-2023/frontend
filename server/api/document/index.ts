@@ -4,7 +4,7 @@ import type { DocumentRequestDTO } from '~/types/dtos';
 
 export default defineEventHandler(async (event) => {
   const query = getQuery<DocumentRequestDTO>(event);
-  if (!query.contentRelativePath || !query.contentRelativePath.match(SAFE_CONTENT_RELATIVE_PATH_REGEX))
+  if (!query.contentRelativePath?.match(SAFE_CONTENT_RELATIVE_PATH_REGEX))
     throw createError({
       statusCode: 400,
       statusMessage: 'Bad Request',
