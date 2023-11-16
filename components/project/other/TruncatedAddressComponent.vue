@@ -5,7 +5,7 @@
         text
         class="cursor-pointer"
         @click="copyAddress"
-        @contextmenu="(e) => (isNFT ? handleContextMenu(e) : null)"
+        @contextmenu="(e) => (isEthNFT ? handleContextMenu(e) : null)"
         >{{ truncatedAddress }}</n-button
       >
     </template>
@@ -41,7 +41,8 @@ const props = defineProps({
 
 const message = useMessage();
 const truncatedAddress = computed(() => truncateAddress(props.address));
-const etherscanAddress = computed(() => (props.isNFT ? getEtherscanAddress(props.address) : ''));
+const isEthNFT = computed(() => (props.isNFT ? props.address.includes('eth') : false));
+const etherscanAddress = computed(() => (isEthNFT ? getEtherscanAddress(props.address) : ''));
 const showDropdown = ref(false);
 const x = ref(0);
 const y = ref(0);
