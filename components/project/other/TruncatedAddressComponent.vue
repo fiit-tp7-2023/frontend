@@ -1,13 +1,9 @@
 <template>
   <n-tooltip trigger="hover">
     <template #trigger>
-      <n-button
-        text
-        class="cursor-pointer"
-        @click="copyAddress"
-        @contextmenu="(e) => (isEthNFT ? handleContextMenu(e) : null)"
-        >{{ truncatedAddress }}</n-button
-      >
+      <n-button text class="cursor-pointer" @click="copyAddress" @contextmenu="(e) => handleContextMenu(e)">{{
+        truncatedAddress
+      }}</n-button>
     </template>
     {{ address }}
   </n-tooltip>
@@ -41,8 +37,7 @@ const props = defineProps({
 
 const message = useMessage();
 const truncatedAddress = computed(() => truncateAddress(props.address));
-const isEthNFT = computed(() => (props.isNFT ? props.address.includes('eth') : false));
-const etherscanAddress = computed(() => (isEthNFT ? getEtherscanAddress(props.address) : ''));
+const etherscanAddress = computed(() => getEtherscanAddress(props.isNFT, props.address));
 const showDropdown = ref(false);
 const x = ref(0);
 const y = ref(0);
@@ -91,8 +86,12 @@ const truncateAddress = (address: string) => {
   return match ? `${match[1].slice(0, 6)}...${match[2].slice(-4)}` : address;
 };
 
-const getEtherscanAddress = (address: string) => {
-  const parts = address.split('_');
-  return parts.length > 0 ? `https://etherscan.io/token/${parts[0]}` : 'https://etherscan.io';
+const getEtherscanAddress = (isNFT: boolean, address: string) => {
+  if (isNFT) {
+    const parts = address.split('_');
+    return parts.length > 0 ? `https://etherscan.io/token/${parts[0]}` : 'https://etherscan.io';
+  } else {
+    return `https://etherscan.io/address/${address}`;
+  }
 };
 </script>
