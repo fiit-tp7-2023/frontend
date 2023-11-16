@@ -18,11 +18,10 @@ export default defineEventHandler(async (event) => {
   });
 
   const { getDocument } = useDocumentService();
-  return await getDocument(query).catch((e) => {
-    console.log(e);
+  return await getDocument(query).catch(() => {
     throw createError({
       statusCode: 404,
-      statusMessage: String(e),
+      statusMessage: 'Not Found',
     });
   });
 });
