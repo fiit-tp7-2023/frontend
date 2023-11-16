@@ -20,34 +20,22 @@
 <script setup>
 const timelineItems = [
   {
-    title: 'Title 1',
+    title: 'Shared Tag for 100 NFTs',
     content:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    date: 'DD|MM|YYYY',
+      'We can now turn our attention to a shared tag for 100 NFTs. This exciting development marks a significant step forward in our project.',
+    date: '08|11|2023',
   },
   {
-    title: 'Title 2',
+    title: ' Indexing Two ERC-721 Collections',
     content:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    date: 'DD|MM|YYYY',
+      'Inedexing team successfully indexed two collections, both utilizing the ERC-721 standard. Additionally, indexing team included metadata, allowing us to delve into exploration.',
+    date: '21|10|2023',
   },
   {
-    title: 'Title 3',
+    title: 'Beggining of the Project',
     content:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    date: 'DD|MM|YYYY',
-  },
-  {
-    title: 'Title 4',
-    content:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    date: 'DD|MM|YYYY',
-  },
-  {
-    title: 'Title 5 ',
-    content:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    date: 'DD|MM|YYYY',
+      'Our first meeting occured. We started to discuss the main ideas of the project and the technologies we will use.',
+    date: '02|10|2023',
   },
 ];
 const { colorMode } = useNaiveColorMode();
