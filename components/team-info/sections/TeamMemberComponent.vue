@@ -1,14 +1,12 @@
 <template>
   <div class="text-center w-32">
     <img :src="image" alt="avatar" class="rounded-full" />
-    <n-p class="uppercase text-xl mb-1">{{ name }}</n-p>
-    <n-p class="m-0">{{ role }}</n-p>
+    <n-text class="uppercase text-xl mt-4 mb-1" tag="div">{{ name }}</n-text>
+    <n-text tag="div">{{ role }}</n-text>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { NP } from 'naive-ui';
-
 const props = defineProps({
   name: {
     type: String,

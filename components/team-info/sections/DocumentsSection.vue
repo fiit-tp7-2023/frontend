@@ -7,7 +7,7 @@
     <div class="lg:col-span-3">
       <content-doc :path="selectedOptionPath"
         ><template #not-found>
-          <n-p class="text-xl">Please select a document</n-p>
+          <n-text class="text-xl">Please select a document</n-text>
         </template></content-doc
       >
     </div>
