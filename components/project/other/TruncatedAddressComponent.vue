@@ -21,7 +21,7 @@
 <script lang="ts" setup>
 import copy from 'copy-to-clipboard';
 import { NButton } from 'naive-ui';
-import { NuxtLink } from '#components';
+import { NuxtLink, Icon } from '#components';
 import { TRUNCATE_ETH_ADRESS_REGEX, TRUNCATE_NFT_ADRESS_REGEX } from '~/constants/regex';
 
 const props = defineProps({
@@ -43,11 +43,17 @@ const x = ref(0);
 const y = ref(0);
 
 const renderCopyButton = () =>
-  h(NButton, { onClick: copyAddress, text: true, class: 'my-2 mx-4' }, () => 'Copy to clipboard');
+  h(NButton, { onClick: copyAddress, text: true, class: 'my-2 mx-4' }, () => [
+    h(Icon, { name: 'mdi:content-copy', class: 'mr-1' }),
+    'Copy to clipboard',
+  ]);
 
 const renderEtherscanLink = () =>
   h(NuxtLink, { to: etherscanAddress.value, target: '_blank' }, () =>
-    h(NButton, { text: true, class: 'my-2 mx-4', onClick: closeDropdown }, () => 'Etherscan'),
+    h(NButton, { text: true, class: 'my-2 mx-4', onClick: closeDropdown }, () => [
+      h(Icon, { name: 'mdi:launch', class: 'mr-1' }),
+      'Etherscan',
+    ]),
   );
 
 const options = [
