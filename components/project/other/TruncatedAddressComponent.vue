@@ -44,14 +44,14 @@ const y = ref(0);
 
 const renderCopyButton = () =>
   h(NButton, { onClick: copyAddress, text: true, class: 'my-2 mx-4' }, () => [
-    h(Icon, { name: 'mdi:content-copy', class: 'mr-1' }),
+    h(Icon, { name: 'mdi:content-copy', class: 'mr-2', size: '18px' }),
     'Copy to clipboard',
   ]);
 
 const renderEtherscanLink = () =>
   h(NuxtLink, { to: etherscanAddress.value, target: '_blank' }, () =>
     h(NButton, { text: true, class: 'my-2 mx-4', onClick: closeDropdown }, () => [
-      h(Icon, { name: 'mdi:launch', class: 'mr-1' }),
+      h(Icon, { name: 'mdi:launch', class: 'mr-2', size: '18px' }),
       'Etherscan',
     ]),
   );
