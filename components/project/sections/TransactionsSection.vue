@@ -45,17 +45,17 @@ const columns = [
   {
     title: 'Sender',
     key: 'sender.id',
-    render: (row: TransactionDTO) => h(TruncatedAddressComponent, { address: row.sender.id }),
+    render: (row: TransactionDTO) => h(TruncatedAddressComponent, { address: row.sender.id, isNFT: false }),
   },
   {
     title: 'Receiver',
     key: 'receiver.id',
-    render: (row: TransactionDTO) => h(TruncatedAddressComponent, { address: row.receiver.id }),
+    render: (row: TransactionDTO) => h(TruncatedAddressComponent, { address: row.receiver.id, isNFT: false }),
   },
   {
     title: 'NFT',
     key: 'nft.id',
-    render: (row: TransactionDTO) => h(TruncatedAddressComponent, { address: row.nft.id }),
+    render: (row: TransactionDTO) => h(TruncatedAddressComponent, { address: row.nft.id, isNFT: true }),
   },
 ];
 
