@@ -1,9 +1,11 @@
 <template>
   <naive-config :theme-config="themeConfig">
     <n-message-provider>
-      <NuxtLayout>
-        <NuxtPage />
-      </NuxtLayout>
+      <n-layout>
+        <NuxtLayout>
+          <NuxtPage />
+        </NuxtLayout>
+      </n-layout>
     </n-message-provider>
   </naive-config>
 </template>
@@ -28,12 +30,18 @@ const themeConfig: ThemeConfig = {
       cardColor: 'rgb(17, 24, 48)',
       bodyColor: 'rgb(17, 24, 39)',
     },
+    Layout: {
+      textColor: '#ffffff',
+    },
     Button: {
       textColorText: '#ffffff',
       textColorTextHover: '#fe086e',
     },
   },
   light: {
+    Layout: {
+      textColor: '#000000',
+    },
     Button: {
       textColorText: '#000000',
       textColorTextHover: '#fe086e',
