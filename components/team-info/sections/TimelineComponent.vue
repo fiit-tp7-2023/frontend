@@ -32,7 +32,7 @@ const timelineItems = [
     date: '21|10|2023',
   },
   {
-    title: 'Beggining of the Project',
+    title: 'Beginning of the Project',
     content:
       'Our first meeting occured. We started to discuss the main ideas of the project and the technologies we will use.',
     date: '02|10|2023',
