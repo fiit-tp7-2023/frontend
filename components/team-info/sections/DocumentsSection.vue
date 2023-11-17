@@ -4,7 +4,7 @@
       <n-h2 class="text-3xl font-bold">Documents</n-h2>
       <n-menu :options="menuOptions" :indent="16" @update-value="handleMenuOptionSelect" />
     </div>
-    <div class="lg:col-span-3">
+    <div ref="documentScrollView" class="lg:col-span-3">
       <content-doc :path="selectedOptionPath"
         ><template #not-found>
           <n-text class="text-xl">Please select a document</n-text>
@@ -52,6 +52,8 @@ const renderDownloadIconButton = (doc: ParsedContent) => {
   );
 };
 
+const documentScrollView = ref<HTMLElement>();
+
 const menuOptions: MenuOption[] = [
   {
     label: 'Minute books',
@@ -62,6 +64,7 @@ const menuOptions: MenuOption[] = [
         label: doc.title,
         key: doc.title,
         path: doc._path,
+        onClick: () => documentScrollView.value!.scrollIntoView({ behavior: 'smooth' }),
         icon: () => renderDownloadIconButton(doc),
       })),
   },
@@ -70,7 +73,13 @@ const menuOptions: MenuOption[] = [
     key: 'retrospectives',
     children: documents.value
       ?.filter((doc) => doc.title?.startsWith('retrospective'))
-      .map((doc) => ({ label: doc.title, key: doc.title, path: doc._path, icon: () => renderDownloadIconButton(doc) })),
+      .map((doc) => ({
+        label: doc.title,
+        key: doc.title,
+        path: doc._path,
+        onClick: () => documentScrollView.value!.scrollIntoView({ behavior: 'smooth' }),
+        icon: () => renderDownloadIconButton(doc),
+      })),
   },
 ];
 
