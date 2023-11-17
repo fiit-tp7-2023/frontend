@@ -1,6 +1,6 @@
 <template>
-  <div class="header">
-    <div class="z-10 p-5 flex justify-between w-full">
+  <n-affix :trigger-top="0" class="w-full backdrop-blur-md bg-[rgba(0,0,0,0.1)] dark:bg-[rgba(255,255,255,0.1)]">
+    <div class="z-50 p-5 flex justify-between w-full">
       <h1 class="text-3xl font-bold">ChainMates</h1>
       <div class="items-center flex space-x-7">
         <span class="hidden md:flex justify-between gap-6">
@@ -19,7 +19,7 @@
         </n-button>
       </div>
     </div>
-  </div>
+  </n-affix>
 </template>
 
 <script lang="ts" setup>
@@ -40,21 +40,3 @@ const changeTheme = () => {
   }
 };
 </script>
-
-<style>
-.header {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 1000;
-  background-color: white;
-}
-
-.light .header {
-  background-color: white;
-}
-
-.dark .header {
-  background-color: rgb(17, 24, 39);
-}
-</style>

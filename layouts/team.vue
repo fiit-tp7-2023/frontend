@@ -1,20 +1,22 @@
 <template>
-  <header>
+  <n-layout-header>
     <team-navigation />
-  </header>
-  <main class="w-full overflow-hidden isolate relative grid grid-cols-1 md:grid-cols-5" :class="[bgColor]">
-    <div class="absolute w-screen top-0 left-0 -z-30 transform-gpu blur-3xl">
-      <div class="aspect-square w-screen bg-gradient-to-tr from-[#ff4694] to-[#776fff] opacity-20 tag-bg-gradient" />
-    </div>
-    <div class="hidden md:block" />
-    <div class="col-span-3 px-4 md:px-0 py-24">
-      <slot />
-    </div>
-    <div class="hidden md:block" />
-  </main>
-  <footer>
+  </n-layout-header>
+  <n-layout-content>
+    <main class="w-full overflow-hidden isolate relative grid grid-cols-1 md:grid-cols-5" :class="[bgColor]">
+      <div class="absolute w-screen top-0 left-0 -z-30 transform-gpu blur-3xl">
+        <div class="aspect-square w-screen bg-gradient-to-tr from-[#ff4694] to-[#776fff] opacity-20 tag-bg-gradient" />
+      </div>
+      <div class="hidden md:block" />
+      <div class="col-span-3 px-4 md:px-0 py-24">
+        <slot />
+      </div>
+      <div class="hidden md:block" />
+    </main>
+  </n-layout-content>
+  <n-layout-footer>
     <team-footer />
-  </footer>
+  </n-layout-footer>
 </template>
 <script setup lang="ts">
 import TeamNavigation from '~/components/team-info/layout/TeamNavigation.vue';
@@ -96,5 +98,9 @@ const bgColor = computed(() => {
 
 .tag-bg-gradient {
   animation: bg-shapes 5s ease-in-out infinite alternate;
+}
+.n-layout-header {
+  position: sticky;
+  z-index: 10;
 }
 </style>
