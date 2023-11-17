@@ -3,9 +3,9 @@
     <h1 class="text-3xl font-bold">ChainMates</h1>
     <div class="items-center flex space-x-7">
       <span class="hidden md:flex justify-between gap-6">
-        <n-button v-for="(link, text) in pages" :key="text" text size="large" @click="scrollTo(link)">{{
-          text
-        }}</n-button>
+        <n-button v-for="(link, text) in pages" :key="text" text size="large" @click="scrollTo(link)">
+          {{ text }}
+        </n-button>
       </span>
       <n-button text @click="changeTheme">
         <Icon size="30px" name="mdi:theme-light-dark" />
