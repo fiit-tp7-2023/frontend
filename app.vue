@@ -26,6 +26,7 @@ const themeConfig: ThemeConfig = {
     Button: {
       textColorText: '#ffffff',
       textColorTextHover: '#fe086e',
+      fontSizeLarge: '1.25rem',
     },
   },
   light: {
