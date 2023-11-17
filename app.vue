@@ -20,8 +20,6 @@ const themeConfig: ThemeConfig = {
       infoColor: '#43e2f2',
     },
     Button: {
-      textColorText: '#ffffff',
-      textColorTextHover: '#fe086e',
       fontSizeLarge: '1.25rem',
     },
   },
