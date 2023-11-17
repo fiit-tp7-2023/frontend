@@ -23,6 +23,21 @@ import { Icon } from '#components';
 const selectedOptionPath = ref('');
 const { data: documents } = await useAsyncData('minute-books', () => queryContent('/').find());
 
+// TODO: Delete PDFs in public folder and use this code to generate PDFs when the document API will be completely funcional
+// import type { DocumentRequestDTO } from '~/types/dtos';
+// const downloadPdf = async (doc: ParsedContent) => {
+//   const query: DocumentRequestDTO = {
+//     contentRelativePath: doc._file,
+//   };
+
+//   const pdf = await $fetch<Blob>('/api/document', { query });
+//   const link = document.createElement('a');
+//   link.href = URL.createObjectURL(pdf);
+//   link.download = doc.title as string;
+//   link.target = '_blank';
+//   link.click();
+// };
+
 const downloadPdf = (doc: ParsedContent) => {
   const link = document.createElement('a');
   link.href = `${doc._path}.pdf`;
