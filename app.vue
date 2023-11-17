@@ -19,6 +19,9 @@ const themeConfig: ThemeConfig = {
       primaryColorHover: '#fe0854',
       infoColor: '#43e2f2',
     },
+    Button: {
+      fontSizeLarge: '1.25rem',
+    },
   },
   dark: {
     common: {
