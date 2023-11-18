@@ -25,6 +25,7 @@
 </template>
 
 <script setup lang="ts">
+import { useResizeObserver } from '@vueuse/core';
 import TruncatedAddressComponent from '../other/TruncatedAddressComponent.vue';
 import type { LocationQueryRaw } from '#vue-router';
 import type { TransactionDTO, TransactionSearchRequestDTO, TransactionSearchResponseDTO } from '~/types/dtos';
@@ -32,15 +33,18 @@ import type { TransactionSearchForm } from '~/types/forms';
 
 const router = useRouter();
 const route = useRoute();
+const table = ref();
 
 const columns = [
   {
     title: 'Transaction',
     key: 'id',
+    minWidth: 130,
   },
   {
     title: 'Amount',
     key: 'amount',
+    minWidth: 90,
   },
   {
     title: 'Sender',
@@ -130,6 +134,16 @@ const pagination = reactive({
   pageCount,
   onChange: handlePageChange,
   onUpdatePageSize: handlePageSizeChange,
+  simple: true,
+});
+
+useResizeObserver(table, (entries) => {
+  const w = entries[0].contentRect.width;
+  if (w <= 530) {
+    pagination.simple = true;
+  } else {
+    pagination.simple = false;
+  }
 });
 
 watch(transactionsResponse, handleResponse);
