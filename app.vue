@@ -17,6 +17,7 @@ const themeConfig: ThemeConfig = {
     common: {
       primaryColor: '#fe086e',
       primaryColorHover: '#fe0854',
+      primaryColorPressed: '#fe086e',
       infoColor: '#43e2f2',
     },
     Button: {
