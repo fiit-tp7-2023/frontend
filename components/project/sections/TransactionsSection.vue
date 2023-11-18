@@ -39,7 +39,7 @@ const columns = [
   {
     title: 'Transaction',
     key: 'id',
-    minWidth: 130,
+    minWidth: 310,
   },
   {
     title: 'Amount',
@@ -134,7 +134,7 @@ const pagination = reactive({
   pageCount,
   onChange: handlePageChange,
   onUpdatePageSize: handlePageSizeChange,
-  simple: true,
+  simple: false,
 });
 
 useResizeObserver(table, (entries) => {
