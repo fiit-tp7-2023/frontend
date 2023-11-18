@@ -51,5 +51,3 @@ const retry = async () => {
   loading.value = false;
 };
 </script>
-
-<style></style>
