@@ -48,28 +48,25 @@ const downloadPdf = (doc: ParsedContent) => {
   link.click();
 };
 
-const renderDownloadIconButton = (doc: ParsedContent) => {
-  const isDocumentVisible = computed(() => selectedOptionPath.value === doc._path);
-
+const renderMenuItem = (doc: ParsedContent) => {
   return h('div', { class: 'flex items-center' }, [
     h(
       NButton,
       {
         text: true,
+
         onClick: () => documentScrollView.value!.scrollIntoView({ behavior: 'smooth' }),
-        class: 'mr-1',
+        class: 'mr-5',
       },
-      () =>
-        h(Icon, {
-          name: isDocumentVisible.value ? 'mdi:eye-outline' : 'mdi:eye-closed',
-          size: '24px',
-        }),
+      doc.title as string,
     ),
+
     h(NButton, { text: true, onClick: () => downloadPdf(doc), class: 'mr-6' }, () =>
-      h(Icon, { name: 'mdi:download', size: '24px' }),
+      h(Icon, { name: 'mdi:arrow-collapse-down', size: '20px' }),
     ),
   ]);
 };
+
 const documentScrollView = ref<HTMLElement>();
 
 const menuOptions: MenuOption[] = [
@@ -79,11 +76,10 @@ const menuOptions: MenuOption[] = [
     children: documents.value
       ?.filter((doc) => doc.title?.startsWith('minute-book'))
       .map((doc) => ({
-        label: doc.title,
+        label: () => renderMenuItem(doc),
         key: doc.title,
         path: doc._path,
         onClick: () => documentScrollView.value!.scrollIntoView({ behavior: 'smooth' }),
-        icon: () => renderDownloadIconButton(doc),
       })),
   },
   {
@@ -92,11 +88,10 @@ const menuOptions: MenuOption[] = [
     children: documents.value
       ?.filter((doc) => doc.title?.startsWith('retrospective'))
       .map((doc) => ({
-        label: doc.title,
+        label: () => renderMenuItem(doc),
         key: doc.title,
         path: doc._path,
         onClick: () => documentScrollView.value!.scrollIntoView({ behavior: 'smooth' }),
-        icon: () => renderDownloadIconButton(doc),
       })),
   },
 ];
