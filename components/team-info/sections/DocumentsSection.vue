@@ -17,11 +17,13 @@
 <script lang="ts" setup>
 import type { MenuOption } from 'naive-ui';
 import type { ParsedContent } from '@nuxt/content/dist/runtime/types';
+import { ref, h } from 'vue';
 import { NButton } from 'naive-ui';
 import { Icon } from '#components';
 
 const selectedOptionPath = ref('');
 const { data: documents } = await useAsyncData('minute-books', () => queryContent('/').find());
+// const isVisible = ref(false);
 
 // TODO: Delete PDFs in public folder and use this code to generate PDFs when the document API will be completely funcional
 // import type { DocumentRequestDTO } from '~/types/dtos';
@@ -47,11 +49,27 @@ const downloadPdf = (doc: ParsedContent) => {
 };
 
 const renderDownloadIconButton = (doc: ParsedContent) => {
-  return h(NButton, { text: true, onClick: () => downloadPdf(doc) }, () =>
-    h(Icon, { name: 'mdi:download', size: '24px' }),
-  );
-};
+  const isDocumentVisible = computed(() => selectedOptionPath.value === doc._path);
 
+  return h('div', { class: 'flex items-center' }, [
+    h(
+      NButton,
+      {
+        text: true,
+        onClick: () => documentScrollView.value!.scrollIntoView({ behavior: 'smooth' }),
+        class: 'mr-1',
+      },
+      () =>
+        h(Icon, {
+          name: isDocumentVisible.value ? 'mdi:eye-outline' : 'mdi:eye-closed',
+          size: '24px',
+        }),
+    ),
+    h(NButton, { text: true, onClick: () => downloadPdf(doc), class: 'mr-6' }, () =>
+      h(Icon, { name: 'mdi:download', size: '24px' }),
+    ),
+  ]);
+};
 const documentScrollView = ref<HTMLElement>();
 
 const menuOptions: MenuOption[] = [
