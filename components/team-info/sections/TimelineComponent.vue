@@ -20,34 +20,63 @@
 <script setup>
 const timelineItems = [
   {
-    title: 'Title 1',
+    title: 'Beginning of the Project',
     content:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    date: 'DD|MM|YYYY',
+      'Our first meeting occured. We started to discuss the main ideas of the project and the technologies we will use.',
+    date: '02.10.2023',
   },
   {
-    title: 'Title 2',
+    title: 'Initiating Transaction Processing',
     content:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    date: 'DD|MM|YYYY',
+      'Successfully processed the first transaction, including setting up Neo4j database and storing transactions within it.',
+    date: '17.10.2023',
   },
   {
-    title: 'Title 3',
-    content:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    date: 'DD|MM|YYYY',
+    title: 'Indexing of ERC-721 Collection',
+    content: 'ERC-721 collection successfully indexed.',
+    date: '21.10.2023',
   },
   {
-    title: 'Title 4',
-    content:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    date: 'DD|MM|YYYY',
+    title: 'NFT Tagging Achievement',
+    content: 'Accomplished tagging for every new NFT recorded, introducing a shared tag.',
+    date: '09.11.2023',
   },
   {
-    title: 'Title 5 ',
+    title: 'Optimized IPFS Metadata Retrieval',
     content:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    date: 'DD|MM|YYYY',
+      'Implemented a custom system for fetching metadata from IPFS using multiple gateways simultaneously, enhancing efficiency.',
+    date: '10.11.2023',
+  },
+  {
+    title: 'Metadata Fetching Enhancement',
+    content: ' Improved metadata fetching for the collection using RPC calls and IPFS.',
+    date: '12.11.2023',
+  },
+  {
+    title: 'RPC Data Fetching Optimization',
+    content:
+      'Integrated Multicall smart contract for optimal fetching of blockchain data, resulting in reduced RPC calls.',
+    date: '12.11.2023',
+  },
+  {
+    title: 'Indexer Optimization for ERC-1155 Tokens',
+    content: 'Upgraded the indexer to support ERC-1155 tokens.',
+    date: '12.11.2023',
+  },
+  {
+    title: 'Optimization for ERC-20 Tokens',
+    content: 'Upgraded the indexer to support ERC-20 tokens.',
+    date: '12.11.2023',
+  },
+  {
+    title: 'Description, Attributes and Name Tokenization',
+    content: 'Extended functionality by tokenizing NFT names, descriptions, and attributes.',
+    date: '12.11.2023',
+  },
+  {
+    title: ' Automation of Data Processing',
+    content: ' Implemented automated processes for data processing.',
+    date: '14.11.2023',
   },
 ];
 const { colorMode } = useNaiveColorMode();
