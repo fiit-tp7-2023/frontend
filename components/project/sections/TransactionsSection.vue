@@ -11,7 +11,7 @@
       <n-input v-model:value="searchValues.nftId" type="text" placeholder="NFT ID" />
       <n-button type="primary" strong class="w-full" @click="handleSearch()">Search</n-button>
       <n-data-table
-        v-if="!error"
+        v-if="!transactionsError"
         ref="table"
         remote
         :columns="columns"
@@ -19,28 +19,34 @@
         :loading="transactionsLoading"
         :pagination="pagination"
       />
-      <div v-else>Error: {{ error }}</div>
+      <server-error-component v-else :error="transactionsError" @retry="refreshTransactions()" />
     </n-space>
   </n-card>
 </template>
 
 <script setup lang="ts">
+import { useResizeObserver } from '@vueuse/core';
 import TruncatedAddressComponent from '../other/TruncatedAddressComponent.vue';
+import ServerErrorComponent from '../other/ServerError.vue';
+
 import type { LocationQueryRaw } from '#vue-router';
 import type { TransactionDTO, TransactionSearchRequestDTO, TransactionSearchResponseDTO } from '~/types/dtos';
 import type { TransactionSearchForm } from '~/types/forms';
 
 const router = useRouter();
 const route = useRoute();
+const table = ref();
 
 const columns = [
   {
     title: 'Transaction',
     key: 'id',
+    minWidth: 310,
   },
   {
     title: 'Amount',
     key: 'amount',
+    minWidth: 90,
   },
   {
     title: 'Sender',
@@ -80,7 +86,7 @@ const {
   data: transactionsResponse,
   refresh: refreshTransactions,
   pending: transactionsLoading,
-  error,
+  error: transactionsError,
 } = useFetch('/api/transaction', {
   query,
 });
@@ -130,6 +136,16 @@ const pagination = reactive({
   pageCount,
   onChange: handlePageChange,
   onUpdatePageSize: handlePageSizeChange,
+  simple: false,
+});
+
+useResizeObserver(table, (entries) => {
+  const w = entries[0].contentRect.width;
+  if (w <= 530) {
+    pagination.simple = true;
+  } else {
+    pagination.simple = false;
+  }
 });
 
 watch(transactionsResponse, handleResponse);

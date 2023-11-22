@@ -4,7 +4,7 @@
       <n-h2 class="text-3xl font-bold">Documents</n-h2>
       <n-menu :options="menuOptions" :indent="16" @update-value="handleMenuOptionSelect" />
     </div>
-    <div class="lg:col-span-3">
+    <div ref="documentScrollView" class="lg:col-span-3">
       <content-doc :path="selectedOptionPath"
         ><template #not-found>
           <n-text class="text-xl">Please select a document</n-text>
@@ -23,6 +23,21 @@ import { Icon } from '#components';
 const selectedOptionPath = ref('');
 const { data: documents } = await useAsyncData('minute-books', () => queryContent('/').find());
 
+// TODO: Delete PDFs in public folder and use this code to generate PDFs when the document API will be completely funcional
+// import type { DocumentRequestDTO } from '~/types/dtos';
+// const downloadPdf = async (doc: ParsedContent) => {
+//   const query: DocumentRequestDTO = {
+//     contentRelativePath: doc._file,
+//   };
+
+//   const pdf = await $fetch<Blob>('/api/document', { query });
+//   const link = document.createElement('a');
+//   link.href = URL.createObjectURL(pdf);
+//   link.download = doc.title as string;
+//   link.target = '_blank';
+//   link.click();
+// };
+
 const downloadPdf = (doc: ParsedContent) => {
   const link = document.createElement('a');
   link.href = `${doc._path}.pdf`;
@@ -37,6 +52,8 @@ const renderDownloadIconButton = (doc: ParsedContent) => {
   );
 };
 
+const documentScrollView = ref<HTMLElement>();
+
 const menuOptions: MenuOption[] = [
   {
     label: 'Minute books',
@@ -47,6 +64,7 @@ const menuOptions: MenuOption[] = [
         label: doc.title,
         key: doc.title,
         path: doc._path,
+        onClick: () => documentScrollView.value!.scrollIntoView({ behavior: 'smooth' }),
         icon: () => renderDownloadIconButton(doc),
       })),
   },
@@ -55,7 +73,13 @@ const menuOptions: MenuOption[] = [
     key: 'retrospectives',
     children: documents.value
       ?.filter((doc) => doc.title?.startsWith('retrospective'))
-      .map((doc) => ({ label: doc.title, key: doc.title, path: doc._path, icon: () => renderDownloadIconButton(doc) })),
+      .map((doc) => ({
+        label: doc.title,
+        key: doc.title,
+        path: doc._path,
+        onClick: () => documentScrollView.value!.scrollIntoView({ behavior: 'smooth' }),
+        icon: () => renderDownloadIconButton(doc),
+      })),
   },
 ];
 
