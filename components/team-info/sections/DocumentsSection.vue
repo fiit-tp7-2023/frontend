@@ -17,13 +17,12 @@
 <script lang="ts" setup>
 import type { MenuOption } from 'naive-ui';
 import type { ParsedContent } from '@nuxt/content/dist/runtime/types';
-import { ref, h } from 'vue';
+import { h } from 'vue';
 import { NButton } from 'naive-ui';
 import { Icon } from '#components';
 
 const selectedOptionPath = ref('');
 const { data: documents } = await useAsyncData('minute-books', () => queryContent('/').find());
-// const isVisible = ref(false);
 
 // TODO: Delete PDFs in public folder and use this code to generate PDFs when the document API will be completely funcional
 // import type { DocumentRequestDTO } from '~/types/dtos';
@@ -54,7 +53,6 @@ const renderMenuItem = (doc: ParsedContent) => {
       NButton,
       {
         text: true,
-
         onClick: () => documentScrollView.value!.scrollIntoView({ behavior: 'smooth' }),
         class: 'mr-5',
       },
