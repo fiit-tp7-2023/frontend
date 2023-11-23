@@ -17,6 +17,7 @@
 <script lang="ts" setup>
 import type { MenuOption } from 'naive-ui';
 import type { ParsedContent } from '@nuxt/content/dist/runtime/types';
+import { h } from 'vue';
 import { NButton } from 'naive-ui';
 import { Icon } from '#components';
 
@@ -46,10 +47,22 @@ const downloadPdf = (doc: ParsedContent) => {
   link.click();
 };
 
-const renderDownloadIconButton = (doc: ParsedContent) => {
-  return h(NButton, { text: true, onClick: () => downloadPdf(doc) }, () =>
-    h(Icon, { name: 'mdi:download', size: '24px' }),
-  );
+const renderMenuItem = (doc: ParsedContent) => {
+  return h('div', { class: 'flex items-center' }, [
+    h(
+      NButton,
+      {
+        text: true,
+        onClick: () => documentScrollView.value!.scrollIntoView({ behavior: 'smooth' }),
+        class: 'mr-5',
+      },
+      doc.title as string,
+    ),
+
+    h(NButton, { text: true, onClick: () => downloadPdf(doc), class: 'mr-6' }, () =>
+      h(Icon, { name: 'mdi:arrow-collapse-down', size: '20px' }),
+    ),
+  ]);
 };
 
 const documentScrollView = ref<HTMLElement>();
@@ -61,11 +74,10 @@ const menuOptions: MenuOption[] = [
     children: documents.value
       ?.filter((doc) => doc.title?.startsWith('minute-book'))
       .map((doc) => ({
-        label: doc.title,
+        label: () => renderMenuItem(doc),
         key: doc.title,
         path: doc._path,
         onClick: () => documentScrollView.value!.scrollIntoView({ behavior: 'smooth' }),
-        icon: () => renderDownloadIconButton(doc),
       })),
   },
   {
@@ -74,11 +86,10 @@ const menuOptions: MenuOption[] = [
     children: documents.value
       ?.filter((doc) => doc.title?.startsWith('retrospective'))
       .map((doc) => ({
-        label: doc.title,
+        label: () => renderMenuItem(doc),
         key: doc.title,
         path: doc._path,
         onClick: () => documentScrollView.value!.scrollIntoView({ behavior: 'smooth' }),
-        icon: () => renderDownloadIconButton(doc),
       })),
   },
 ];
