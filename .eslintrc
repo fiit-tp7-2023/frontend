@@ -11,6 +11,16 @@
   "extends": ["@nuxtjs/eslint-config-typescript", "plugin:prettier/recommended"],
   "plugins": [],
   "rules": {
-    "vue/no-multiple-template-root": "off"
+    "vue/no-multiple-template-root": "off",
+    "vue/component-api-style": ["error",
+      ["script-setup"]
+    ],
+    "vue/block-lang": ["error",
+      {
+        "script": {
+          "lang": "ts"
+        }
+      }
+    ]
   }
 }
