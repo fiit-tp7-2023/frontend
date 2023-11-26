@@ -1,9 +1,10 @@
 <template>
-  <nft-info :route="route.params.address" />
+  <nft-info :address="address" />
 </template>
 
 <script setup lang="ts">
 import NftInfo from '~/components/project/sections/NftInfo.vue';
+
 const route = useRoute();
-console.log(route.params.address);
+const address = computed(() => route.params.address as string);
 </script>

@@ -17,8 +17,14 @@
   </div>
 </template>
 
-<script setup>
-const timelineItems = [
+<script setup lang="ts">
+type TimelineItem = {
+  title: string;
+  content: string;
+  date: string;
+};
+
+const timelineItems: TimelineItem[] = [
   {
     title: 'Beginning of the Project',
     content:
