@@ -9,7 +9,23 @@
       <n-input v-model:value="searchValues.senderId" type="text" placeholder="Sender ID" />
       <n-input v-model:value="searchValues.receiverId" type="text" placeholder="Receiver ID" />
       <n-input v-model:value="searchValues.nftId" type="text" placeholder="NFT ID" />
-      <n-button type="primary" strong class="w-full" @click="handleSearch()">Search</n-button>
+      <n-select
+        v-model:value="searchValues.tagNames"
+        filterable
+        multiple
+        remote
+        clearable
+        placeholder="Search NFT tags"
+        :options="tagOptions"
+        :loading="tagsLoading"
+        :reset-menu-on-options-change="false"
+        :clear-filter-after-select="false"
+        :disabled="!!tagsError"
+        @blur="handleTagsBlur"
+        @search="handleTagsSearch"
+        @scroll="handleTagsScroll"
+      />
+      <n-button type="primary" strong class="w-full" @click="handleTransactionsSearch()">Search</n-button>
       <n-data-table
         v-if="!transactionsError"
         ref="table"
@@ -20,17 +36,24 @@
         :pagination="pagination"
       />
       <server-error-component v-else :error="transactionsError" @retry="refreshTransactions()" />
+      <server-error-component v-if="!!tagsError" :error="tagsError" @retry="refreshTags()" />
     </n-space>
   </n-card>
 </template>
 
 <script setup lang="ts">
 import { useResizeObserver } from '@vueuse/core';
+import type { SelectOption } from 'naive-ui';
 import TruncatedAddressComponent from '../other/TruncatedAddressComponent.vue';
 import ServerErrorComponent from '../other/ServerError.vue';
-
 import type { LocationQueryRaw } from '#vue-router';
-import type { TransactionDTO, TransactionSearchRequestDTO, TransactionSearchResponseDTO } from '~/types/dtos';
+import type {
+  TagSearchRequestDTO,
+  TagSearchResponseDTO,
+  TransactionDTO,
+  TransactionSearchRequestDTO,
+  TransactionSearchResponseDTO,
+} from '~/types/dtos';
 import type { TransactionSearchForm } from '~/types/forms';
 
 const router = useRouter();
@@ -65,21 +88,31 @@ const columns = [
   },
 ];
 
-const pageCount = ref(1);
-const pageSizes = [5, 10, 15, 20];
+const transactionPageCount = ref(1);
+const transactionPageSizes = [5, 10, 15, 20];
 
-const parsedPageNumber = parseInt(route.query.pageNumber as string);
-const parsedPageSize = parseInt(route.query.pageSize as string);
+const parsedTransactionPageNumber = parseInt(route.query.pageNumber as string);
+const parsedTransactionPageSize = parseInt(route.query.pageSize as string);
+const parsedTagNames = route.query.tagNames ? (route.query.tagNames as string).split(',') : [];
 
-const query = ref<TransactionSearchRequestDTO>({
+const tagQuery = ref<TagSearchRequestDTO>({
+  pageNumber: 1,
+  pageSize: 50,
+});
+const transactionQuery = ref<TransactionSearchRequestDTO>({
   ...route.query,
-  pageNumber: isNaN(parsedPageNumber) || parsedPageNumber < 1 ? 1 : parsedPageNumber,
-  pageSize: isNaN(parsedPageSize) || !pageSizes.includes(parsedPageSize) ? 10 : parsedPageSize,
+  pageNumber: isNaN(parsedTransactionPageNumber) || parsedTransactionPageNumber < 1 ? 1 : parsedTransactionPageNumber,
+  pageSize:
+    isNaN(parsedTransactionPageSize) || !transactionPageSizes.includes(parsedTransactionPageSize)
+      ? 10
+      : parsedTransactionPageSize,
+  tagNames: parsedTagNames,
 });
 const searchValues = ref<TransactionSearchForm>({
-  senderId: query.value.senderId,
-  receiverId: query.value.receiverId,
-  nftId: query.value.nftId,
+  senderId: transactionQuery.value.senderId,
+  receiverId: transactionQuery.value.receiverId,
+  nftId: transactionQuery.value.nftId,
+  tagNames: parsedTagNames,
 });
 
 const {
@@ -88,54 +121,94 @@ const {
   pending: transactionsLoading,
   error: transactionsError,
 } = useFetch('/api/transaction', {
-  query,
+  query: transactionQuery,
 });
+const { data: tagsResponse, pending: tagsLoading, error: tagsError } = useFetch('/api/tag', { query: tagQuery });
 
-const handleQuery = (query: LocationQueryRaw) => {
-  router.push({ query });
+const tagOptions = ref<SelectOption[]>(
+  tagsResponse.value ? tagsResponse.value.tags.map((tag) => ({ value: tag, label: tag })) : [],
+);
+
+const refreshTags = () => {
+  tagQuery.value = { ...tagQuery.value, pageNumber: 1, name: '' };
+};
+
+const handleTagsBlur = () => {
+  if (tagQuery.value.name) {
+    tagQuery.value = { ...tagQuery.value, pageNumber: 1, name: '' };
+  }
+};
+
+const handleTagsSearch = (value: string) => {
+  tagQuery.value = { ...tagQuery.value, pageNumber: 1, name: value };
+};
+
+const handleTagsScroll = (e: Event) => {
+  const currentTarget = e.currentTarget as HTMLElement;
+  if (
+    currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight - 250 &&
+    tagsResponse.value &&
+    tagQuery.value.pageNumber < tagsResponse.value.pageCount
+  ) {
+    tagQuery.value = { ...tagQuery.value, pageNumber: tagQuery.value.pageNumber + 1 };
+  }
+};
+
+const handleTagsResponse = (response: TagSearchResponseDTO | null) => {
+  const newTagOptions = response ? response.tags.map((tag) => ({ value: tag, label: tag })) : [];
+  if (tagQuery.value.pageNumber === 1) {
+    tagOptions.value = newTagOptions;
+  } else {
+    tagOptions.value.push(...newTagOptions);
+  }
+};
+
+const handleTransactionQuery = (query: LocationQueryRaw) => {
+  const serializedTagNames = searchValues.value.tagNames.join(',');
+  router.push({ query: { ...query, ...(serializedTagNames ? { tagNames: serializedTagNames } : {}) } });
 };
 
 const handleMounted = () => {
-  pageCount.value = transactionsResponse.value?.pageCount || 1;
-  handleQuery(query.value);
+  transactionPageCount.value = transactionsResponse.value?.pageCount || 1;
+  handleTransactionQuery(transactionQuery.value);
 };
 
-const handleResponse = (response: TransactionSearchResponseDTO | null) => {
+const handleTransactionsResponse = (response: TransactionSearchResponseDTO | null) => {
   if (!response || response.pageCount === 0) {
-    pageCount.value = 1;
+    transactionPageCount.value = 1;
   } else {
-    pageCount.value = response.pageCount;
+    transactionPageCount.value = response.pageCount;
   }
 
-  if (query.value.pageNumber! > pageCount.value) {
-    query.value = { ...query.value, pageNumber: pageCount.value };
-    pagination.page = pageCount.value;
+  if (transactionQuery.value.pageNumber > transactionPageCount.value) {
+    transactionQuery.value = { ...transactionQuery.value, pageNumber: transactionPageCount.value };
+    pagination.page = transactionPageCount.value;
   }
 };
 
-const handleSearch = () => {
-  query.value = { ...query.value, ...searchValues.value, pageNumber: 1 };
+const handleTransactionsSearch = () => {
+  transactionQuery.value = { ...transactionQuery.value, ...searchValues.value, pageNumber: 1 };
   pagination.page = 1;
 };
 
-const handlePageChange = (pageNumber: number) => {
-  query.value = { ...query.value, pageNumber };
+const handleTransactionPageChange = (pageNumber: number) => {
+  transactionQuery.value = { ...transactionQuery.value, pageNumber };
   pagination.page = pageNumber;
 };
 
-const handlePageSizeChange = (pageSize: number) => {
-  query.value = { ...query.value, pageSize };
+const handleTransactionPageSizeChange = (pageSize: number) => {
+  transactionQuery.value = { ...transactionQuery.value, pageSize };
   pagination.pageSize = pageSize;
 };
 
 const pagination = reactive({
-  page: query.value.pageNumber,
-  pageSize: query.value.pageSize,
+  page: transactionQuery.value.pageNumber,
+  pageSize: transactionQuery.value.pageSize,
   showSizePicker: true,
-  pageSizes,
-  pageCount,
-  onChange: handlePageChange,
-  onUpdatePageSize: handlePageSizeChange,
+  pageSizes: transactionPageSizes,
+  pageCount: transactionPageCount,
+  onChange: handleTransactionPageChange,
+  onUpdatePageSize: handleTransactionPageSizeChange,
   simple: false,
 });
 
@@ -148,7 +221,8 @@ useResizeObserver(table, (entries) => {
   }
 });
 
-watch(transactionsResponse, handleResponse);
-watch(query, handleQuery);
+watch(tagsResponse, handleTagsResponse);
+watch(transactionsResponse, handleTransactionsResponse);
+watch(transactionQuery, handleTransactionQuery);
 onMounted(handleMounted);
 </script>
