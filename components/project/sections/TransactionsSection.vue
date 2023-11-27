@@ -46,7 +46,6 @@ import { useResizeObserver } from '@vueuse/core';
 import type { SelectOption, DataTableColumn } from 'naive-ui';
 import TruncatedAddressComponent from '../other/TruncatedAddressComponent.vue';
 import ServerErrorComponent from '../other/ServerError.vue';
-import type { LocationQueryRaw } from '#vue-router';
 import type {
   TagSearchRequestDTO,
   TagSearchResponseDTO,
@@ -160,12 +159,9 @@ const handleTagsResponse = (response: TagSearchResponseDTO | null) => {
   tagOptions.value = tagQuery.value.pageNumber === 1 ? newTagOptions : [...tagOptions.value, ...newTagOptions];
 };
 
-const handleTransactionQuery = (query: LocationQueryRaw) => {
+const handleTransactionQuery = (query: TransactionSearchRequestDTO) => {
   const serializedTagNames = searchValues.value.tagNames.join(',');
-  if (serializedTagNames) {
-    query.tagNames = serializedTagNames;
-  }
-  router.push({ query });
+  router.push({ query: { ...query, ...(serializedTagNames ? { tagNames: serializedTagNames } : {}) } });
 };
 
 const handleTransactionsResponse = (response: TransactionSearchResponseDTO | null) => {
