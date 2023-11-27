@@ -1,6 +1,6 @@
 export interface PaginationRequestDTO {
-  pageNumber?: number;
-  pageSize?: number;
+  pageNumber: number;
+  pageSize: number;
 }
 
 export interface PaginationResponseDTO {
