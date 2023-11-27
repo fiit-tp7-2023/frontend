@@ -162,10 +162,7 @@ const handleTagsResponse = (response: TagSearchResponseDTO | null) => {
 
 const handleTransactionQuery = (query: LocationQueryRaw) => {
   const serializedTagNames = searchValues.value.tagNames.join(',');
-  if (serializedTagNames) {
-    query.tagNames = serializedTagNames;
-  }
-  router.push({ query });
+  router.push({ query: { ...query, ...(serializedTagNames ? { tagNames: serializedTagNames } : {}) } });
 };
 
 const handleTransactionsResponse = (response: TransactionSearchResponseDTO | null) => {
