@@ -36,7 +36,7 @@
         :pagination="pagination"
       />
       <server-error-component v-else :error="transactionsError" @retry="refreshTransactions()" />
-      <server-error-component v-if="!!tagsError" :error="tagsError" @retry="refreshTags()" />
+      <server-error-component v-if="!!tagsError" :error="tagsError" @retry="resetTags()" />
     </n-space>
   </n-card>
 </template>
@@ -91,8 +91,13 @@ const columns = [
 const transactionPageCount = ref(1);
 const transactionPageSizes = [5, 10, 15, 20];
 
-const parsedTransactionPageNumber = parseInt(route.query.pageNumber as string);
-const parsedTransactionPageSize = parseInt(route.query.pageSize as string);
+const parsePaginationQueryParam = (param: string, defaultValue: number) => {
+  const parsedParam = parseInt(param);
+  return isNaN(parsedParam) || parsedParam < 1 ? defaultValue : parsedParam;
+};
+
+const parsedTransactionPageNumber = parsePaginationQueryParam(route.query.pageNumber as string, 1);
+const parsedTransactionPageSize = parsePaginationQueryParam(route.query.pageSize as string, 10);
 const parsedTagNames = route.query.tagNames ? (route.query.tagNames as string).split(',') : [];
 
 const tagQuery = ref<TagSearchRequestDTO>({
@@ -101,11 +106,8 @@ const tagQuery = ref<TagSearchRequestDTO>({
 });
 const transactionQuery = ref<TransactionSearchRequestDTO>({
   ...route.query,
-  pageNumber: isNaN(parsedTransactionPageNumber) || parsedTransactionPageNumber < 1 ? 1 : parsedTransactionPageNumber,
-  pageSize:
-    isNaN(parsedTransactionPageSize) || !transactionPageSizes.includes(parsedTransactionPageSize)
-      ? 10
-      : parsedTransactionPageSize,
+  pageNumber: parsedTransactionPageNumber,
+  pageSize: transactionPageSizes.includes(parsedTransactionPageSize) ? parsedTransactionPageSize : 10,
   tagNames: parsedTagNames,
 });
 const searchValues = ref<TransactionSearchForm>({
@@ -125,42 +127,34 @@ const {
 });
 const { data: tagsResponse, pending: tagsLoading, error: tagsError } = useFetch('/api/tag', { query: tagQuery });
 
-const tagOptions = ref<SelectOption[]>(
-  tagsResponse.value ? tagsResponse.value.tags.map((tag) => ({ value: tag, label: tag })) : [],
-);
+const tagOptions = ref<SelectOption[]>(tagsResponse.value?.tags.map((tag) => ({ value: tag, label: tag })) ?? []);
 
-const refreshTags = () => {
-  tagQuery.value = { ...tagQuery.value, pageNumber: 1, name: '' };
+const resetTags = () => {
+  tagQuery.value.pageNumber = 1;
+  tagQuery.value.name = '';
 };
 
 const handleTagsBlur = () => {
-  if (tagQuery.value.name) {
-    tagQuery.value = { ...tagQuery.value, pageNumber: 1, name: '' };
-  }
+  if (tagQuery.value.name) resetTags();
 };
 
 const handleTagsSearch = (value: string) => {
-  tagQuery.value = { ...tagQuery.value, pageNumber: 1, name: value };
+  tagQuery.value.pageNumber = 1;
+  tagQuery.value.name = value;
 };
 
 const handleTagsScroll = (e: Event) => {
-  const currentTarget = e.currentTarget as HTMLElement;
-  if (
-    currentTarget.scrollTop + currentTarget.offsetHeight >= currentTarget.scrollHeight - 250 &&
-    tagsResponse.value &&
-    tagQuery.value.pageNumber < tagsResponse.value.pageCount
-  ) {
+  const { scrollTop, offsetHeight, scrollHeight } = e.currentTarget as HTMLElement;
+  const shouldLoadMore = scrollTop + offsetHeight >= scrollHeight - 250;
+  const canLoadMore = !tagsLoading.value && tagQuery.value.pageNumber < (tagsResponse.value?.pageCount ?? 0);
+  if (shouldLoadMore && canLoadMore) {
     tagQuery.value = { ...tagQuery.value, pageNumber: tagQuery.value.pageNumber + 1 };
   }
 };
 
 const handleTagsResponse = (response: TagSearchResponseDTO | null) => {
-  const newTagOptions = response ? response.tags.map((tag) => ({ value: tag, label: tag })) : [];
-  if (tagQuery.value.pageNumber === 1) {
-    tagOptions.value = newTagOptions;
-  } else {
-    tagOptions.value.push(...newTagOptions);
-  }
+  const newTagOptions = response?.tags.map((tag) => ({ value: tag, label: tag })) ?? [];
+  tagOptions.value = tagQuery.value.pageNumber === 1 ? newTagOptions : [...tagOptions.value, ...newTagOptions];
 };
 
 const handleTransactionQuery = (query: LocationQueryRaw) => {
@@ -168,21 +162,10 @@ const handleTransactionQuery = (query: LocationQueryRaw) => {
   router.push({ query: { ...query, ...(serializedTagNames ? { tagNames: serializedTagNames } : {}) } });
 };
 
-const handleMounted = () => {
-  transactionPageCount.value = transactionsResponse.value?.pageCount || 1;
-  handleTransactionQuery(transactionQuery.value);
-};
-
 const handleTransactionsResponse = (response: TransactionSearchResponseDTO | null) => {
-  if (!response || response.pageCount === 0) {
-    transactionPageCount.value = 1;
-  } else {
-    transactionPageCount.value = response.pageCount;
-  }
-
+  transactionPageCount.value = response?.pageCount || 1;
   if (transactionQuery.value.pageNumber > transactionPageCount.value) {
-    transactionQuery.value = { ...transactionQuery.value, pageNumber: transactionPageCount.value };
-    pagination.page = transactionPageCount.value;
+    transactionQuery.value.pageNumber = pagination.page = transactionPageCount.value;
   }
 };
 
@@ -192,13 +175,11 @@ const handleTransactionsSearch = () => {
 };
 
 const handleTransactionPageChange = (pageNumber: number) => {
-  transactionQuery.value = { ...transactionQuery.value, pageNumber };
-  pagination.page = pageNumber;
+  transactionQuery.value.pageNumber = pagination.page = pageNumber;
 };
 
 const handleTransactionPageSizeChange = (pageSize: number) => {
-  transactionQuery.value = { ...transactionQuery.value, pageSize };
-  pagination.pageSize = pageSize;
+  transactionQuery.value.pageSize = pagination.pageSize = pageSize;
 };
 
 const pagination = reactive({
@@ -213,16 +194,16 @@ const pagination = reactive({
 });
 
 useResizeObserver(table, (entries) => {
-  const w = entries[0].contentRect.width;
-  if (w <= 530) {
-    pagination.simple = true;
-  } else {
-    pagination.simple = false;
-  }
+  pagination.simple = entries[0].contentRect.width <= 530;
 });
+
+const handleMounted = () => {
+  transactionPageCount.value = transactionsResponse.value?.pageCount || 1;
+  handleTransactionQuery(transactionQuery.value);
+};
 
 watch(tagsResponse, handleTagsResponse);
 watch(transactionsResponse, handleTransactionsResponse);
-watch(transactionQuery, handleTransactionQuery);
+watch(transactionQuery, handleTransactionQuery, { deep: true });
 onMounted(handleMounted);
 </script>
