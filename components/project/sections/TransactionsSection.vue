@@ -169,7 +169,7 @@ const handleTransactionQuery = (query: LocationQueryRaw) => {
 };
 
 const handleTransactionsResponse = (response: TransactionSearchResponseDTO | null) => {
-  transactionPageCount.value = response?.pageCount ?? 1;
+  transactionPageCount.value = response?.pageCount || 1;
   if (transactionQuery.value.pageNumber > transactionPageCount.value) {
     transactionQuery.value.pageNumber = pagination.page = transactionPageCount.value;
   }
@@ -204,7 +204,7 @@ useResizeObserver(table, (entries) => {
 });
 
 const handleMounted = () => {
-  transactionPageCount.value = transactionsResponse.value?.pageCount ?? 1;
+  transactionPageCount.value = transactionsResponse.value?.pageCount || 1;
   handleTransactionQuery(transactionQuery.value);
 };
 
