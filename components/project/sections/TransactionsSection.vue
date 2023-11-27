@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
 import { useResizeObserver } from '@vueuse/core';
-import type { SelectOption } from 'naive-ui';
+import type { SelectOption, DataTableColumn } from 'naive-ui';
 import TruncatedAddressComponent from '../other/TruncatedAddressComponent.vue';
 import ServerErrorComponent from '../other/ServerError.vue';
 import type { LocationQueryRaw } from '#vue-router';
@@ -60,7 +60,7 @@ const router = useRouter();
 const route = useRoute();
 const table = ref();
 
-const columns = [
+const columns: DataTableColumn<TransactionDTO>[] = [
   {
     title: 'Transaction',
     key: 'id',
@@ -74,17 +74,17 @@ const columns = [
   {
     title: 'Sender',
     key: 'sender.id',
-    render: (row: TransactionDTO) => h(TruncatedAddressComponent, { address: row.sender.id, isNFT: false }),
+    render: (row) => h(TruncatedAddressComponent, { address: row.sender.id, isNFT: false }),
   },
   {
     title: 'Receiver',
     key: 'receiver.id',
-    render: (row: TransactionDTO) => h(TruncatedAddressComponent, { address: row.receiver.id, isNFT: false }),
+    render: (row) => h(TruncatedAddressComponent, { address: row.receiver.id, isNFT: false }),
   },
   {
     title: 'NFT',
     key: 'nft.id',
-    render: (row: TransactionDTO) => h(TruncatedAddressComponent, { address: row.nft.id, isNFT: true }),
+    render: (row) => h(TruncatedAddressComponent, { address: row.nft.id, isNFT: true }),
   },
 ];
 
@@ -104,12 +104,14 @@ const tagQuery = ref<TagSearchRequestDTO>({
   pageNumber: 1,
   pageSize: 50,
 });
+
 const transactionQuery = ref<TransactionSearchRequestDTO>({
   ...route.query,
   pageNumber: parsedTransactionPageNumber,
   pageSize: transactionPageSizes.includes(parsedTransactionPageSize) ? parsedTransactionPageSize : 10,
   tagNames: parsedTagNames,
 });
+
 const searchValues = ref<TransactionSearchForm>({
   senderId: transactionQuery.value.senderId,
   receiverId: transactionQuery.value.receiverId,
@@ -125,6 +127,7 @@ const {
 } = useFetch('/api/transaction', {
   query: transactionQuery,
 });
+
 const { data: tagsResponse, pending: tagsLoading, error: tagsError } = useFetch('/api/tag', { query: tagQuery });
 
 const tagOptions = ref<SelectOption[]>(tagsResponse.value?.tags.map((tag) => ({ value: tag, label: tag })) ?? []);
@@ -148,7 +151,7 @@ const handleTagsScroll = (e: Event) => {
   const shouldLoadMore = scrollTop + offsetHeight >= scrollHeight - 250;
   const canLoadMore = !tagsLoading.value && tagQuery.value.pageNumber < (tagsResponse.value?.pageCount ?? 0);
   if (shouldLoadMore && canLoadMore) {
-    tagQuery.value = { ...tagQuery.value, pageNumber: tagQuery.value.pageNumber + 1 };
+    tagQuery.value.pageNumber++;
   }
 };
 
@@ -159,11 +162,14 @@ const handleTagsResponse = (response: TagSearchResponseDTO | null) => {
 
 const handleTransactionQuery = (query: LocationQueryRaw) => {
   const serializedTagNames = searchValues.value.tagNames.join(',');
-  router.push({ query: { ...query, ...(serializedTagNames ? { tagNames: serializedTagNames } : {}) } });
+  if (serializedTagNames) {
+    query.tagNames = serializedTagNames;
+  }
+  router.push({ query });
 };
 
 const handleTransactionsResponse = (response: TransactionSearchResponseDTO | null) => {
-  transactionPageCount.value = response?.pageCount || 1;
+  transactionPageCount.value = response?.pageCount ?? 1;
   if (transactionQuery.value.pageNumber > transactionPageCount.value) {
     transactionQuery.value.pageNumber = pagination.page = transactionPageCount.value;
   }
@@ -198,7 +204,7 @@ useResizeObserver(table, (entries) => {
 });
 
 const handleMounted = () => {
-  transactionPageCount.value = transactionsResponse.value?.pageCount || 1;
+  transactionPageCount.value = transactionsResponse.value?.pageCount ?? 1;
   handleTransactionQuery(transactionQuery.value);
 };
 
