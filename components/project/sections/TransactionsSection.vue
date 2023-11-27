@@ -34,7 +34,9 @@
         :data="transactionsResponse?.transactions"
         :loading="transactionsLoading"
         :pagination="pagination"
-      />
+      >
+        <template #loading><div v-if="transactionsLoading"></div></template>
+      </n-data-table>
       <server-error-component v-else :error="transactionsError" @retry="refreshTransactions()" />
       <server-error-component v-if="!!tagsError" :error="tagsError" @retry="resetTags()" />
     </n-space>
@@ -44,6 +46,7 @@
 <script setup lang="ts">
 import { useResizeObserver } from '@vueuse/core';
 import type { SelectOption, DataTableColumn } from 'naive-ui';
+import { NSkeleton } from 'naive-ui';
 import TruncatedAddressComponent from '../other/TruncatedAddressComponent.vue';
 import ServerErrorComponent from '../other/ServerError.vue';
 import type {
@@ -64,26 +67,38 @@ const columns: DataTableColumn<TransactionDTO>[] = [
     title: 'Transaction',
     key: 'id',
     minWidth: 310,
+    render: (row) => (transactionsLoading.value ? h(NSkeleton, { style: { width: '310px', height: '19px' } }) : row.id),
   },
   {
     title: 'Amount',
     key: 'amount',
     minWidth: 90,
+    render: (row) =>
+      transactionsLoading.value ? h(NSkeleton, { style: { width: '90px', height: '19px' } }) : row.amount,
   },
   {
     title: 'Sender',
     key: 'sender.id',
-    render: (row) => h(TruncatedAddressComponent, { address: row.sender.id, isNFT: false }),
+    render: (row) =>
+      transactionsLoading.value
+        ? h(NSkeleton, { style: { width: '150px', height: '19px' } })
+        : h(TruncatedAddressComponent, { address: row.sender.id, isNFT: false }),
   },
   {
     title: 'Receiver',
     key: 'receiver.id',
-    render: (row) => h(TruncatedAddressComponent, { address: row.receiver.id, isNFT: false }),
+    render: (row) =>
+      transactionsLoading.value
+        ? h(NSkeleton, { style: { width: '150px', height: '19px' } })
+        : h(TruncatedAddressComponent, { address: row.receiver.id, isNFT: false }),
   },
   {
     title: 'NFT',
     key: 'nft.id',
-    render: (row) => h(TruncatedAddressComponent, { address: row.nft.id, isNFT: true }),
+    render: (row) =>
+      transactionsLoading.value
+        ? h(NSkeleton, { style: { width: '150px', height: '19px' } })
+        : h(TruncatedAddressComponent, { address: row.nft.id, isNFT: true }),
   },
 ];
 
