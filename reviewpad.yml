@@ -55,12 +55,12 @@ workflows:
     description: Check that pull requests have the required number of approvals
     always-run: true
     if:
-      # Label pull requests with `waiting-for-review` if there are no approvals;
+      # Label pull requests with `waiting-for-review` if there are no approvals
       - rule: $isDraft() == false && $approvalsCount() < 1
         extra-actions:
           - $addLabel("waiting-for-review")
-      # Remove `waiting-for-review` if the pull request is closed
-      - rule: $getState() == "closed"
+      # Remove `waiting-for-review` if the pull request is closed or is a draft
+      - rule: $isDraft() || $getState() == "closed"
         extra-actions:
           - $removeLabel("waiting-for-review")
 
