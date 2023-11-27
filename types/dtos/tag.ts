@@ -6,7 +6,7 @@ export interface TagRelationDTO {
 }
 
 export interface TagSearchRequestDTO extends PaginationRequestDTO {
-  name: string;
+  name?: string;
 }
 
 export interface TagSearchResponseDTO extends PaginationResponseDTO {

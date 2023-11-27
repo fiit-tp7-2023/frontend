@@ -9,7 +9,23 @@
       <n-input v-model:value="searchValues.senderId" type="text" placeholder="Sender ID" />
       <n-input v-model:value="searchValues.receiverId" type="text" placeholder="Receiver ID" />
       <n-input v-model:value="searchValues.nftId" type="text" placeholder="NFT ID" />
-      <n-button type="primary" strong class="w-full" @click="handleSearch()">Search</n-button>
+      <n-select
+        v-model:value="searchValues.tagNames"
+        filterable
+        multiple
+        remote
+        clearable
+        placeholder="Search NFT tags"
+        :options="tagOptions"
+        :loading="tagsLoading"
+        :reset-menu-on-options-change="false"
+        :clear-filter-after-select="false"
+        :disabled="!!tagsError"
+        @blur="handleTagsBlur"
+        @search="handleTagsSearch"
+        @scroll="handleTagsScroll"
+      />
+      <n-button type="primary" strong class="w-full" @click="handleTransactionsSearch()">Search</n-button>
       <n-data-table
         v-if="!transactionsError"
         ref="table"
@@ -20,24 +36,31 @@
         :pagination="pagination"
       />
       <server-error-component v-else :error="transactionsError" @retry="refreshTransactions()" />
+      <server-error-component v-if="!!tagsError" :error="tagsError" @retry="resetTags()" />
     </n-space>
   </n-card>
 </template>
 
 <script setup lang="ts">
 import { useResizeObserver } from '@vueuse/core';
+import type { SelectOption, DataTableColumn } from 'naive-ui';
 import TruncatedAddressComponent from '../other/TruncatedAddressComponent.vue';
 import ServerErrorComponent from '../other/ServerError.vue';
-
 import type { LocationQueryRaw } from '#vue-router';
-import type { TransactionDTO, TransactionSearchRequestDTO, TransactionSearchResponseDTO } from '~/types/dtos';
+import type {
+  TagSearchRequestDTO,
+  TagSearchResponseDTO,
+  TransactionDTO,
+  TransactionSearchRequestDTO,
+  TransactionSearchResponseDTO,
+} from '~/types/dtos';
 import type { TransactionSearchForm } from '~/types/forms';
 
 const router = useRouter();
 const route = useRoute();
 const table = ref();
 
-const columns = [
+const columns: DataTableColumn<TransactionDTO>[] = [
   {
     title: 'Transaction',
     key: 'id',
@@ -51,35 +74,49 @@ const columns = [
   {
     title: 'Sender',
     key: 'sender.id',
-    render: (row: TransactionDTO) => h(TruncatedAddressComponent, { address: row.sender.id, isNFT: false }),
+    render: (row) => h(TruncatedAddressComponent, { address: row.sender.id, isNFT: false }),
   },
   {
     title: 'Receiver',
     key: 'receiver.id',
-    render: (row: TransactionDTO) => h(TruncatedAddressComponent, { address: row.receiver.id, isNFT: false }),
+    render: (row) => h(TruncatedAddressComponent, { address: row.receiver.id, isNFT: false }),
   },
   {
     title: 'NFT',
     key: 'nft.id',
-    render: (row: TransactionDTO) => h(TruncatedAddressComponent, { address: row.nft.id, isNFT: true }),
+    render: (row) => h(TruncatedAddressComponent, { address: row.nft.id, isNFT: true }),
   },
 ];
 
-const pageCount = ref(1);
-const pageSizes = [5, 10, 15, 20];
+const transactionPageCount = ref(1);
+const transactionPageSizes = [5, 10, 15, 20];
 
-const parsedPageNumber = parseInt(route.query.pageNumber as string);
-const parsedPageSize = parseInt(route.query.pageSize as string);
+const parsePaginationQueryParam = (param: string, defaultValue: number) => {
+  const parsedParam = parseInt(param);
+  return isNaN(parsedParam) || parsedParam < 1 ? defaultValue : parsedParam;
+};
 
-const query = ref<TransactionSearchRequestDTO>({
-  ...route.query,
-  pageNumber: isNaN(parsedPageNumber) || parsedPageNumber < 1 ? 1 : parsedPageNumber,
-  pageSize: isNaN(parsedPageSize) || !pageSizes.includes(parsedPageSize) ? 10 : parsedPageSize,
+const parsedTransactionPageNumber = parsePaginationQueryParam(route.query.pageNumber as string, 1);
+const parsedTransactionPageSize = parsePaginationQueryParam(route.query.pageSize as string, 10);
+const parsedTagNames = route.query.tagNames ? (route.query.tagNames as string).split(',') : [];
+
+const tagQuery = ref<TagSearchRequestDTO>({
+  pageNumber: 1,
+  pageSize: 50,
 });
+
+const transactionQuery = ref<TransactionSearchRequestDTO>({
+  ...route.query,
+  pageNumber: parsedTransactionPageNumber,
+  pageSize: transactionPageSizes.includes(parsedTransactionPageSize) ? parsedTransactionPageSize : 10,
+  tagNames: parsedTagNames,
+});
+
 const searchValues = ref<TransactionSearchForm>({
-  senderId: query.value.senderId,
-  receiverId: query.value.receiverId,
-  nftId: query.value.nftId,
+  senderId: transactionQuery.value.senderId,
+  receiverId: transactionQuery.value.receiverId,
+  nftId: transactionQuery.value.nftId,
+  tagNames: parsedTagNames,
 });
 
 const {
@@ -88,67 +125,91 @@ const {
   pending: transactionsLoading,
   error: transactionsError,
 } = useFetch('/api/transaction', {
-  query,
+  query: transactionQuery,
 });
 
-const handleQuery = (query: LocationQueryRaw) => {
+const { data: tagsResponse, pending: tagsLoading, error: tagsError } = useFetch('/api/tag', { query: tagQuery });
+
+const tagOptions = ref<SelectOption[]>(tagsResponse.value?.tags.map((tag) => ({ value: tag, label: tag })) ?? []);
+
+const resetTags = () => {
+  tagQuery.value.pageNumber = 1;
+  tagQuery.value.name = '';
+};
+
+const handleTagsBlur = () => {
+  if (tagQuery.value.name) resetTags();
+};
+
+const handleTagsSearch = (value: string) => {
+  tagQuery.value.pageNumber = 1;
+  tagQuery.value.name = value;
+};
+
+const handleTagsScroll = (e: Event) => {
+  const { scrollTop, offsetHeight, scrollHeight } = e.currentTarget as HTMLElement;
+  const shouldLoadMore = scrollTop + offsetHeight >= scrollHeight - 250;
+  const canLoadMore = !tagsLoading.value && tagQuery.value.pageNumber < (tagsResponse.value?.pageCount ?? 0);
+  if (shouldLoadMore && canLoadMore) {
+    tagQuery.value.pageNumber++;
+  }
+};
+
+const handleTagsResponse = (response: TagSearchResponseDTO | null) => {
+  const newTagOptions = response?.tags.map((tag) => ({ value: tag, label: tag })) ?? [];
+  tagOptions.value = tagQuery.value.pageNumber === 1 ? newTagOptions : [...tagOptions.value, ...newTagOptions];
+};
+
+const handleTransactionQuery = (query: LocationQueryRaw) => {
+  const serializedTagNames = searchValues.value.tagNames.join(',');
+  if (serializedTagNames) {
+    query.tagNames = serializedTagNames;
+  }
   router.push({ query });
 };
 
-const handleMounted = () => {
-  pageCount.value = transactionsResponse.value?.pageCount || 1;
-  handleQuery(query.value);
-};
-
-const handleResponse = (response: TransactionSearchResponseDTO | null) => {
-  if (!response || response.pageCount === 0) {
-    pageCount.value = 1;
-  } else {
-    pageCount.value = response.pageCount;
-  }
-
-  if (query.value.pageNumber! > pageCount.value) {
-    query.value = { ...query.value, pageNumber: pageCount.value };
-    pagination.page = pageCount.value;
+const handleTransactionsResponse = (response: TransactionSearchResponseDTO | null) => {
+  transactionPageCount.value = response?.pageCount || 1;
+  if (transactionQuery.value.pageNumber > transactionPageCount.value) {
+    transactionQuery.value.pageNumber = pagination.page = transactionPageCount.value;
   }
 };
 
-const handleSearch = () => {
-  query.value = { ...query.value, ...searchValues.value, pageNumber: 1 };
+const handleTransactionsSearch = () => {
+  transactionQuery.value = { ...transactionQuery.value, ...searchValues.value, pageNumber: 1 };
   pagination.page = 1;
 };
 
-const handlePageChange = (pageNumber: number) => {
-  query.value = { ...query.value, pageNumber };
-  pagination.page = pageNumber;
+const handleTransactionPageChange = (pageNumber: number) => {
+  transactionQuery.value.pageNumber = pagination.page = pageNumber;
 };
 
-const handlePageSizeChange = (pageSize: number) => {
-  query.value = { ...query.value, pageSize };
-  pagination.pageSize = pageSize;
+const handleTransactionPageSizeChange = (pageSize: number) => {
+  transactionQuery.value.pageSize = pagination.pageSize = pageSize;
 };
 
 const pagination = reactive({
-  page: query.value.pageNumber,
-  pageSize: query.value.pageSize,
+  page: transactionQuery.value.pageNumber,
+  pageSize: transactionQuery.value.pageSize,
   showSizePicker: true,
-  pageSizes,
-  pageCount,
-  onChange: handlePageChange,
-  onUpdatePageSize: handlePageSizeChange,
+  pageSizes: transactionPageSizes,
+  pageCount: transactionPageCount,
+  onChange: handleTransactionPageChange,
+  onUpdatePageSize: handleTransactionPageSizeChange,
   simple: false,
 });
 
 useResizeObserver(table, (entries) => {
-  const w = entries[0].contentRect.width;
-  if (w <= 530) {
-    pagination.simple = true;
-  } else {
-    pagination.simple = false;
-  }
+  pagination.simple = entries[0].contentRect.width <= 530;
 });
 
-watch(transactionsResponse, handleResponse);
-watch(query, handleQuery);
+const handleMounted = () => {
+  transactionPageCount.value = transactionsResponse.value?.pageCount || 1;
+  handleTransactionQuery(transactionQuery.value);
+};
+
+watch(tagsResponse, handleTagsResponse);
+watch(transactionsResponse, handleTransactionsResponse);
+watch(transactionQuery, handleTransactionQuery, { deep: true });
 onMounted(handleMounted);
 </script>
