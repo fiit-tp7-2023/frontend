@@ -49,7 +49,7 @@ const timelineItems = [
   },
   {
     title: 'Metadata Fetching Enhancement',
-    content: ' Improved metadata fetching for the collection using RPC calls and IPFS.',
+    content: 'Improved metadata fetching for the collection using RPC calls and IPFS.',
     date: '12.11.2023',
   },
   {
@@ -75,8 +75,13 @@ const timelineItems = [
   },
   {
     title: ' Automation of Data Processing',
-    content: ' Implemented automated processes for data processing.',
+    content: 'Implemented automated processes for data processing.',
     date: '14.11.2023',
+  },
+  {
+    title: 'Tag-Based Filtering Feature Implementation',
+    content: 'Introduced a new feature enabling users to filter content based on tags.',
+    date: '26.11.2023',
   },
 ];
 const { colorMode } = useNaiveColorMode();
