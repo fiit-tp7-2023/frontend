@@ -7,7 +7,7 @@
         <n-p>NFT description will be here</n-p>
       </div>
       <div class="col-span-2">
-        <n-p class="text-4xl">{{ address }}</n-p>
+        <n-p class="text-xl">{{ address }}</n-p>
         <n-p>Token ID:</n-p>
         <n-p>Token standard:</n-p>
         <hr class="mb-6" />
