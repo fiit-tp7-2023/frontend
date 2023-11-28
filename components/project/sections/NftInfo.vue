@@ -11,14 +11,17 @@
         <n-p>Token ID:</n-p>
         <n-p>Token standard:</n-p>
         <hr class="mb-6" />
-        <n-card class="rounded-md" title="Tags">
-          <div v-if="loading" class="flex flex-wrap gap-1">
-            <n-skeleton v-for="n in 4" :key="n" height="28px" width="58px"></n-skeleton>
-          </div>
-          <div v-if="!loading" class="flex flex-wrap gap-1">
-            <n-tag v-for="tag in nftData?.tags" :key="tag.type" size="medium" round>{{ tag.type }}</n-tag>
-          </div>
-        </n-card>
+        <table>
+          <td class="whitespace-nowrap pr-3">Tags:</td>
+          <td>
+            <div v-if="loading" class="flex flex-wrap gap-1">
+              <n-skeleton v-for="n in 4" :key="n" height="28px" width="58px"></n-skeleton>
+            </div>
+            <div v-if="!loading" class="flex flex-wrap gap-1">
+              <n-tag v-for="tag in nftData?.tags" :key="tag.type" size="medium" round>{{ tag.type }}</n-tag>
+            </div>
+          </td>
+        </table>
       </div>
     </div>
   </n-card>
