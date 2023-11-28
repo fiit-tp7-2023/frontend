@@ -1,9 +1,9 @@
 <template>
   <n-tooltip trigger="hover">
     <template #trigger>
-      <n-button text class="cursor-pointer" @click="copyAddress" @contextmenu="(e) => handleContextMenu(e)">{{
-        truncatedAddress
-      }}</n-button>
+      <n-button text class="cursor-pointer" @click="handleContextMenu">
+        {{ truncatedAddress }}
+      </n-button>
     </template>
     {{ address }}
   </n-tooltip>
@@ -65,10 +65,15 @@ const options = [
     render: renderEtherscanLink,
     type: 'render',
   },
+  {
+    render: () => (props.isNFT ? renderOpenNFTPageLink() : null),
+    type: 'render',
+  },
 ];
 
 const closeDropdown = () => (showDropdown.value = false);
 const openDropdown = () => (showDropdown.value = true);
+const router = useRouter();
 
 const handleContextMenu = (e: MouseEvent) => {
   e.preventDefault();
@@ -99,5 +104,16 @@ const getEtherscanAddress = (isNFT: boolean, address: string) => {
   } else {
     return `https://etherscan.io/address/${address}`;
   }
+};
+
+const renderOpenNFTPageLink = () =>
+  h(NButton, { text: true, class: 'my-2 mx-4', onClick: openNFTPage }, () => [
+    h(Icon, { name: 'mdi:arrow-top-right-bold-outline', class: 'mr-2', size: '18px' }),
+    'Open NFT Page',
+  ]);
+
+const openNFTPage = () => {
+  closeDropdown();
+  router.push(`project/nft/${props.address}`);
 };
 </script>
