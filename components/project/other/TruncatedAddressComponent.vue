@@ -1,7 +1,7 @@
 <template>
   <n-tooltip trigger="hover">
     <template #trigger>
-      <n-button text class="cursor-pointer" @click="copyAddress" @contextmenu="(e) => handleContextMenu(e)">{{
+      <n-button text class="cursor-pointer" @click="handleContextMenu" @contextmenu="(e) => handleContextMenu(e)">{{
         truncatedAddress
       }}</n-button>
     </template>
@@ -21,6 +21,7 @@
 <script lang="ts" setup>
 import copy from 'copy-to-clipboard';
 import { NButton } from 'naive-ui';
+import { useRouter } from 'vue-router';
 import { NuxtLink, Icon } from '#components';
 import { TRUNCATE_ETH_ADRESS_REGEX, TRUNCATE_NFT_ADRESS_REGEX } from '~/constants/regex';
 
@@ -38,6 +39,7 @@ const props = defineProps({
 const message = useMessage();
 const truncatedAddress = computed(() => truncateAddress(props.address));
 const etherscanAddress = computed(() => getEtherscanAddress(props.isNFT, props.address));
+const routedAddress = computed(() => routeAddress(props.isNFT, props.address));
 const showDropdown = ref(false);
 const x = ref(0);
 const y = ref(0);
@@ -65,10 +67,15 @@ const options = [
     render: renderEtherscanLink,
     type: 'render',
   },
+  {
+    render: () => (props.isNFT ? renderOpenNFTPageLink() : null),
+    type: 'render',
+  },
 ];
 
 const closeDropdown = () => (showDropdown.value = false);
 const openDropdown = () => (showDropdown.value = true);
+const router = useRouter();
 
 const handleContextMenu = (e: MouseEvent) => {
   e.preventDefault();
@@ -83,6 +90,7 @@ const handleContextMenu = (e: MouseEvent) => {
 const copyAddress = (e: MouseEvent) => {
   copy(props.address);
   message.info('Copied to clipboard');
+
   (e.currentTarget as HTMLElement | null)?.blur();
   closeDropdown();
 };
@@ -99,5 +107,23 @@ const getEtherscanAddress = (isNFT: boolean, address: string) => {
   } else {
     return `https://etherscan.io/address/${address}`;
   }
+};
+
+const renderOpenNFTPageLink = () =>
+  h(NButton, { text: true, class: 'my-2 mx-4', onClick: openNFTPage }, () => [
+    h(Icon, { name: 'mdi:arrow-top-right-bold-outline', class: 'mr-2', size: '18px' }),
+    'Open NFT Page',
+  ]);
+
+const openNFTPage = () => {
+  closeDropdown();
+  router.push(`project/nft/${routedAddress.value}`);
+};
+
+const routeAddress = (isNFT: boolean, address: string) => {
+  if (isNFT) {
+    return `${address}`;
+  }
+  return null;
 };
 </script>
