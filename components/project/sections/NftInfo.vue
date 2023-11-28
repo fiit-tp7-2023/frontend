@@ -12,7 +12,12 @@
         <n-p>Token standard:</n-p>
         <hr class="mb-6" />
         <n-card class="rounded-md" title="Tags">
-          <n-p>Tag chips will be here</n-p>
+          <div v-if="loading" class="flex flex-wrap gap-1">
+            <n-skeleton v-for="n in 4" :key="n" height="28px" width="58px"></n-skeleton>
+          </div>
+          <div v-if="!loading" class="flex flex-wrap gap-1">
+            <n-tag v-for="tag in nftData?.tags" :key="tag.type" size="medium" round>{{ tag.type }}</n-tag>
+          </div>
         </n-card>
       </div>
     </div>
@@ -26,7 +31,9 @@
 </template>
 
 <script setup lang="ts">
-defineProps({
+import type { NFTDTO } from '~/types/dtos';
+
+const props = defineProps({
   address: {
     type: String,
     required: true,
@@ -62,4 +69,6 @@ const columns3 = [
 const data: Record<string, unknown>[] = [];
 
 const pagination = {};
+
+const { data: nftData, pending: loading } = useFetch<NFTDTO>(`/api/nft/${props.address}`);
 </script>
