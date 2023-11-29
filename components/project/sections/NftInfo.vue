@@ -11,9 +11,17 @@
         <n-p>Token ID:</n-p>
         <n-p>Token standard:</n-p>
         <hr class="mb-6" />
-        <n-card class="rounded-md" title="Tags">
-          <n-p>Tag chips will be here</n-p>
-        </n-card>
+        <table>
+          <td class="whitespace-nowrap p-0 pr-3 align-middle">Tags:</td>
+          <td class="p-0">
+            <div v-if="nftLoading || nftError" class="flex flex-wrap gap-1">
+              <n-skeleton v-for="n in 4" :key="n" height="28px" width="58px" />
+            </div>
+            <div v-else class="flex flex-wrap gap-1">
+              <n-tag v-for="tag in nftData?.tags" :key="tag.type" size="medium" round>{{ tag.type }}</n-tag>
+            </div>
+          </td>
+        </table>
       </div>
     </div>
   </n-card>
@@ -23,10 +31,14 @@
   <n-card class="rounded-md mb-3" title="Transactions">
     <n-data-table :columns="columns3" :data="data" :pagination="pagination" :bordered="false" />
   </n-card>
+  <server-error-component v-if="nftError" :error="nftError" @retry="refreshNftData()" />
 </template>
 
 <script setup lang="ts">
-defineProps({
+import ServerErrorComponent from '../other/ServerError.vue';
+import type { NFTDTO } from '~/types/dtos';
+
+const props = defineProps({
   address: {
     type: String,
     required: true,
@@ -62,4 +74,11 @@ const columns3 = [
 const data: Record<string, unknown>[] = [];
 
 const pagination = {};
+
+const {
+  data: nftData,
+  pending: nftLoading,
+  error: nftError,
+  refresh: refreshNftData,
+} = useFetch<NFTDTO>(`/api/nft/${props.address}`);
 </script>
