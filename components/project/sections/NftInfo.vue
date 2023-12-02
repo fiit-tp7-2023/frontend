@@ -29,14 +29,31 @@
     <n-data-table :columns="columns1" :data="data" :pagination="pagination" :bordered="false" />
   </n-card>
   <n-card class="rounded-md mb-3" title="Transactions">
-    <n-data-table :columns="columns3" :data="data" :pagination="pagination" :bordered="false" />
+    <n-data-table
+      v-if="!transactionsError"
+      ref="transactionsTable"
+      remote
+      :columns="transactionColumns"
+      :data="transactionsResponse?.transactions"
+      :pagination="transactionsPagination"
+    />
   </n-card>
   <server-error-component v-if="nftError" :error="nftError" @retry="refreshNftData()" />
+  <server-error-component v-if="transactionsError" :error="transactionsError" @retry="refreshTransactions()" />
 </template>
 
 <script setup lang="ts">
+import { useResizeObserver } from '@vueuse/core';
+import type { DataTableColumn } from 'naive-ui';
+import { NSkeleton } from 'naive-ui';
 import ServerErrorComponent from '../other/ServerError.vue';
-import type { NFTDTO } from '~/types/dtos';
+import TruncatedAddressComponent from '../other/TruncatedAddressComponent.vue';
+import type { NFTDTO, TransactionDTO, TransactionSearchRequestDTO, TransactionSearchResponseDTO } from '~/types/dtos';
+import { parsePaginationQueryParam } from '~/utils/pagination';
+
+const router = useRouter();
+const route = useRoute();
+const transactionsTable = ref();
 
 const props = defineProps({
   address: {
@@ -56,20 +73,49 @@ const columns1 = [
   },
 ];
 
-const columns3 = [
+const transactionColumns: DataTableColumn<TransactionDTO>[] = [
   {
-    title: 'Hash',
-    key: 'hash',
+    title: 'Transaction',
+    key: 'id',
+    minWidth: 310,
+    render: (row) => (transactionsLoading.value ? h(NSkeleton, { style: { width: '310px', height: '19px' } }) : row.id),
   },
   {
-    title: 'From',
-    key: 'from',
+    title: 'Amount',
+    key: 'amount',
+    minWidth: 90,
+    render: (row) =>
+      transactionsLoading.value ? h(NSkeleton, { style: { width: '90px', height: '19px' } }) : row.amount,
   },
   {
-    title: 'To',
-    key: 'to',
+    title: 'Sender',
+    key: 'sender.id',
+    render: (row) =>
+      transactionsLoading.value
+        ? h(NSkeleton, { style: { width: '150px', height: '19px' } })
+        : h(TruncatedAddressComponent, { address: row.sender.id, isNFT: false }),
+  },
+  {
+    title: 'Receiver',
+    key: 'receiver.id',
+    render: (row) =>
+      transactionsLoading.value
+        ? h(NSkeleton, { style: { width: '150px', height: '19px' } })
+        : h(TruncatedAddressComponent, { address: row.receiver.id, isNFT: false }),
   },
 ];
+
+const transactionPageCount = ref(1);
+const transactionPageSizes = [5, 10, 15, 20];
+
+const parsedTransactionPageNumber = parsePaginationQueryParam(route.query.transactionPageNumber as string, 1);
+const parsedTransactionPageSize = parsePaginationQueryParam(route.query.transactionPageSize as string, 10);
+
+const transactionQuery = ref<TransactionSearchRequestDTO>({
+  pageNumber: parsedTransactionPageNumber,
+  pageSize: transactionPageSizes.includes(parsedTransactionPageSize) ? parsedTransactionPageSize : 10,
+  nftId: props.address,
+});
 
 const data: Record<string, unknown>[] = [];
 
@@ -81,4 +127,56 @@ const {
   error: nftError,
   refresh: refreshNftData,
 } = useFetch<NFTDTO>(`/api/nft/${props.address}`);
+
+const {
+  data: transactionsResponse,
+  refresh: refreshTransactions,
+  pending: transactionsLoading,
+  error: transactionsError,
+} = useFetch('/api/transaction', {
+  query: transactionQuery,
+});
+
+const handleTransactionQuery = (query: TransactionSearchRequestDTO) => {
+  router.push({ query: { transactionPageNumber: query.pageNumber, transactionPageSize: query.pageSize } });
+};
+
+const handleTransactionsResponse = (response: TransactionSearchResponseDTO | null) => {
+  transactionPageCount.value = response?.pageCount || 1;
+  if (transactionQuery.value.pageNumber > transactionPageCount.value) {
+    transactionQuery.value.pageNumber = transactionsPagination.page = transactionPageCount.value;
+  }
+};
+
+const handleTransactionPageChange = (pageNumber: number) => {
+  transactionQuery.value.pageNumber = transactionsPagination.page = pageNumber;
+};
+
+const handleTransactionPageSizeChange = (pageSize: number) => {
+  transactionQuery.value.pageSize = transactionsPagination.pageSize = pageSize;
+};
+
+const transactionsPagination = reactive({
+  page: transactionQuery.value.pageNumber,
+  pageSize: transactionQuery.value.pageSize,
+  showSizePicker: true,
+  pageSizes: transactionPageSizes,
+  pageCount: transactionPageCount,
+  onChange: handleTransactionPageChange,
+  onUpdatePageSize: handleTransactionPageSizeChange,
+  simple: false,
+});
+
+useResizeObserver(transactionsTable, (entries) => {
+  transactionsPagination.simple = entries[0].contentRect.width <= 530;
+});
+
+const handleMounted = () => {
+  transactionPageCount.value = transactionsResponse.value?.pageCount || 1;
+  handleTransactionQuery(transactionQuery.value);
+};
+
+watch(transactionsResponse, handleTransactionsResponse);
+watch(transactionQuery, handleTransactionQuery, { deep: true });
+onMounted(handleMounted);
 </script>

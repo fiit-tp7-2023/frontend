@@ -32,11 +32,8 @@
         remote
         :columns="columns"
         :data="transactionsResponse?.transactions"
-        :loading="transactionsLoading"
         :pagination="pagination"
-      >
-        <template #loading><div v-if="transactionsLoading"></div></template>
-      </n-data-table>
+      />
       <server-error-component v-else :error="transactionsError" @retry="refreshTransactions()" />
       <server-error-component v-if="!!tagsError" :error="tagsError" @retry="resetTags()" />
     </n-space>
@@ -57,6 +54,7 @@ import type {
   TransactionSearchResponseDTO,
 } from '~/types/dtos';
 import type { TransactionSearchForm } from '~/types/forms';
+import { parsePaginationQueryParam } from '~/utils/pagination';
 
 const router = useRouter();
 const route = useRoute();
@@ -104,11 +102,6 @@ const columns: DataTableColumn<TransactionDTO>[] = [
 
 const transactionPageCount = ref(1);
 const transactionPageSizes = [5, 10, 15, 20];
-
-const parsePaginationQueryParam = (param: string, defaultValue: number) => {
-  const parsedParam = parseInt(param);
-  return isNaN(parsedParam) || parsedParam < 1 ? defaultValue : parsedParam;
-};
 
 const parsedTransactionPageNumber = parsePaginationQueryParam(route.query.pageNumber as string, 1);
 const parsedTransactionPageSize = parsePaginationQueryParam(route.query.pageSize as string, 10);
