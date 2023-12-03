@@ -5,7 +5,8 @@
         <n-p class="text-xl md:hidden">{{ address }}</n-p>
         <n-p class="mt-0">NFT image will be here</n-p>
         <n-p class="text-xl">Description</n-p>
-        <n-p>{{ nftData?.description ?? 'No description' }}</n-p>
+        <n-skeleton v-if="nftLoading" height="1rem" width="100%" />
+        <n-p v-else>{{ nftDescription }}</n-p>
       </div>
       <div class="col-span-2">
         <n-p class="hidden text-xl md:block">{{ address }}</n-p>
@@ -14,7 +15,7 @@
         <hr class="mb-6" />
         <div class="flex gap-3">
           <p class="whitespace-nowrap pt-1">Tags:</p>
-          <div v-if="nftLoading || nftError" class="flex flex-wrap gap-1">
+          <div v-if="nftLoading" class="flex flex-wrap gap-1">
             <n-skeleton v-for="n in 4" :key="n" height="1.75rem" width="58px" />
           </div>
           <div v-else class="flex flex-wrap gap-1">
@@ -34,7 +35,6 @@
 </template>
 
 <script setup lang="ts">
-import { NSkeleton } from 'naive-ui';
 import ServerErrorComponent from '../other/ServerError.vue';
 import type { NFTDTO } from '~/types/dtos';
 
@@ -83,4 +83,6 @@ const {
   error: nftError,
   refresh: refreshNftData,
 } = useFetch<NFTDTO>(`/api/nft/${props.address}`);
+
+const nftDescription = computed(() => nftData.value?.description ?? 'No description');
 </script>
