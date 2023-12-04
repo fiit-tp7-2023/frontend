@@ -1,7 +1,10 @@
 <template>
   <n-affix :trigger-top="0" class="w-full backdrop-blur-md bg-[rgba(0,0,0,0.1)] dark:bg-[rgba(255,255,255,0.1)]">
     <div class="z-50 p-5 flex justify-between w-full">
-      <h1 class="text-3xl font-bold">ChainMates</h1>
+      <span class="flex justify-between items-center">
+        <nuxt-img width="45" height="45" src="/images/logo-pink.svg" />
+        <h1 class="text-3xl font-bold ml-2">ChainMates</h1>
+      </span>
       <div class="items-center flex space-x-7">
         <span class="hidden md:flex justify-between gap-6">
           <n-button v-for="(link, text) in pages" :key="text" text size="large" @click="scrollTo(link)">{{
