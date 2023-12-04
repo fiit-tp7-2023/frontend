@@ -34,7 +34,7 @@
         strong
         round
         type="primary"
-        class="w-1/2 md:w-1/2 h-20 text-xl rounded-lg"
+        class="w-full md:w-1/2 h-20 text-xl rounded-lg"
         @click="$router.push('/project/login')"
       >
         Project Section
