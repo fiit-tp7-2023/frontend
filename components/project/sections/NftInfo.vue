@@ -34,7 +34,7 @@
       ref="transactionsTable"
       remote
       :columns="transactionColumns"
-      :data="transactionsResponse?.transactions"
+      :data="transactionsData?.transactions"
       :pagination="transactionsPagination"
     />
   </n-card>
@@ -43,16 +43,12 @@
 </template>
 
 <script setup lang="ts">
-import { useResizeObserver } from '@vueuse/core';
 import type { DataTableColumn } from 'naive-ui';
 import { NSkeleton } from 'naive-ui';
 import ServerErrorComponent from '../other/ServerError.vue';
 import TruncatedAddressComponent from '../other/TruncatedAddressComponent.vue';
 import type { NFTDTO, TransactionDTO, TransactionSearchRequestDTO, TransactionSearchResponseDTO } from '~/types/dtos';
-import { parsePaginationQueryParam } from '~/utils/pagination';
 
-const router = useRouter();
-const route = useRoute();
 const transactionsTable = ref();
 
 const props = defineProps({
@@ -107,17 +103,17 @@ const transactionColumns: DataTableColumn<TransactionDTO>[] = [
   },
 ];
 
-const transactionPageCount = ref(1);
-const transactionPageSizes = [5, 10, 15, 20];
+const {
+  query: transactionsPaginationQuery,
+  pagination: transactionsPagination,
+  updatePageCount,
+  pushQueryToUrl,
+} = usePagination<TransactionSearchResponseDTO>(transactionsTable);
 
-const parsedTransactionPageNumber = parsePaginationQueryParam(route.query.transactionPageNumber as string, 1);
-const parsedTransactionPageSize = parsePaginationQueryParam(route.query.transactionPageSize as string, 10);
-
-const transactionQuery = ref<TransactionSearchRequestDTO>({
-  pageNumber: parsedTransactionPageNumber,
-  pageSize: transactionPageSizes.includes(parsedTransactionPageSize) ? parsedTransactionPageSize : 10,
+const transactionsQuery = computed<TransactionSearchRequestDTO>(() => ({
   nftId: props.address,
-});
+  ...transactionsPaginationQuery,
+}));
 
 const {
   data: nftData,
@@ -129,54 +125,18 @@ const {
 const nftDescription = computed(() => nftData.value?.description ?? 'No description');
 
 const {
-  data: transactionsResponse,
+  data: transactionsData,
   refresh: refreshTransactions,
   pending: transactionsLoading,
   error: transactionsError,
 } = useFetch('/api/transaction', {
-  query: transactionQuery,
+  query: transactionsQuery,
 });
 
-const handleTransactionQuery = (query: TransactionSearchRequestDTO) => {
-  router.push({ query: { transactionPageNumber: query.pageNumber, transactionPageSize: query.pageSize } });
-};
-
-const handleTransactionsResponse = (response: TransactionSearchResponseDTO | null) => {
-  transactionPageCount.value = response?.pageCount || 1;
-  if (transactionQuery.value.pageNumber > transactionPageCount.value) {
-    transactionQuery.value.pageNumber = transactionsPagination.page = transactionPageCount.value;
-  }
-};
-
-const handleTransactionPageChange = (pageNumber: number) => {
-  transactionQuery.value.pageNumber = transactionsPagination.page = pageNumber;
-};
-
-const handleTransactionPageSizeChange = (pageSize: number) => {
-  transactionQuery.value.pageSize = transactionsPagination.pageSize = pageSize;
-};
-
-const transactionsPagination = reactive({
-  page: transactionQuery.value.pageNumber,
-  pageSize: transactionQuery.value.pageSize,
-  showSizePicker: true,
-  pageSizes: transactionPageSizes,
-  pageCount: transactionPageCount,
-  onChange: handleTransactionPageChange,
-  onUpdatePageSize: handleTransactionPageSizeChange,
-  simple: false,
+onMounted(() => {
+  updatePageCount(transactionsData.value, false);
+  pushQueryToUrl(transactionsPaginationQuery);
 });
-
-useResizeObserver(transactionsTable, (entries) => {
-  transactionsPagination.simple = entries[0].contentRect.width <= 530;
-});
-
-const handleMounted = () => {
-  transactionPageCount.value = transactionsResponse.value?.pageCount || 1;
-  handleTransactionQuery(transactionQuery.value);
-};
-
-watch(transactionsResponse, handleTransactionsResponse);
-watch(transactionQuery, handleTransactionQuery, { deep: true });
-onMounted(handleMounted);
+watch(transactionsData, (data) => updatePageCount(data));
+watch(transactionsPaginationQuery, pushQueryToUrl, { deep: true });
 </script>
