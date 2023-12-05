@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import type { SelectOption, DataTableColumn } from 'naive-ui';
-import { NSkeleton } from 'naive-ui';
+import { NSkeleton, NDataTable } from 'naive-ui';
 import TruncatedAddressComponent from '../other/TruncatedAddressComponent.vue';
 import ServerErrorComponent from '../other/ServerError.vue';
 import type {
@@ -56,7 +56,7 @@ import type {
 import type { TransactionSearchForm } from '~/types/forms';
 
 const route = useRoute();
-const table = ref();
+const table = ref<InstanceType<typeof NDataTable> | undefined>();
 
 const columns: DataTableColumn<TransactionDTO>[] = [
   {

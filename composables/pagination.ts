@@ -1,8 +1,11 @@
 import { useResizeObserver } from '@vueuse/core';
+import { NDataTable } from 'naive-ui';
 import type { PaginationRequestDTO, PaginationResponseDTO } from '~/types/dtos';
 import { parsePaginationQueryParam } from '~/utils/pagination';
 
-export const usePagination = <T extends PaginationResponseDTO>(tableRef: Ref<any>) => {
+export const usePagination = <T extends PaginationResponseDTO>(
+  tableRef: Ref<InstanceType<typeof NDataTable> | undefined>,
+) => {
   const router = useRouter();
   const route = useRoute();
 
@@ -55,9 +58,11 @@ export const usePagination = <T extends PaginationResponseDTO>(tableRef: Ref<any
     simple: false,
   });
 
-  useResizeObserver(tableRef, (entries) => {
-    pagination.simple = entries[0].contentRect.width <= 530;
-  });
+  if (tableRef.value) {
+    useResizeObserver(tableRef, (entries) => {
+      pagination.simple = entries[0].contentRect.width <= 530;
+    });
+  }
 
   return {
     pushQueryToUrl,

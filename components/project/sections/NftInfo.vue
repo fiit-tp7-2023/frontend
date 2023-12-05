@@ -44,12 +44,12 @@
 
 <script setup lang="ts">
 import type { DataTableColumn } from 'naive-ui';
-import { NSkeleton } from 'naive-ui';
+import { NSkeleton, NDataTable } from 'naive-ui';
 import ServerErrorComponent from '../other/ServerError.vue';
 import TruncatedAddressComponent from '../other/TruncatedAddressComponent.vue';
 import type { NFTDTO, TransactionDTO, TransactionSearchRequestDTO, TransactionSearchResponseDTO } from '~/types/dtos';
 
-const transactionsTable = ref();
+const transactionsTable = ref<InstanceType<typeof NDataTable> | undefined>();
 
 const props = defineProps({
   address: {
