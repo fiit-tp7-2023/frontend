@@ -1,0 +1,8 @@
+version: '1.0'
+services:
+  presentation-web-frontend:
+    build: .
+    container_name: presentation-web-frontend
+    restart: unless-stopped
+    ports:
+      - 3000:3000
