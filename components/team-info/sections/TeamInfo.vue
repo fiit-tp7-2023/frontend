@@ -30,8 +30,14 @@
       </div>
     </div>
     <div class="flex justify-center items-center mt-3">
-      <n-button strong ghost type="primary" class="w-full md:w-1/2 h-20" @click="$router.push('/project/login')">
-        Project section
+      <n-button
+        strong
+        round
+        type="primary"
+        class="w-full md:w-1/2 h-20 text-xl rounded-lg"
+        @click="$router.push('/project/login')"
+      >
+        Project Section
       </n-button>
     </div>
   </div>
