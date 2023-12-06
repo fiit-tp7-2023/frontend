@@ -69,6 +69,6 @@ export const usePagination = <T extends PaginationResponseDTO>(
     resetPageNumber,
     updatePageCount,
     pagination,
-    query: query.value,
+    query,
   };
 };

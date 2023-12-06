@@ -113,7 +113,7 @@ const tagQuery = ref<TagSearchRequestDTO>({
 
 const transactionsQuery = ref<TransactionSearchRequestDTO>({
   ...route.query,
-  ...transactionsPaginationQuery,
+  ...transactionsPaginationQuery.value,
 });
 
 const searchValues = ref<TransactionSearchForm>({

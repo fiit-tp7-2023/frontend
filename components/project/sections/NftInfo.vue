@@ -112,7 +112,7 @@ const {
 
 const transactionsQuery = computed<TransactionSearchRequestDTO>(() => ({
   nftId: props.address,
-  ...transactionsPaginationQuery,
+  ...transactionsPaginationQuery.value,
 }));
 
 const {
@@ -135,7 +135,7 @@ const {
 
 onMounted(() => {
   updatePageCount(transactionsData.value, false);
-  pushQueryToUrl(transactionsPaginationQuery);
+  pushQueryToUrl(transactionsPaginationQuery.value);
 });
 watch(transactionsData, (data) => updatePageCount(data));
 watch(transactionsPaginationQuery, pushQueryToUrl, { deep: true });
