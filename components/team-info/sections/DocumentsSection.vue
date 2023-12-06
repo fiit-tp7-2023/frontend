@@ -72,7 +72,7 @@ const menuOptions: MenuOption[] = [
     label: 'Minute books',
     key: 'minute-books',
     children: documents.value
-      ?.filter((doc) => doc.title?.startsWith('minute-book'))
+      ?.filter((doc) => doc.title?.startsWith('m'))
       .map((doc) => ({
         label: () => renderMenuItem(doc),
         key: doc.title,
@@ -84,7 +84,7 @@ const menuOptions: MenuOption[] = [
     label: 'Retrospectives',
     key: 'retrospectives',
     children: documents.value
-      ?.filter((doc) => doc.title?.startsWith('retrospective'))
+      ?.filter((doc) => doc.title?.startsWith('r'))
       .map((doc) => ({
         label: () => renderMenuItem(doc),
         key: doc.title,
