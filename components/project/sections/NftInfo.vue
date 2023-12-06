@@ -29,14 +29,27 @@
     <n-data-table :loading="nftLoading" :columns="propertiesColumns" :data="nftData?.attributes" :bordered="false" />
   </n-card>
   <n-card class="rounded-md mb-3" title="Transactions">
-    <n-data-table :columns="columns3" :data="data" :pagination="pagination" :bordered="false" />
+    <n-data-table
+      v-if="!transactionsError"
+      ref="transactionsTable"
+      remote
+      :columns="transactionColumns"
+      :data="transactionsData?.transactions"
+      :pagination="transactionsPagination"
+    />
   </n-card>
   <server-error-component v-if="nftError" :error="nftError" @retry="refreshNftData()" />
+  <server-error-component v-if="transactionsError" :error="transactionsError" @retry="refreshTransactions()" />
 </template>
 
 <script setup lang="ts">
+import type { DataTableColumn } from 'naive-ui';
+import { NSkeleton, NDataTable } from 'naive-ui';
 import ServerErrorComponent from '../other/ServerError.vue';
-import type { NFTDTO } from '~/types/dtos';
+import TruncatedAddressComponent from '../other/TruncatedAddressComponent.vue';
+import type { NFTDTO, TransactionDTO, TransactionSearchRequestDTO, TransactionSearchResponseDTO } from '~/types/dtos';
+
+const transactionsTable = ref<InstanceType<typeof NDataTable> | undefined>();
 
 const props = defineProps({
   address: {
@@ -58,24 +71,49 @@ const propertiesColumns = [
   },
 ];
 
-const columns3 = [
+const transactionColumns: DataTableColumn<TransactionDTO>[] = [
   {
-    title: 'Hash',
-    key: 'hash',
+    title: 'Transaction',
+    key: 'id',
+    minWidth: 310,
+    render: (row) => (transactionsLoading.value ? h(NSkeleton, { style: { width: '310px', height: '19px' } }) : row.id),
   },
   {
-    title: 'From',
-    key: 'from',
+    title: 'Amount',
+    key: 'amount',
+    minWidth: 90,
+    render: (row) =>
+      transactionsLoading.value ? h(NSkeleton, { style: { width: '90px', height: '19px' } }) : row.amount,
   },
   {
-    title: 'To',
-    key: 'to',
+    title: 'Sender',
+    key: 'sender.id',
+    render: (row) =>
+      transactionsLoading.value
+        ? h(NSkeleton, { style: { width: '150px', height: '19px' } })
+        : h(TruncatedAddressComponent, { address: row.sender.id, isNFT: false }),
+  },
+  {
+    title: 'Receiver',
+    key: 'receiver.id',
+    render: (row) =>
+      transactionsLoading.value
+        ? h(NSkeleton, { style: { width: '150px', height: '19px' } })
+        : h(TruncatedAddressComponent, { address: row.receiver.id, isNFT: false }),
   },
 ];
 
-const data: Record<string, unknown>[] = [];
+const {
+  query: transactionsPaginationQuery,
+  pagination: transactionsPagination,
+  updatePageCount,
+  pushQueryToUrl,
+} = usePagination<TransactionSearchResponseDTO>(transactionsTable);
 
-const pagination = {};
+const transactionsQuery = computed<TransactionSearchRequestDTO>(() => ({
+  nftId: props.address,
+  ...transactionsPaginationQuery.value,
+}));
 
 const {
   data: nftData,
@@ -85,4 +123,20 @@ const {
 } = useFetch<NFTDTO>(`/api/nft/${props.address}`);
 
 const nftDescription = computed(() => nftData.value?.description ?? 'No description');
+
+const {
+  data: transactionsData,
+  refresh: refreshTransactions,
+  pending: transactionsLoading,
+  error: transactionsError,
+} = useFetch('/api/transaction', {
+  query: transactionsQuery,
+});
+
+onMounted(() => {
+  updatePageCount(transactionsData.value, false);
+  pushQueryToUrl(transactionsPaginationQuery.value);
+});
+watch(transactionsData, (data) => updatePageCount(data));
+watch(transactionsPaginationQuery, pushQueryToUrl, { deep: true });
 </script>
