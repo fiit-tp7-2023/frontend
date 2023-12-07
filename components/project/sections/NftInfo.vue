@@ -3,9 +3,7 @@
     <div class="grid md:grid-cols-3 gap-3 align-top">
       <div class="col-span-1">
         <n-p class="text-xl md:hidden">{{ address }}</n-p>
-        <picture>
-          <source v-for="source in sources" :key="source" :srcset="source" />
-        </picture>
+        <img :src="nftData?.image" />
         <n-p class="text-xl">Description</n-p>
         <n-skeleton v-if="nftLoading" height="1rem" width="100%" />
         <n-p v-else>{{ nftDescription }}</n-p>
@@ -142,7 +140,7 @@ onMounted(async () => {
   pushQueryToUrl(transactionsPaginationQuery.value);
   if (nftData.value?.uri) {
     console.log(nftData.value?.uri);
-    const data = await $obtain<{ image: string }>(nftData.value?.uri);
+    const data = await $obtain<{ image: string }>(nftData.value.uri);
     sources.value = [data.image];
   }
 });
