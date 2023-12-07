@@ -1,4 +1,9 @@
 version: '1.0'
+
+networks:
+  team07:
+    external: true
+
 services:
   presentation-web-frontend:
     build: .
@@ -7,3 +12,5 @@ services:
     restart: unless-stopped
     ports:
       - 3000:3000
+    networks:
+      - team07

@@ -1,6 +1,6 @@
 export interface TransactionSearchForm {
-  senderId?: string;
-  receiverId?: string;
-  nftId?: string;
+  senderAddress?: string;
+  receiverAddress?: string;
+  nftAddress?: string;
   tagNames: string[];
 }

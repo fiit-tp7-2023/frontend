@@ -6,9 +6,9 @@
       </n-button>
     </template>
     <n-space vertical>
-      <n-input v-model:value="searchValues.senderId" type="text" placeholder="Sender ID" />
-      <n-input v-model:value="searchValues.receiverId" type="text" placeholder="Receiver ID" />
-      <n-input v-model:value="searchValues.nftId" type="text" placeholder="NFT ID" />
+      <n-input v-model:value="searchValues.senderAddress" type="text" placeholder="Sender ID" />
+      <n-input v-model:value="searchValues.receiverAddress" type="text" placeholder="Receiver ID" />
+      <n-input v-model:value="searchValues.nftAddress" type="text" placeholder="NFT ID" />
       <n-select
         v-model:value="searchValues.tagNames"
         filterable
@@ -31,12 +31,9 @@
         ref="table"
         remote
         :columns="columns"
-        :data="transactionsResponse?.transactions"
-        :loading="transactionsLoading"
+        :data="transactionsData?.transactions"
         :pagination="pagination"
-      >
-        <template #loading><div v-if="transactionsLoading"></div></template>
-      </n-data-table>
+      />
       <server-error-component v-else :error="transactionsError" @retry="refreshTransactions()" />
       <server-error-component v-if="!!tagsError" :error="tagsError" @retry="resetTags()" />
     </n-space>
@@ -44,12 +41,12 @@
 </template>
 
 <script setup lang="ts">
-import { useResizeObserver } from '@vueuse/core';
 import type { SelectOption, DataTableColumn } from 'naive-ui';
-import { NSkeleton } from 'naive-ui';
+import { NSkeleton, NDataTable } from 'naive-ui';
 import TruncatedAddressComponent from '../other/TruncatedAddressComponent.vue';
 import ServerErrorComponent from '../other/ServerError.vue';
 import type {
+  PaginationRequestDTO,
   TagSearchRequestDTO,
   TagSearchResponseDTO,
   TransactionDTO,
@@ -58,9 +55,8 @@ import type {
 } from '~/types/dtos';
 import type { TransactionSearchForm } from '~/types/forms';
 
-const router = useRouter();
 const route = useRoute();
-const table = ref();
+const table = ref<InstanceType<typeof NDataTable> | undefined>();
 
 const columns: DataTableColumn<TransactionDTO>[] = [
   {
@@ -82,7 +78,7 @@ const columns: DataTableColumn<TransactionDTO>[] = [
     render: (row) =>
       transactionsLoading.value
         ? h(NSkeleton, { style: { width: '150px', height: '19px' } })
-        : h(TruncatedAddressComponent, { address: row.sender.id, isNFT: false }),
+        : h(TruncatedAddressComponent, { address: row.sender.address, isNFT: false }),
   },
   {
     title: 'Receiver',
@@ -90,7 +86,7 @@ const columns: DataTableColumn<TransactionDTO>[] = [
     render: (row) =>
       transactionsLoading.value
         ? h(NSkeleton, { style: { width: '150px', height: '19px' } })
-        : h(TruncatedAddressComponent, { address: row.receiver.id, isNFT: false }),
+        : h(TruncatedAddressComponent, { address: row.receiver.address, isNFT: false }),
   },
   {
     title: 'NFT',
@@ -98,48 +94,42 @@ const columns: DataTableColumn<TransactionDTO>[] = [
     render: (row) =>
       transactionsLoading.value
         ? h(NSkeleton, { style: { width: '150px', height: '19px' } })
-        : h(TruncatedAddressComponent, { address: row.nft.id, isNFT: true }),
+        : h(TruncatedAddressComponent, { address: row.nft.address, isNFT: true }),
   },
 ];
 
-const transactionPageCount = ref(1);
-const transactionPageSizes = [5, 10, 15, 20];
-
-const parsePaginationQueryParam = (param: string, defaultValue: number) => {
-  const parsedParam = parseInt(param);
-  return isNaN(parsedParam) || parsedParam < 1 ? defaultValue : parsedParam;
-};
-
-const parsedTransactionPageNumber = parsePaginationQueryParam(route.query.pageNumber as string, 1);
-const parsedTransactionPageSize = parsePaginationQueryParam(route.query.pageSize as string, 10);
-const parsedTagNames = route.query.tagNames ? (route.query.tagNames as string).split(',') : [];
+const {
+  query: transactionsPaginationQuery,
+  pagination,
+  updatePageCount,
+  resetPageNumber,
+  pushQueryToUrl,
+} = usePagination<TransactionSearchResponseDTO>(table);
 
 const tagQuery = ref<TagSearchRequestDTO>({
   pageNumber: 1,
   pageSize: 50,
 });
 
-const transactionQuery = ref<TransactionSearchRequestDTO>({
+const transactionsQuery = ref<TransactionSearchRequestDTO>({
   ...route.query,
-  pageNumber: parsedTransactionPageNumber,
-  pageSize: transactionPageSizes.includes(parsedTransactionPageSize) ? parsedTransactionPageSize : 10,
-  tagNames: parsedTagNames,
+  ...transactionsPaginationQuery.value,
 });
 
 const searchValues = ref<TransactionSearchForm>({
-  senderId: transactionQuery.value.senderId,
-  receiverId: transactionQuery.value.receiverId,
-  nftId: transactionQuery.value.nftId,
-  tagNames: parsedTagNames,
+  senderAddress: transactionsQuery.value.senderAddress,
+  receiverAddress: transactionsQuery.value.receiverAddress,
+  nftAddress: transactionsQuery.value.nftAddress,
+  tagNames: transactionsQuery.value.tagNames ?? [],
 });
 
 const {
-  data: transactionsResponse,
+  data: transactionsData,
   refresh: refreshTransactions,
   pending: transactionsLoading,
   error: transactionsError,
-} = useFetch('/api/transaction', {
-  query: transactionQuery,
+} = await useFetch('/api/transaction', {
+  query: transactionsQuery,
 });
 
 const { data: tagsResponse, pending: tagsLoading, error: tagsError } = useFetch('/api/tag', { query: tagQuery });
@@ -174,53 +164,22 @@ const handleTagsResponse = (response: TagSearchResponseDTO | null) => {
   tagOptions.value = tagQuery.value.pageNumber === 1 ? newTagOptions : [...tagOptions.value, ...newTagOptions];
 };
 
-const handleTransactionQuery = (query: TransactionSearchRequestDTO) => {
-  const serializedTagNames = searchValues.value.tagNames.join(',');
-  router.push({ query: { ...query, ...(serializedTagNames ? { tagNames: serializedTagNames } : {}) } });
-};
-
-const handleTransactionsResponse = (response: TransactionSearchResponseDTO | null) => {
-  transactionPageCount.value = response?.pageCount || 1;
-  if (transactionQuery.value.pageNumber > transactionPageCount.value) {
-    transactionQuery.value.pageNumber = pagination.page = transactionPageCount.value;
-  }
+const handleTransactionsPaginationQuery = (query: PaginationRequestDTO) => {
+  transactionsQuery.value.pageNumber = query.pageNumber;
+  transactionsQuery.value.pageSize = query.pageSize;
 };
 
 const handleTransactionsSearch = () => {
-  transactionQuery.value = { ...transactionQuery.value, ...searchValues.value, pageNumber: 1 };
-  pagination.page = 1;
+  transactionsQuery.value = { ...transactionsQuery.value, ...searchValues.value, pageNumber: 1 };
+  resetPageNumber();
 };
 
-const handleTransactionPageChange = (pageNumber: number) => {
-  transactionQuery.value.pageNumber = pagination.page = pageNumber;
-};
-
-const handleTransactionPageSizeChange = (pageSize: number) => {
-  transactionQuery.value.pageSize = pagination.pageSize = pageSize;
-};
-
-const pagination = reactive({
-  page: transactionQuery.value.pageNumber,
-  pageSize: transactionQuery.value.pageSize,
-  showSizePicker: true,
-  pageSizes: transactionPageSizes,
-  pageCount: transactionPageCount,
-  onChange: handleTransactionPageChange,
-  onUpdatePageSize: handleTransactionPageSizeChange,
-  simple: false,
+onMounted(() => {
+  updatePageCount(transactionsData.value, false);
+  pushQueryToUrl(transactionsQuery.value);
 });
-
-useResizeObserver(table, (entries) => {
-  pagination.simple = entries[0].contentRect.width <= 530;
-});
-
-const handleMounted = () => {
-  transactionPageCount.value = transactionsResponse.value?.pageCount || 1;
-  handleTransactionQuery(transactionQuery.value);
-};
-
 watch(tagsResponse, handleTagsResponse);
-watch(transactionsResponse, handleTransactionsResponse);
-watch(transactionQuery, handleTransactionQuery, { deep: true });
-onMounted(handleMounted);
+watch(transactionsData, (data) => updatePageCount(data));
+watch(transactionsPaginationQuery, handleTransactionsPaginationQuery, { deep: true });
+watch(transactionsQuery, pushQueryToUrl, { deep: true });
 </script>
