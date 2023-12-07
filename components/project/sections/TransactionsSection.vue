@@ -6,9 +6,9 @@
       </n-button>
     </template>
     <n-space vertical>
-      <n-input v-model:value="searchValues.senderId" type="text" placeholder="Sender ID" />
-      <n-input v-model:value="searchValues.receiverId" type="text" placeholder="Receiver ID" />
-      <n-input v-model:value="searchValues.nftId" type="text" placeholder="NFT ID" />
+      <n-input v-model:value="searchValues.senderAddress" type="text" placeholder="Sender ID" />
+      <n-input v-model:value="searchValues.receiverAddress" type="text" placeholder="Receiver ID" />
+      <n-input v-model:value="searchValues.nftAddress" type="text" placeholder="NFT ID" />
       <n-select
         v-model:value="searchValues.tagNames"
         filterable
@@ -78,7 +78,7 @@ const columns: DataTableColumn<TransactionDTO>[] = [
     render: (row) =>
       transactionsLoading.value
         ? h(NSkeleton, { style: { width: '150px', height: '19px' } })
-        : h(TruncatedAddressComponent, { address: row.sender.id, isNFT: false }),
+        : h(TruncatedAddressComponent, { address: row.sender.address, isNFT: false }),
   },
   {
     title: 'Receiver',
@@ -86,7 +86,7 @@ const columns: DataTableColumn<TransactionDTO>[] = [
     render: (row) =>
       transactionsLoading.value
         ? h(NSkeleton, { style: { width: '150px', height: '19px' } })
-        : h(TruncatedAddressComponent, { address: row.receiver.id, isNFT: false }),
+        : h(TruncatedAddressComponent, { address: row.receiver.address, isNFT: false }),
   },
   {
     title: 'NFT',
@@ -94,7 +94,7 @@ const columns: DataTableColumn<TransactionDTO>[] = [
     render: (row) =>
       transactionsLoading.value
         ? h(NSkeleton, { style: { width: '150px', height: '19px' } })
-        : h(TruncatedAddressComponent, { address: row.nft.id, isNFT: true }),
+        : h(TruncatedAddressComponent, { address: row.nft.address, isNFT: true }),
   },
 ];
 
@@ -117,9 +117,9 @@ const transactionsQuery = ref<TransactionSearchRequestDTO>({
 });
 
 const searchValues = ref<TransactionSearchForm>({
-  senderId: transactionsQuery.value.senderId,
-  receiverId: transactionsQuery.value.receiverId,
-  nftId: transactionsQuery.value.nftId,
+  senderAddress: transactionsQuery.value.senderAddress,
+  receiverAddress: transactionsQuery.value.receiverAddress,
+  nftAddress: transactionsQuery.value.nftAddress,
   tagNames: transactionsQuery.value.tagNames ?? [],
 });
 
