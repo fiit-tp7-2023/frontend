@@ -10,7 +10,7 @@
       </div>
       <div class="col-span-2">
         <n-p class="hidden text-xl md:block">{{ address }}</n-p>
-        <n-p>Token ID:</n-p>
+        <n-p>Token ID: {{ nftData?.tokenId }}</n-p>
         <n-p>Token standard:</n-p>
         <hr class="mb-6" />
         <div class="flex gap-3">
@@ -111,7 +111,7 @@ const {
 } = usePagination<TransactionSearchResponseDTO>(transactionsTable);
 
 const transactionsQuery = computed<TransactionSearchRequestDTO>(() => ({
-  nftId: props.address,
+  nftAddress: props.address,
   ...transactionsPaginationQuery.value,
 }));
 
