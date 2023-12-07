@@ -1,3 +1,4 @@
 export interface AddressNode {
-  id: string;
+  address: string;
+  createAtBlock: number;
 }

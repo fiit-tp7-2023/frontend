@@ -91,7 +91,7 @@ const transactionColumns: DataTableColumn<TransactionDTO>[] = [
     render: (row) =>
       transactionsLoading.value
         ? h(NSkeleton, { style: { width: '150px', height: '19px' } })
-        : h(TruncatedAddressComponent, { address: row.sender.id, isNFT: false }),
+        : h(TruncatedAddressComponent, { address: row.sender.address, isNFT: false }),
   },
   {
     title: 'Receiver',
@@ -99,7 +99,7 @@ const transactionColumns: DataTableColumn<TransactionDTO>[] = [
     render: (row) =>
       transactionsLoading.value
         ? h(NSkeleton, { style: { width: '150px', height: '19px' } })
-        : h(TruncatedAddressComponent, { address: row.receiver.id, isNFT: false }),
+        : h(TruncatedAddressComponent, { address: row.receiver.address, isNFT: false }),
   },
 ];
 
