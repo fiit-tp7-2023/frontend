@@ -3,7 +3,9 @@
     <div class="grid md:grid-cols-3 gap-3 align-top">
       <div class="col-span-1">
         <n-p class="text-xl md:hidden">{{ address }}</n-p>
-        <n-p class="mt-0">NFT image will be here</n-p>
+        <picture>
+          <source v-for="source in sources" :key="source" :srcset="source" />
+        </picture>
         <n-p class="text-xl">Description</n-p>
         <n-skeleton v-if="nftLoading" height="1rem" width="100%" />
         <n-p v-else>{{ nftDescription }}</n-p>
@@ -45,10 +47,10 @@
 <script setup lang="ts">
 import type { DataTableColumn } from 'naive-ui';
 import { NSkeleton, NDataTable } from 'naive-ui';
+import { $obtain } from '@kodadot1/minipfs';
 import ServerErrorComponent from '../other/ServerError.vue';
 import TruncatedAddressComponent from '../other/TruncatedAddressComponent.vue';
 import type { NFTDTO, TransactionDTO, TransactionSearchRequestDTO, TransactionSearchResponseDTO } from '~/types/dtos';
-
 const transactionsTable = ref<InstanceType<typeof NDataTable> | undefined>();
 
 const props = defineProps({
@@ -133,9 +135,16 @@ const {
   query: transactionsQuery,
 });
 
-onMounted(() => {
+const sources = ref<string[]>();
+
+onMounted(async () => {
   updatePageCount(transactionsData.value, false);
   pushQueryToUrl(transactionsPaginationQuery.value);
+  if (nftData.value?.uri) {
+    console.log(nftData.value?.uri);
+    const data = await $obtain<{ image: string }>(nftData.value?.uri);
+    sources.value = [data.image];
+  }
 });
 watch(transactionsData, (data) => updatePageCount(data));
 watch(transactionsPaginationQuery, pushQueryToUrl, { deep: true });
