@@ -3,7 +3,7 @@
     <div class="z-50 p-5 flex justify-between w-full">
       <span class="flex justify-between items-center">
         <nuxt-img width="45" height="45" src="/images/logo-pink.svg" />
-        <h1 class="text-3xl font-bold ml-2">ChainMates</h1>
+        <n-button text class="text-3xl font-bold ml-2" @click="scrollToTop">ChainMates</n-button>
       </span>
       <div class="items-center flex space-x-7">
         <span class="hidden md:flex justify-between gap-6">
@@ -40,5 +40,9 @@ const changeTheme = () => {
 const scrollTo = (link: string) => {
   const element = document.getElementById(link);
   element?.scrollIntoView({ behavior: 'smooth' });
+};
+
+const scrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 </script>

@@ -1,20 +1,19 @@
 <template>
   <n-card class="rounded-md text-start mb-3">
     <div class="grid md:grid-cols-3 gap-3 align-top">
-      <div class="col-span-1">
-        <n-p class="text-xl md:hidden">{{ address }}</n-p>
-        <n-p class="mt-0">NFT image will be here</n-p>
-        <n-p class="text-xl">Description</n-p>
-        <n-skeleton v-if="nftLoading" height="1rem" width="100%" />
-        <n-p v-else>{{ nftDescription }}</n-p>
+      <div class="md:col-span-1">
+        <n-p class="text-xl md:hidden"><b>Address:</b> {{ address }}</n-p>
+        <n-skeleton v-if="nftLoading || !nftData?.image" height="500px" width="100%" />
+        <img v-else class="w-full" :src="nftData.image" />
       </div>
-      <div class="col-span-2">
-        <n-p class="hidden text-xl md:block">{{ address }}</n-p>
-        <n-p>Token ID: {{ nftData?.tokenId }}</n-p>
-        <n-p>Token standard:</n-p>
+      <div class="md:col-span-2">
+        <n-p class="hidden text-xl md:block"><b>Address:</b> {{ address }}</n-p>
+        <n-p><b>Token name:</b> {{ nftData?.name }}</n-p>
+        <n-p><b>Token ID:</b> {{ nftData?.tokenId }}</n-p>
+        <n-p><b>Description:</b> {{ nftDescription }}</n-p>
         <hr class="mb-6" />
         <div class="flex gap-3">
-          <p class="whitespace-nowrap pt-1">Tags:</p>
+          <p class="whitespace-nowrap font-bold pt-1">Tags:</p>
           <div v-if="nftLoading" class="flex flex-wrap gap-1">
             <n-skeleton v-for="n in 4" :key="n" height="1.75rem" width="58px" />
           </div>
@@ -45,10 +44,10 @@
 <script setup lang="ts">
 import type { DataTableColumn } from 'naive-ui';
 import { NSkeleton, NDataTable } from 'naive-ui';
+import { $obtain } from '@kodadot1/minipfs';
 import ServerErrorComponent from '../other/ServerError.vue';
 import TruncatedAddressComponent from '../other/TruncatedAddressComponent.vue';
 import type { NFTDTO, TransactionDTO, TransactionSearchRequestDTO, TransactionSearchResponseDTO } from '~/types/dtos';
-
 const transactionsTable = ref<InstanceType<typeof NDataTable> | undefined>();
 
 const props = defineProps({
@@ -133,9 +132,16 @@ const {
   query: transactionsQuery,
 });
 
-onMounted(() => {
+const sources = ref<string[]>();
+
+onMounted(async () => {
   updatePageCount(transactionsData.value, false);
   pushQueryToUrl(transactionsPaginationQuery.value);
+  if (nftData.value?.uri) {
+    console.log(nftData.value?.uri);
+    const data = await $obtain<{ image: string }>(nftData.value.uri);
+    sources.value = [data.image];
+  }
 });
 watch(transactionsData, (data) => updatePageCount(data));
 watch(transactionsPaginationQuery, pushQueryToUrl, { deep: true });

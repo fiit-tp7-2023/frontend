@@ -3,7 +3,9 @@
     <header class="flex justify-between items-center">
       <span class="flex justify-between items-center">
         <nuxt-img width="40" height="40" src="/images/logo-pink.svg" />
-        <h1 class="text-lg h-1/2 ml-2">Graph explorer</h1>
+        <n-button class="text-lg h-1/2 ml-2 font-bold" text @click="$router.replace('/project')">
+          Graph explorer
+        </n-button>
       </span>
       <span class="flex justify-evenly items-center mr-2 gap-2">
         <span v-if="status == 'authenticated'" class="hidden md:block"
