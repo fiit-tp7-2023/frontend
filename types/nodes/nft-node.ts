@@ -4,9 +4,15 @@ export interface Attribute {
 }
 
 export interface NFTNode {
-  id: string;
+  address: string;
   name?: string;
   uri?: string;
   description?: string;
   attributes: Attribute[];
+  image?: string;
+  externalUrl?: string;
+  animationUrl?: string;
+  tokenId: string;
+  createdAtBlock: number;
+  raw?: string;
 }

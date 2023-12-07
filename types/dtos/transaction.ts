@@ -8,9 +8,9 @@ export interface TransactionDTO extends TransactionNode {
 }
 
 export interface TransactionSearchRequestDTO extends PaginationRequestDTO {
-  senderId?: string;
-  receiverId?: string;
-  nftId?: string;
+  senderAddress?: string;
+  receiverAddress?: string;
+  nftAddress?: string;
   tagNames?: string[];
 }
 
