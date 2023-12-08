@@ -13,6 +13,10 @@ definePageMeta({
   },
 });
 
+useHead({
+  title: 'Project page - Login',
+});
+
 const { signIn } = useAuth();
 
 const handleSignIn = async () => {
