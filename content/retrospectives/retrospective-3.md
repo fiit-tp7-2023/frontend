@@ -64,3 +64,5 @@ Ctibor Kovalčík, Branislav Hozza, Kirstián Košťal, Christian Danížek, Sam
 ---
 
 ### TÍMOVÉ HODNOTENIE 📈
+
+![Retrospektíva](/images/retrospectives/retrospective-3.png 'Retrospektíva')

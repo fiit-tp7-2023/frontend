@@ -50,3 +50,6 @@ Ctibor Kovalčík, Branislav Hozza, Kristián Košťál, Christian Danížek, Sa
 
 - S energiou sme na tom lepšie
 - oproti poslednému šprintu sme sa zlepšili v každej kategórii 
+
+
+![Retrospektíva](/images/retrospectives/retrospective-4.png 'Retrospektíva')
