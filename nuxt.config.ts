@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   auth: {
     enableGlobalAppMiddleware: process.env.VERCEL_ENV !== 'preview',
-    origin: process.env.NODE_ENV === 'production' ? 'https://frontend-tag.vercel.app' : 'http://localhost:3000',
+    origin: process.env.AUTH_ORIGIN ?? 'http://localhost:3000',
   },
   runtimeConfig: {
     restApiUrl: process.env.REST_API_URL,
