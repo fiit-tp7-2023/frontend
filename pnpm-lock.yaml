@@ -15,8 +15,8 @@ dependencies:
     specifier: ^5.2.4
     version: 5.2.4(typescript@5.2.2)
   next-auth:
-    specifier: ~4.22.5
-    version: 4.22.5(next@13.5.6)(react-dom@18.2.0)(react@18.2.0)
+    specifier: 4.21.1
+    version: 4.21.1(next@13.5.6)(react-dom@18.2.0)(react@18.2.0)
 
 devDependencies:
   '@bg-dev/nuxt-naiveui':
@@ -48,7 +48,7 @@ devDependencies:
     version: 6.8.1(ts-node@10.9.1)(webpack@5.89.0)
   '@sidebase/nuxt-auth':
     specifier: ^0.5.0
-    version: 0.5.0(next-auth@4.22.5)
+    version: 0.5.0(next-auth@4.21.1)
   commitlint-config-gitmoji:
     specifier: ^2.3.1
     version: 2.3.1
@@ -2242,14 +2242,14 @@ packages:
       - zenObservable
     dev: false
 
-  /@sidebase/nuxt-auth@0.5.0(next-auth@4.22.5):
+  /@sidebase/nuxt-auth@0.5.0(next-auth@4.21.1):
     resolution: {integrity: sha512-Zq0laKbRjX3luAJrkSTYE9gkLttFO5LiWB9qq5xiYQGmtKxY9cu8sk9KeUVZ3z6shjEqHdtwM5FFCKGGvwVALA==}
     peerDependencies:
       next-auth: ^4.21.1
     dependencies:
       '@nuxt/kit': 3.7.4
       defu: 6.1.2
-      next-auth: 4.22.5(next@13.5.6)(react-dom@18.2.0)(react@18.2.0)
+      next-auth: 4.21.1(next@13.5.6)(react-dom@18.2.0)(react@18.2.0)
       nitropack: 2.6.3
       requrl: 3.0.2
       ufo: 1.3.1
@@ -8363,8 +8363,8 @@ packages:
     engines: {node: '>= 0.4.0'}
     dev: false
 
-  /next-auth@4.22.5(next@13.5.6)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-zPVEpqDp4cx1y0HbonCSrz2sA4qw0grTMd/S0PezUKXvDzmVemtsJnfNK/xo5pO2sz5ilM541+EVCTp9QoRLbA==}
+  /next-auth@4.21.1(next@13.5.6)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-NYkU4jAPSVxWhCblE8dDFAnKM7kOoO/QEobQ0RoEVP9Wox99A3PKHwOAsWhSg8ahJG/iKIWk2Bo1xHvsS4R39Q==}
     peerDependencies:
       next: ^12.2.5 || ^13
       nodemailer: ^6.6.5
