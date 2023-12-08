@@ -1,5 +1,5 @@
 ---
-title: 'minute-book-s.pdf'
+title: 'minute-book-summary.pdf'
 ---
 # Sumarizácia zápisníc z jednotlivých stretnutí
 

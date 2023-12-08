@@ -1,5 +1,5 @@
 ---
-title: 'retrospective-s.pdf'
+title: 'retrospective-summary.pdf'
 ---
 # Sumarizácia retrospektív z jednotlivých stretnutí
 
