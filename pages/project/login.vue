@@ -14,7 +14,7 @@ definePageMeta({
 });
 
 useHead({
-  title: 'Project page - Login',
+  title: 'Graph explorer - Login',
 });
 
 const { signIn } = useAuth();

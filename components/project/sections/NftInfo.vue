@@ -73,7 +73,7 @@ import type { NFTDTO, TransactionDTO, TransactionSearchRequestDTO, TransactionSe
 const transactionsTable = ref<InstanceType<typeof NDataTable> | undefined>();
 
 useHead({
-  title: 'NFT details',
+  title: 'Graph explorer - NFT',
 });
 
 const props = defineProps({
