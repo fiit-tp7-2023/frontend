@@ -2,7 +2,7 @@
   <n-card class="rounded-md text-start mb-3">
     <div class="grid md:grid-cols-3 gap-3 align-top">
       <div class="md:col-span-1">
-        <n-p class="text-xl md:hidden"><b>Address</b> {{ address }}</n-p>
+        <n-p class="text-xl md:hidden"><b>Address:</b> {{ address }}</n-p>
         <n-skeleton v-if="nftLoading || !nftData?.image" height="500px" width="100%" />
         <img v-else class="w-full" :src="nftData.image" />
       </div>
