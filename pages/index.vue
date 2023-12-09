@@ -12,6 +12,10 @@ import TeamInfo from '~/components/team-info/sections/TeamInfo.vue';
 import DocumentsSection from '~/components/team-info/sections/DocumentsSection.vue';
 import TimelineComponent from '~/components/team-info/sections/TimelineComponent.vue';
 
+useHead({
+  title: 'ChainMates',
+});
+
 definePageMeta({
   auth: false,
   layout: 'team',

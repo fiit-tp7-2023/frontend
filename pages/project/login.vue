@@ -13,6 +13,10 @@ definePageMeta({
   },
 });
 
+useHead({
+  title: 'Graph explorer - Login',
+});
+
 const { signIn } = useAuth();
 
 const handleSignIn = async () => {

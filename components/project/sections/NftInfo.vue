@@ -7,7 +7,12 @@
         <img v-else class="w-full" :src="nftData.image" />
       </div>
       <div class="md:col-span-2">
-        <n-p class="hidden text-xl md:block"><b>Address:</b> {{ address }}</n-p>
+        <n-p class="hidden text-xl md:block">
+          <b>Address:</b> {{ address }}
+          <n-button text class="my-2 mx-4" @click="navigateToEtherscan">
+            <icon name="mdi:launch" class="mr-2" size="18px"></icon>
+          </n-button>
+        </n-p>
         <n-p><b>Token name:</b> {{ nftData?.name }}</n-p>
         <n-p><b>Token ID:</b> {{ nftData?.tokenId }}</n-p>
         <n-p><b>Description:</b> {{ nftDescription }}</n-p>
@@ -43,12 +48,16 @@
 
 <script setup lang="ts">
 import type { DataTableColumn } from 'naive-ui';
-import { NSkeleton, NDataTable } from 'naive-ui';
+import { NSkeleton, NDataTable, NButton } from 'naive-ui';
 import { $obtain } from '@kodadot1/minipfs';
 import ServerErrorComponent from '../other/ServerError.vue';
 import TruncatedAddressComponent from '../other/TruncatedAddressComponent.vue';
 import type { NFTDTO, TransactionDTO, TransactionSearchRequestDTO, TransactionSearchResponseDTO } from '~/types/dtos';
 const transactionsTable = ref<InstanceType<typeof NDataTable> | undefined>();
+
+useHead({
+  title: 'Graph explorer - NFT',
+});
 
 const props = defineProps({
   address: {
@@ -131,6 +140,15 @@ const {
 } = useFetch('/api/transaction', {
   query: transactionsQuery,
 });
+
+const navigateToEtherscan = () => {
+  window.open(getEtherscanAddress(props.address), '_blank');
+};
+
+const getEtherscanAddress = (address: string) => {
+  const parts = address.split('_');
+  return parts.length > 0 ? `https://etherscan.io/token/${parts[0]}` : 'https://etherscan.io';
+};
 
 const sources = ref<string[]>();
 
