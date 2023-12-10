@@ -46,7 +46,7 @@ const teams = {
       image: '/avatars/kiko.svg',
     },
     {
-      name: 'Viky',
+      name: 'Viki',
       role: 'Product owner',
       image: '/avatars/viky.svg',
     },
