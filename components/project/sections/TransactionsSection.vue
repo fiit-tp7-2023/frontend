@@ -6,9 +6,9 @@
       </n-button>
     </template>
     <n-space vertical>
-      <n-input v-model:value="searchValues.senderAddress" type="text" placeholder="Sender ID" />
-      <n-input v-model:value="searchValues.receiverAddress" type="text" placeholder="Receiver ID" />
-      <n-input v-model:value="searchValues.nftAddress" type="text" placeholder="NFT ID" />
+      <n-input v-model:value="searchValues.senderAddress" type="text" placeholder="Sender Address" />
+      <n-input v-model:value="searchValues.receiverAddress" type="text" placeholder="Receiver Address" />
+      <n-input v-model:value="searchValues.nftAddress" type="text" placeholder="NFT Address" />
       <n-select
         v-model:value="searchValues.tagNames"
         filterable
@@ -74,7 +74,7 @@ const columns: DataTableColumn<TransactionDTO>[] = [
   },
   {
     title: 'Sender',
-    key: 'sender.id',
+    key: 'sender.address',
     render: (row) =>
       transactionsLoading.value
         ? h(NSkeleton, { style: { width: '150px', height: '19px' } })
@@ -82,7 +82,7 @@ const columns: DataTableColumn<TransactionDTO>[] = [
   },
   {
     title: 'Receiver',
-    key: 'receiver.id',
+    key: 'receiver.address',
     render: (row) =>
       transactionsLoading.value
         ? h(NSkeleton, { style: { width: '150px', height: '19px' } })
@@ -90,7 +90,7 @@ const columns: DataTableColumn<TransactionDTO>[] = [
   },
   {
     title: 'NFT',
-    key: 'nft.id',
+    key: 'nft.address',
     render: (row) =>
       transactionsLoading.value
         ? h(NSkeleton, { style: { width: '150px', height: '19px' } })
