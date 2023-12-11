@@ -1,5 +1,5 @@
 <template>
-  <div id="documents" class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+  <div id="documents" class="grid grid-cols-1 lg:grid-cols-4 gap-8 my-8">
     <div>
       <n-h2 class="text-3xl font-bold">Documents</n-h2>
       <n-menu :options="menuOptions" :indent="16" @update-value="handleMenuOptionSelect" />

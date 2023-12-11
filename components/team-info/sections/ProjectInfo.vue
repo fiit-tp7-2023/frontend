@@ -1,5 +1,5 @@
 <template>
-  <div id="about" class="grid gap-8">
+  <div id="about" class="grid gap-8 mt-2">
     <n-h1 class="font-bold text-6xl">Social Graph Explorer</n-h1>
     <div class="mx-auto lg:mx-0 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
       <div>
@@ -38,17 +38,15 @@
         </n-text>
       </div>
     </div>
-    <div class="flex justify-center items-center mt-3">
-      <n-button
-        strong
-        ghost
-        type="primary"
-        class="w-full h-20 font-bold text-lg blinking-dash"
-        @click="$router.push('/project/login')"
-      >
-        PROJECT SECTION
-      </n-button>
-    </div>
+    <n-button
+      strong
+      ghost
+      type="primary"
+      class="w-full h-20 font-bold text-lg blinking-dash self-center my-8"
+      @click="$router.push('/project/login')"
+    >
+      PROJECT SECTION
+    </n-button>
   </div>
 </template>
 <style>

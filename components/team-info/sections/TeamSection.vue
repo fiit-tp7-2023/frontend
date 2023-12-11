@@ -1,6 +1,6 @@
 <template>
   <div id="team">
-    <n-h1 class="text-3xl text-center font-bold mb-12">Our Team</n-h1>
+    <n-h1 class="text-3xl text-center font-bold mb-10 mt-20">Our Team</n-h1>
     <div class="hidden lg:flex flex-col items-center gap-10">
       <div v-for="(team, rowIndex) in teams" :key="rowIndex" class="flex flex-row items-start gap-10">
         <team-member-component
