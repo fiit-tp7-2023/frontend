@@ -18,9 +18,7 @@ export default defineEventHandler(async (event) => {
   });
 
   const { getDocument } = useDocumentService();
-  return await getDocument(query).catch((e) => {
-    console.error('Download document error:', String(e));
-
+  return await getDocument(query).catch(() => {
     throw createError({
       statusCode: 404,
       statusMessage: 'Not Found',
