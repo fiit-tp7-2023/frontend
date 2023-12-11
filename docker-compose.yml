@@ -1,0 +1,16 @@
+version: '1.0'
+
+networks:
+  team07:
+    external: true
+
+services:
+  presentation-web-frontend:
+    build: .
+    container_name: presentation-web-frontend
+    image: presentation-web-frontend
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    networks:
+      - team07
