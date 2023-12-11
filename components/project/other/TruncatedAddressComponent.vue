@@ -1,9 +1,9 @@
 <template>
   <n-tooltip trigger="hover">
     <template #trigger>
-      <n-button text class="cursor-pointer" @click="handleContextMenu" @contextmenu="(e) => handleContextMenu(e)">{{
-        truncatedAddress
-      }}</n-button>
+      <n-button text class="cursor-pointer" @click="handleContextMenu" @contextmenu="(e) => handleContextMenu(e)">
+        {{ truncatedAddress }}
+      </n-button>
     </template>
     {{ address }}
   </n-tooltip>
@@ -21,7 +21,6 @@
 <script lang="ts" setup>
 import copy from 'copy-to-clipboard';
 import { NButton } from 'naive-ui';
-import { useRouter } from 'vue-router';
 import { NuxtLink, Icon } from '#components';
 import { TRUNCATE_ETH_ADRESS_REGEX, TRUNCATE_NFT_ADRESS_REGEX } from '~/constants/regex';
 
