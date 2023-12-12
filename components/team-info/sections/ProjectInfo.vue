@@ -19,9 +19,9 @@
         src="/images/graph.png"
       />
       <nuxt-img class="self-center justify-self-center" width="450" height="450" src="/images/screen.png" />
-      <div>
+      <div class="flex flex-col gap-4">
         <n-h2 depth="1" class="text-2xl font-bold tracking-tight underline">Key features</n-h2>
-        <n-text depth="2" class="mt-6 text-lg leading-8">
+        <n-text depth="2" class="text-lg leading-8">
           <b>Graph layer</b>
           <n-text depth="3">
             - Uncover patterns in blockchain transactions by modeling dependencies among addresses and smart
@@ -29,7 +29,7 @@
           >
         </n-text>
         <br />
-        <n-text depth="2" class="mt-6 text-lg leading-8">
+        <n-text depth="2" class="text-lg leading-8">
           <b>Data Visualization</b>
           <n-text depth="3">
             - Our Neo4j graph database is not just a repository; it's a vibrant canvas revealing the intricate
