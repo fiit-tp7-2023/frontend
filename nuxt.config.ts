@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   auth: {
     enableGlobalAppMiddleware: process.env.VERCEL_ENV !== 'preview',
     origin: process.env.AUTH_ORIGIN ?? 'http://localhost:3000',

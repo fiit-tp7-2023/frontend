@@ -19,6 +19,7 @@ const themeConfig: ThemeConfig = {
       primaryColorHover: '#fe0854',
       primaryColorPressed: '#fe086e',
       infoColor: '#43e2f2',
+      fontFamily: 'monospace',
     },
     Button: {
       fontSizeLarge: '1.25rem',

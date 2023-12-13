@@ -39,7 +39,13 @@ const changeTheme = () => {
 
 const scrollTo = (link: string) => {
   const element = document.getElementById(link);
-  element?.scrollIntoView({ behavior: 'smooth' });
+  if (!element) return;
+  const headerOffset = 100;
+
+  window.scrollTo({
+    top: element.offsetTop - headerOffset,
+    behavior: 'smooth',
+  });
 };
 
 const scrollToTop = () => {

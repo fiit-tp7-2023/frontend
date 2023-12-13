@@ -1,7 +1,7 @@
 <template>
-  <div id="timeline" class="flex flex-col items-center">
+  <div id="timeline" class="flex flex-col items-center my-10">
     <h1 class="text-3xl font-bold mb-0">Timeline</h1>
-    <div class="timeline" :class="theme">
+    <div class="mt-2" :class="theme">
       <div v-for="(item, index) in timelineItems" :key="index" class="card">
         <div class="info flex">
           <n-card :title="item.title" class="title">
@@ -96,12 +96,8 @@ const theme = computed(() => {
 </script>
 
 <style scoped>
-.timeline {
-  margin-top: 5%;
-}
 .card {
   position: relative;
-  max-width: 500px;
 }
 
 .card::before {
