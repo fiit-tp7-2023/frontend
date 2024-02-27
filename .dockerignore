@@ -1,0 +1,16 @@
+.git
+.nuxt
+.output
+.vscode
+.husky
+.github
+node_modules
+
+.env.example
+.gitignore
+README.md
+.editorconfig
+.eslintrc
+reviewpad.yml
+.prettierrc
+.commitlintrc.js
