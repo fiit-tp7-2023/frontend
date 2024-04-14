@@ -9,6 +9,6 @@ services:
     image: presentation-web-frontend
     restart: unless-stopped
     ports:
-      - 3000:3000
+      - ${PRESENTATION_FRONTEND_HOST_PORT:-8000}:3000
     networks:
       - team07
