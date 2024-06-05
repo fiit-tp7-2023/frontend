@@ -83,6 +83,36 @@ const timelineItems = [
     content: 'Introduced a new feature enabling users to filter content based on tags.',
     date: '26.11.2023',
   },
+  {
+    title: 'Global goal',
+    content: 'Defined a goal for the project - aim is to create a social network app.',
+    date: '15.2.2024',
+  },
+  {
+    title: 'Recommendation system',
+    content: 'Implemented a recommendation system of NFT posts for users.',
+    date: '4.3.2024',
+  },
+  {
+    title: 'In-app messaging system',
+    content: 'Introduced a feature for sending and receiving messages, including groupchats.',
+    date: '4.3.2024',
+  },
+  {
+    title: 'IIT SRC paper',
+    content: 'Finished writing a paper about this project for the IIT SRC conference.',
+    date: '18.3.2024',
+  },
+  {
+    title: 'Front-end design refactor',
+    content: 'Reimagined and designed the new appearance of our social network site.',
+    date: '15.4.2024',
+  },
+  {
+    title: 'End of the Project',
+    content: 'Our last meeting. We discussed and evaluated our work throughout the project timeline.',
+    date: '29.4.2024',
+  },
 ];
 const { colorMode } = useNaiveColorMode();
 

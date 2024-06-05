@@ -122,6 +122,131 @@ title: 'retrospective-summary.pdf'
 
 ---
 
+### Retrospektíva 5. šprintu (5.12.2023)
+#### Čo fungovalo dobre ✔️
+
+- hotový auto-deploy
+- stihli sa všetky dev tasky
+- dokončená NFT page
+- máme server
+- podarilo sa nám optimalizovať data processor
+
+
+#### Čo by sme mohli zlepšiť ✨
+
+- vyhorievanie
+- málo pamäte na serveri
+- uvedomenie, že nám chýba spracovanie tokenov
+- nezistili sme problém, prečo Nuxt nechce spracovať IPFS (https://github.com/kodadot/packages/issues/192)
+
+
+#### Zmeny do budúcnosti 🚀
+- dorobiť spracovanie erc-20 v letnom semestri
+
+---
+
+### Retrospektíva 6. šprintu (26.2.2024)
+#### Čo fungovalo dobre ✔️
+
+- dobre zvládnuté a navrhnuté overenie prihlásenia
+- máme lightový dizajn webu
+- konečne zdvihnutý space, navýšenú HDD kapacitu
+- posunul sa deployment veci na našom vlastnom serveri
+- upratali sme server
+
+
+#### Čo by sme mohli zlepšiť ✨
+
+- nestihli sme všetko, lebo veľa blockerov (v dôsledku malého miesta)
+
+#### Zmeny do budúcnosti 🚀
+- minimalizovať FE docker image
+
+---
+
+### Retrospektíva 7. šprintu (26.2.2024)
+#### Čo fungovalo dobre ✔️
+
+- zadefinovali sme si štruktúry dát
+- data processor beží aj na serveri
+- máme ownerov NFTs
+- dobrý progress na BE
+- stihlo sa všetko
+
+
+#### Čo by sme mohli zlepšiť ✨
+
+- presunuli sme storku s hot posts
+- nemáme obrázky
+
+---
+
+### Retrospektíva 8. šprintu (11.3.2024)
+#### Čo fungovalo dobre ✔️
+
+- vyriešený recommendation flow
+- pochvala pre Sama za dobrú prácu na BE
+- žiadne problémy so serverom
+- úspešný teambuilding za nami (fínsky dych)
+- deplomenty fungujú tak, ako majú 
+- na strane indexera sa pekne pracuje
+
+
+#### Čo by sme mohli zlepšiť ✨
+
+- potreba prediskutovať REST endpointy
+- väčšia iniciatíva
+- na FE treba viac zamakať
+- nestihol sa recommendation systém
+
+
+#### Zmeny do budúcnosti 🚀
+
+- špecifikovať si porty
+- nebáť sa opýtať ak niečo neviem
+- začať písať článok + prezentáciu
+- porozprávať sa o tom, ako sme naladení v rámci projekt
+
+
+---
+
+### Retrospektíva 9. šprintu (8.4.2024)
+#### Čo fungovalo dobre ✔️
+- stihlo sa všetko čo sa dalo
+- podarilo sa rozbehať SignalR
+- BE vyzerý byť zatiaľ hotový
+
+
+
+#### Čo by sme mohli zlepšiť ✨
+- článok sme mohli začať písať skôr
+
+
+
+#### Zmeny do budúcnosti 🚀
+- FE potrebujeme preštýlovať
+
+
+---
+
+### Retrospektíva 10. šprintu (29.4.2024)
+#### Čo fungovalo dobre ✔️
+- základná funkcionalita aplikácie dokončená
+- práca do neskorých hodín pred IITSRC (dopadol celkom fajn)
+- dobrý review na článok
+
+
+
+#### Čo by sme mohli zlepšiť ✨
+- nesihli sme zapracovať niektoré pripravené veci na BE
+- nestíhali sme celkovo
+
+#### Zmeny do budúcnosti 🚀
+- upraviť prezentáciu na TP Cup
+- naplánovať posledný teambuilding
+
+---
+
 ### Sumarizácia 💥
 Počas prvej retrospektívy sme si uvedomili, aká je dôležitá kvalitná organizačná štruktúra. Zavedenie pravidelných stretnutí a daily standupov nám ponúklo priestor na otvorenú komunikáciu, ale tiež nám umožnilo nezabúdať na úlohy a postupne pracovať na vývoji projektu. V organizácii času a efektívnej komunikácii sme dosiahli postupné zlepšenie, ktoré malo kľúčový dopad na pokrok v projekte.
 
